@@ -7,7 +7,7 @@ class Settings:
         self.resizable = True  # Флажок для редактирования размера окна
         self.fullscreen = False  # Полноэкранный режим экрана тогда берется размер экрана
 
-        self.title = "My First Arcade Project"  # Название приложения
+        self.title = "Vampire Garden"  # Название приложения
 
         self.reboot = False  # Флажок для перезагрузки приложения
 

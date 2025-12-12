@@ -2,6 +2,7 @@ import arcade
 from pyglet.graphics import Batch
 from src.settings import settings
 from src.registry import reg
+from arcade import gui
 
 
 class StartView(arcade.View):
@@ -10,81 +11,116 @@ class StartView(arcade.View):
     def __init__(self, window):
         super().__init__()
         self.window = window  # Ссылка на главное окно
-        self.timer = 0.0
-        self.batch = Batch()
+        self.login_batch = Batch()
+        self.password_batch = Batch()
         self.shape_list = arcade.shape_list.ShapeElementList()
-        self.name_game = None
-        self.rect_outline = None
+        self.login = None
+        self.background = arcade.load_texture('resources/Background/background.jpeg')
 
     def setup(self):
         """Инициализация представления"""
-        self.create_text()
+        
+        part_x = self.window.width // 100
+        part_y = self.window.height // 100
+        center_x = part_x * 50
+        center_y = part_y * 50
+        
+        self.create_text(part_x, part_y, center_x, center_y)
+        
+        # Создаем объект для ввода логина
+        self.login_input = gui.UIInputText(
+            x=center_x - part_x * 9, y=center_y + 15 * part_y,
+            width=200, height=30,
+            text="",  # начальный текст
+            font_size=16
+        )
+        
+        # Создаем объект для ввода пароля
+        self.password_input = gui.UIInputText(
+            x=center_x - part_x * 9, y=center_y - 3 * part_y,
+            width=200, height=30,
+            text="",  # начальный текст
+            font_size=16
+        )
+        
+        # Создаем менеджер GUI
+        self.manager = gui.UIManager()
+        self.manager.enable()
+        
+        # Добавляем текстовое поле в менеджер
+        self.manager.add(self.password_input)
+        self.manager.add(self.login_input)
 
     def on_show_view(self):
         """Вызывается при показе этого представления"""
         self.setup()
-        self.timer = 0.0
 
     def on_draw(self):
         """Рисование"""
         self.clear()
-        self.batch.draw()
+        
+        arcade.draw_texture_rect(self.background, arcade.rect.XYWH(
+            self.width // 2, self.height // 2,
+            self.width, self.height
+        ))
+        
+        # Отрисовываем интерфейс
+        self.manager.draw()
+        self.password_batch.draw()
+        self.login_batch.draw()
         self.shape_list.draw()
 
     def on_update(self, delta_time):
         """Обновление логики"""
-        self.timer += delta_time
 
-        # Переход на главное меню через 5 секунд
-        if self.timer >= 5.0:
-            self.window.switch_view("main_menu")
+        pass
 
     def on_resize(self, width: float, height: float):
         """Обработка изменения размера окна"""
         super().on_resize(width, height)
-        self.create_text()
+        
+        part_x = self.window.width // 100
+        part_y = self.window.height // 100
+        center_x = part_x * 50
+        center_y = part_y * 50
+        
+        self.create_text(part_x, part_y, center_x, center_y)
 
-    def create_text(self):
+    def create_text(self, part_x, part_y, center_x, center_y):
         """Создание текста и рамки"""
         # Очищаем предыдущие объекты
-        self.batch = Batch()
+        self.login_batch = Batch()
+        self.password_batch = Batch()
         if self.shape_list:
             self.shape_list.clear()
-
-        center_x = self.window.width // 2
-        center_y = self.window.height // 2
 
         # Расчет размера шрифта
         base_width = settings.width_min
         font_size = int(24 * (self.window.width / base_width))
 
         # Создаем текст
-        self.name_game = arcade.Text(
-            settings.title,
+        self.login = arcade.Text(
+            'Login',
             center_x,
-            center_y,
-            arcade.color.RED,
+            center_y + 26 * part_y,
+            arcade.color.ANTIQUE_WHITE,
             font_size,
             bold=True,
             align="center",
             anchor_x="center",
             anchor_y="center",
-            batch=self.batch
+            batch=self.login_batch
         )
-
-        # Создаем рамку
-        text_width = self.name_game.content_width
-        text_height = self.name_game.content_height
-        padding = int(min(self.window.width, self.window.height) * 0.05)
-        rect_width = text_width + padding
-        rect_height = text_height + padding
-
-        self.rect_outline = arcade.shape_list.create_rectangle_outline(
-            center_x=center_x,
-            center_y=center_y,
-            width=rect_width,
-            height=rect_height,
-            color=arcade.color.RED,
-            border_width=2
+        
+        self.password = arcade.Text(
+            'Password',
+            center_x,
+            center_y + 10 * part_y,
+            arcade.color.ANTIQUE_WHITE,
+            font_size,
+            bold=True,
+            align="center",
+            anchor_x="center",
+            anchor_y="center",
+            batch=self.password_batch
         )
-        self.shape_list.append(self.rect_outline)
