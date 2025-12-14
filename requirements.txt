@@ -1,9 +1,13 @@
 arcade==3.3.3
 attrs==25.4.0
 cffi==2.0.0
+Cython==3.2.2
 pillow==11.3.0
 pycparser==2.23
 pyglet==2.1.11
 pymunk==6.9.0
+pyobjc-core==12.1
+pyobjc-framework-Cocoa==12.1
 pytiled_parser==2.2.9
+screeninfo==0.8.1
 typing_extensions==4.15.0
