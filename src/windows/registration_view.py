@@ -32,13 +32,18 @@ class RegistrationView(arcade.View):
         
         # кнопка для регистрации
         reg_btn = arcade.gui.widgets.buttons.UIFlatButton(
-            x=center_x - part_x,
+            x=center_x - 9 * part_x,
             y=center_y - 12 * part_y,
             style=styles.button_style,
-            text="Регистрация", width=200
+            text="Зарегистрироваться", width=200
         )
         # добавляем в менеджер
         self.manager.add(reg_btn)
+        
+        # при нажатии кнопки окно меняется на авторизацию
+        @reg_btn.event("on_click")
+        def on_click_settings(event):
+            self.window.switch_view("start")
         
         # надпись логин
         self.login_text = arcade.Text(

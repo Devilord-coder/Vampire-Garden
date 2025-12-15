@@ -40,6 +40,7 @@ class StartView(arcade.View):
         # добавляем в менеджер
         self.manager.add(reg_btn)
         
+        # при нажатии кнопки окно меняется на регистрацию
         @reg_btn.event("on_click")
         def on_click_settings(event):
             self.window.switch_view("registration")
@@ -64,7 +65,7 @@ class StartView(arcade.View):
             font_name='comic'
         )
         
-        # Создаем объект для ввода логина
+        # объект для ввода логина
         login_input = arcade.gui.UIInputText(
             x=center_x - part_x * 9, y=center_y + 15 * part_y,
             width=200, height=30,
@@ -75,7 +76,7 @@ class StartView(arcade.View):
             border_color=arcade.color.AMARANTH_PURPLE
         )
         
-        # Создаем объект для ввода пароля
+        # объект для ввода пароля
         password_input = arcade.gui.UIInputText(
             x=center_x - part_x * 9, y=center_y - 3 * part_y,
             width=200, height=30,
