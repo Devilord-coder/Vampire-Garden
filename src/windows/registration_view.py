@@ -68,7 +68,7 @@ class RegistrationView(arcade.View):
         # Создаем объект для ввода логина
         login_input = arcade.gui.UIInputText(
             x=center_x - part_x * 9, y=center_y + 15 * part_y,
-            width=200, height=30,
+            width=300, height=30,
             text="",
             font_size=16,
             style=styles.input_text_style,
@@ -79,7 +79,7 @@ class RegistrationView(arcade.View):
         # Создаем объект для ввода пароля
         password_input = arcade.gui.UIInputText(
             x=center_x - part_x * 9, y=center_y - 3 * part_y,
-            width=200, height=30,
+            width=300, height=30,
             text="",
             font_size=16,
             style=styles.input_text_style,
@@ -116,3 +116,9 @@ class RegistrationView(arcade.View):
         """Обновление логики"""
 
         ...
+        
+    def on_resize(self, width, height):
+        """ Изменение размера окна """
+        
+        super().on_resize(width, height)
+        self.setup()

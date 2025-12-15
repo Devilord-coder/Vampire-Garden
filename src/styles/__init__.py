@@ -1,5 +1,6 @@
 from .button_style import button_style
 from .input_text_style import input_text_style
+from .text_style import text_style
 
 """
 Модуль со всеми стилями
@@ -8,5 +9,6 @@ from .input_text_style import input_text_style
 
 __all__ = [
     "button_style",
-    "input_text_style"
+    "input_text_style",
+    "text_style"
 ]

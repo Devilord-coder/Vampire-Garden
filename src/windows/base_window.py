@@ -10,7 +10,7 @@ class BaseWindow(arcade.Window):
         super().__init__(settings.width, settings.height, settings.title,
                          resizable=settings.resizable, fullscreen=settings.fullscreen)
         self.set_minimum_size(settings.width_min, settings.height_min)
-        self.center_window()
+        # self.center_window() - не работает (по крайней мере на Маке)
         self.background_color = arcade.color.BLACK
 
         # Храним представления
