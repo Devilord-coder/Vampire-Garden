@@ -1,13 +1,14 @@
 import arcade
 import arcade.gui
 import src.styles as styles
+from src.registry import reg
 
 
 class PrehistoryView(arcade.View):
     def __init__(self, window):
         super().__init__()
         self.window = window
-        # self.sound = arcade.load_sound("resources/sounds/prehistory_sound.mp3")
+        # self.sound = reg.prehistory_voice
         self.ui_manager = arcade.gui.UIManager()
         self.ui_manager.enable()
 
@@ -18,7 +19,7 @@ class PrehistoryView(arcade.View):
         with open("resources/prehistory.txt", "r") as file:
             self.text = file.readlines()
         self.background = arcade.load_texture("resources/Moon/png/orig.png")
-        # self.vampire_picture = arcade.load_texture("resources/prehistory_vampire.jpg")
+        self.vampire_picture = arcade.load_texture("resources/prehistory_vampire.jpg")
         # arcade.play_sound(self.sound, volume=0.5, loop=False)
         
         part_x, part_y, center_x, center_y = self.window.get_parts()
@@ -69,10 +70,10 @@ class PrehistoryView(arcade.View):
             text.draw()
             height -= 50
 
-        # rect = arcade.rect.XYWH(
-        #     self.width // 2 + 40 * self.width // 100, self.height // 2, 280, 500
-        # )
-        # arcade.draw_texture_rect(texture=self.vampire_picture, rect=rect)
+        rect = arcade.rect.XYWH(
+            self.width // 2 + 40 * self.width // 100, self.height // 2, 280, 500
+        )
+        arcade.draw_texture_rect(texture=self.vampire_picture, rect=rect)
 
         self.ui_manager.draw()
 

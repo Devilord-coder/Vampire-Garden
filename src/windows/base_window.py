@@ -12,6 +12,12 @@ class BaseWindow(arcade.Window):
         self.set_minimum_size(settings.width_min, settings.height_min)
         # self.center_window() - не работает (по крайней мере на Маке)
         self.background_color = arcade.color.BLACK
+        self.sprites = arcade.SpriteList()
+        self.set_mouse_visible(False)
+        self.mouse = arcade.Sprite('resources/Cursor.png', scale=2)
+        self.mouse.center_x = self.width // 2
+        self.mouse.center_y = self.height // 2
+        self.sprites.append(self.mouse)
 
         # Храним представления
         self.views = {}
@@ -20,6 +26,10 @@ class BaseWindow(arcade.Window):
         self.db = database
         # Открываем соединение
         self.db.open()
+    
+    def on_mouse_motion(self, x, y, dx, dy):
+        self.mouse.center_x = x
+        self.mouse.center_y = y
 
     def get_view(self, view_name):
         """ Получить или создать представление по имени """
@@ -39,6 +49,11 @@ class BaseWindow(arcade.Window):
                 self.views[view_name] = PrehistoryView(self)
 
         return self.views[view_name]
+    
+    def on_draw(self):
+        
+        self.sprites.draw()
+        return super().on_draw()
     
     def get_parts(self) -> tuple[int, int, int, int]:
         """ Функция для разделения экрана на равные части

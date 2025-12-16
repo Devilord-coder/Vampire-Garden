@@ -132,6 +132,10 @@ class RegistrationView(arcade.View):
         
         self.anchor_layout.add(self.box_layout)  # Box в anchor
         self.manager.add(self.anchor_layout)  # Всё в manager
+    
+    def on_key_press(self, key, modifiers):
+        if key == arcade.key.ESCAPE:
+            self.window.switch_view("start")
 
     def add_user(self) -> tuple[bool, None | str]:
         """ Добавление пользователя в БД
