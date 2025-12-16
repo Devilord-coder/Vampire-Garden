@@ -128,6 +128,8 @@ class StartView(arcade.View):
 
         login = self.login_input.text
         password = self.password_input.text
+        if not login or not password:
+            return False, "Все поля должны быть заполнены"
         result = self.window.db.check_user(login, password)
         if result == "OK":
             return True, None
