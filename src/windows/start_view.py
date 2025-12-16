@@ -4,6 +4,9 @@ import src.styles as styles
 import arcade
 import arcade.gui
 import arcade.gui.widgets.buttons
+from arcade.gui import UIManager, UIFlatButton, UITextureButton, UILabel, UIInputText, UITextArea, UISlider, UIDropdown, \
+    UIMessageBox  # Это разные виджеты
+from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout  # А это менеджеры компоновки, как в pyQT
 
 
 class StartView(arcade.View):
@@ -14,15 +17,16 @@ class StartView(arcade.View):
         self.window = window  # Ссылка на главное окно
         self.background = arcade.load_texture('resources/Background/background.jpeg')
         
-        # список виджетов
-        self.list_widget = arcade.shape_list.ShapeElementList()
-
     def setup(self):
         """Инициализация представления"""
         
-        # Для отрисовки особых виджетов
-        self.manager = arcade.gui.UIManager()
-        self.manager.enable()
+        # UIManager — сердце GUI
+        self.manager = UIManager()
+        self.manager.enable()  # Включить, чтоб виджеты работали
+        
+        # Layout для организации — как полки в шкафу
+        self.anchor_layout = UIAnchorLayout()  # Центрирует виджеты
+        self.box_layout = UIBoxLayout(vertical=True, space_between=20)  # Вертикальный стек
 
         part_x, part_y, center_x, center_y = self.get_parts()
 
@@ -41,9 +45,14 @@ class StartView(arcade.View):
             style=styles.button_style,
             text="Регистрация", width=200
         )
-        # добавляем в менеджер
-        self.manager.add(reg_btn)
-        self.manager.add(log_in_btn)
+        
+        texture_normal = arcade.load_texture("resources/buttons/OK/OK_Default.png")
+        texture_hovered = arcade.load_texture("resources/buttons/OK/OK_Hovered.png")
+        texture_pressed = arcade.load_texture("resources/buttons/OK/OK_Hovered.png")
+        log_in_btn = UITextureButton(texture=texture_normal, 
+                                        texture_hovered=texture_hovered,
+                                        texture_pressed=texture_pressed,
+                                        scale=1.0)
         
         # при нажатии кнопки окно меняется на регистрацию
         @reg_btn.event("on_click")
@@ -57,20 +66,20 @@ class StartView(arcade.View):
             self.window.switch_view("main_menu")
         
         # надпись логин
-        self.login_text = arcade.Text(
-            'Логин',
-            center_x - part_x * 10,
-            center_y + 23 * part_y,
-            arcade.color.AMARANTH_PURPLE,
+        login_text = UILabel(
+            text='Логин',
+            x=center_x - part_x * 10,
+            y=center_y + 23 * part_y,
+            text_color=arcade.color.AMARANTH_PURPLE,
             font_size=30
         )
         
         # надпись пароль
-        self.password_text = arcade.Text(
-            'Пароль',
-            center_x - 10 * part_x,
-            center_y + 5 * part_y,
-            arcade.color.AMARANTH_PURPLE,
+        password_text = UILabel(
+            text='Пароль',
+            x=center_x - 10 * part_x,
+            y=center_y + 5 * part_y,
+            text_color=arcade.color.AMARANTH_PURPLE,
             font_size=30
         )
         
@@ -96,9 +105,15 @@ class StartView(arcade.View):
             border_color=arcade.color.AMARANTH_PURPLE
         )
         
-        # Добавляем в менеджер
-        self.manager.add(password_input)
-        self.manager.add(login_input)
+        self.box_layout.add(login_text)
+        self.box_layout.add(login_input)
+        self.box_layout.add(password_text)
+        self.box_layout.add(password_input)
+        self.box_layout.add(reg_btn)
+        self.box_layout.add(log_in_btn)
+        
+        self.anchor_layout.add(self.box_layout)  # Box в anchor
+        self.manager.add(self.anchor_layout)  # Всё в manager
     
     def get_parts(self) -> tuple[int, int, int, int]:
         """ Функция для разделения экрана на равные части
@@ -133,9 +148,6 @@ class StartView(arcade.View):
         ))
         
         # только после этого все остальное
-        self.list_widget.draw()
-        self.password_text.draw()
-        self.login_text.draw()
         self.manager.draw()
 
     def on_update(self, delta_time):
