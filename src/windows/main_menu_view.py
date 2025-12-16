@@ -1,7 +1,6 @@
 import arcade
 from pyglet.graphics import Batch
 from src.settings import settings
-from src.registry import reg
 
 
 class MainMenuView(arcade.View):

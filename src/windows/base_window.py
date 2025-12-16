@@ -1,6 +1,6 @@
-# base_window.py
 import arcade
 from src.settings import settings
+from data.registry_data import database
 
 
 class BaseWindow(arcade.Window):
@@ -15,6 +15,11 @@ class BaseWindow(arcade.Window):
 
         # Храним представления
         self.views = {}
+        
+        # База данных
+        self.db = database
+        # Открываем соединение
+        self.db.open()
 
     def get_view(self, view_name):
         """ Получить или создать представление по имени """
@@ -30,9 +35,27 @@ class BaseWindow(arcade.Window):
                 from src.windows.main_menu_view import MainMenuView
                 self.views[view_name] = MainMenuView(self)
             elif view_name == "prehistory": # окно предыстории
-                ...
+                from src.windows.prehistory_view import PrehistoryView
+                self.views[view_name] = PrehistoryView(self)
 
         return self.views[view_name]
+    
+    def get_parts(self) -> tuple[int, int, int, int]:
+        """ Функция для разделения экрана на равные части
+
+        Returns:
+            tuple[int, int, int, int]: одна сотая часть экрана по х и у,
+        а также центры окна по х и у
+        """
+
+        # part_x и part_y - одна сотая часть экрана по х и у,
+        # так будет легче ставить кнопки на разных размерах экрана
+        part_x = self.width // 100
+        part_y = self.height // 100
+        center_x = part_x * 50
+        center_y = part_y * 50
+        
+        return (part_x, part_y, center_x, center_y)
 
     def switch_view(self, view_name):
         """ Переключиться на представление """
@@ -44,3 +67,10 @@ class BaseWindow(arcade.Window):
         # выйти при нажатии COMMAND + Q или CTRL + Q
         if key == arcade.key.Q and modifiers in {arcade.key.MOD_COMMAND, arcade.key.MOD_CTRL}:
             self.close()
+    
+    def close(self):
+        """ Закрытие окна """
+        
+        # Перед закрытием отключаемя от БД
+        self.db.close()
+        return super().close()
