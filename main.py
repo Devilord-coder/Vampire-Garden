@@ -2,7 +2,7 @@ import arcade
 from src.windows.base_window import BaseWindow
 
 
-if __name__ == "__main__":
+def main():
     # Создаем главное окно
     window = BaseWindow()
 
@@ -11,3 +11,7 @@ if __name__ == "__main__":
 
     # Запускаем игровой цикл
     arcade.run()
+
+
+if __name__ == "__main__":
+    main()
