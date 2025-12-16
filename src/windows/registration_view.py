@@ -1,0 +1,183 @@
+import src.styles as styles
+import arcade
+import arcade.gui
+import arcade.gui.widgets.buttons
+from arcade.gui import UIManager, UITextureButton, UILabel
+from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
+
+
+class RegistrationView(arcade.View):
+    """ Экран для регистрации """
+
+    def __init__(self, window):
+        super().__init__()
+        self.window = window  # Ссылка на главное окно
+        self.background = arcade.load_texture('resources/Background/start_background.jpeg')
+
+    def setup(self):
+        """Инициализация представления"""
+        
+        # UIManager — сердце GUI
+        self.manager = UIManager()
+        self.manager.enable()  # Включить, чтоб виджеты работали
+        
+        # Layout для организации — как полки в шкафу
+        self.anchor_layout = UIAnchorLayout()  # Центрирует виджеты
+        self.box_layout = UIBoxLayout(vertical=True, space_between=20)  # Вертикальный стек
+
+        part_x, part_y, center_x, center_y = self.window.get_parts()
+        
+        texture_normal = arcade.load_texture("resources/buttons/OK/OK_Default.png")
+        texture_hovered = arcade.load_texture("resources/buttons/OK/OK_Hovered.png")
+        texture_pressed = arcade.load_texture("resources/buttons/OK/OK_Hovered.png")
+        reg_btn = UITextureButton(texture=texture_normal, 
+                                        texture_hovered=texture_hovered,
+                                        texture_pressed=texture_pressed,
+                                        scale=1.0)
+        
+        # при нажатии кнопки окно меняется на регистрацию
+        @reg_btn.event("on_click")
+        def on_click_settings(event):
+            result, error = self.add_user()
+            if result:
+                self.window.switch_view("start")
+            else:
+                ... # Если не получилось зарегаться
+            
+        name_text = UILabel(
+            text='Имя',
+            text_color=arcade.color.AMARANTH_PURPLE,
+            font_size=30,
+            multiline=True
+        )
+        
+        # объект для ввода имени
+        self.name_input = arcade.gui.UIInputText(
+            width=300, height=30,
+            text="",
+            font_size=16,
+            style=styles.input_text_style,
+            text_color=arcade.color.AMARANTH_PURPLE,
+            border_color=arcade.color.AMARANTH_PURPLE
+        )
+        
+        email_text = UILabel(
+            text='Почта',
+            text_color=arcade.color.AMARANTH_PURPLE,
+            font_size=30,
+            multiline=True
+        )
+        
+        # объект для ввода имени
+        self.email_input = arcade.gui.UIInputText(
+            width=300, height=30,
+            text="",
+            font_size=16,
+            style=styles.input_text_style,
+            text_color=arcade.color.AMARANTH_PURPLE,
+            border_color=arcade.color.AMARANTH_PURPLE
+        )
+        
+        # надпись логин
+        login_text = UILabel(
+            text='Логин',
+            x=center_x - part_x * 10,
+            y=center_y + 23 * part_y,
+            text_color=arcade.color.AMARANTH_PURPLE,
+            font_size=30,
+            multiline=True
+        )
+        
+        # надпись пароль
+        password_text = UILabel(
+            text='Пароль',
+            x=center_x - 10 * part_x,
+            y=center_y + 5 * part_y,
+            text_color=arcade.color.AMARANTH_PURPLE,
+            font_size=30,
+            multiline=True
+        )
+        
+        # объект для ввода логина
+        self.login_input = arcade.gui.UIInputText(
+            x=center_x - part_x * 9, y=center_y + 15 * part_y,
+            width=300, height=30,
+            text="",
+            font_size=16,
+            style=styles.input_text_style,
+            text_color=arcade.color.AMARANTH_PURPLE,
+            border_color=arcade.color.AMARANTH_PURPLE
+        )
+        
+        # объект для ввода пароля
+        self.password_input = arcade.gui.UIInputText(
+            x=center_x - part_x * 9, y=center_y - 3 * part_y,
+            width=300, height=30,
+            text="",
+            font_size=16,
+            style=styles.input_text_style,
+            text_color=arcade.color.AMARANTH_PURPLE,
+            border_color=arcade.color.AMARANTH_PURPLE
+        )
+        
+        self.box_layout.add(name_text)
+        self.box_layout.add(self.name_input)
+        self.box_layout.add(email_text)
+        self.box_layout.add(self.email_input)
+        self.box_layout.add(login_text)
+        self.box_layout.add(self.login_input)
+        self.box_layout.add(password_text)
+        self.box_layout.add(self.password_input)
+        self.box_layout.add(reg_btn)
+        
+        self.anchor_layout.add(self.box_layout)  # Box в anchor
+        self.manager.add(self.anchor_layout)  # Всё в manager
+
+    def add_user(self) -> tuple[bool, None | str]:
+        """ Добавление пользователя в БД
+
+        Returns:
+            tuple[bool, None | str]: результат и ошибка (если есть)
+        """
+
+        name = self.name_input.text
+        email = self.email_input.text
+        login = self.login_input.text
+        password = self.password_input.text
+        
+        result =  self.window.db.add_user(name, email, login, password)
+        if result == "OK":
+            return True, None
+        else:
+            return False, result
+
+    def on_show_view(self):
+        """Вызывается при показе этого представления"""
+
+        self.setup()
+
+    def on_draw(self):
+        """Рисование"""
+        
+        # Очищаем
+        self.clear()
+        
+        # рисуем задний фон
+        arcade.draw_texture_rect(self.background, arcade.rect.XYWH(
+            self.width // 2, self.height // 2,
+            self.width, self.height
+        ))
+        
+        # только после этого все остальное
+        self.manager.draw()
+
+    def on_update(self, delta_time):
+        """Обновление логики"""
+
+        ...
+    
+    def on_resize(self, width, height):
+        """ Изменение размера окна """
+        
+        super().on_resize(width, height)
+        self.setup()
