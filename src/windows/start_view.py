@@ -23,14 +23,9 @@ class StartView(arcade.View):
         # Для отрисовки особых виджетов
         self.manager = arcade.gui.UIManager()
         self.manager.enable()
-        
-        # part_x и part_y - одна сотая часть экрана по х и у,
-        # так будет легче ставить кнопки на разных размерах экрана
-        part_x = self.window.width // 100
-        part_y = self.window.height // 100
-        center_x = part_x * 50
-        center_y = part_y * 50
-        
+
+        part_x, part_y, center_x, center_y = self.get_parts()
+
         # кнопка для входа
         log_in_btn = arcade.gui.widgets.buttons.UIFlatButton(
             x=center_x - 11 * part_x,
