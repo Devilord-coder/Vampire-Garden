@@ -1,4 +1,4 @@
-import src.styles as styles
+from src.styles import *
 import arcade
 import arcade.gui
 import arcade.gui.widgets.buttons
@@ -17,6 +17,9 @@ class StartView(arcade.View):
     def setup(self):
         """Инициализация представления"""
         
+        # открываем соединение с БД
+        self.window.db.open()
+        
         # UIManager — сердце GUI
         self.manager = UIManager()
         self.manager.enable()  # Включить, чтоб виджеты работали
@@ -26,23 +29,16 @@ class StartView(arcade.View):
         self.box_layout = UIBoxLayout(vertical=True, space_between=20)  # Вертикальный стек
 
         part_x, part_y, center_x, center_y = self.window.get_parts()
-
-        # кнопка для входа
-        log_in_btn = arcade.gui.widgets.buttons.UIFlatButton(
-            x=center_x - 11 * part_x,
-            y=center_y - 12 * part_y,
-            style=styles.button_style,
-            text="Войти", width=200
-        )
         
         # кнопка для регистрации
         reg_btn = arcade.gui.widgets.buttons.UIFlatButton(
             x=center_x + 5 * part_x,
             y=center_y - 12 * part_y,
-            style=styles.button_style,
-            text="Регистрация", width=200
+            style=button_style,
+            text="РЕГИСТРАЦИЯ", width=200
         )
         
+        # Это пока тестовый вариант кнопки (потом я её уменьшу)
         texture_normal = arcade.load_texture("resources/buttons/OK/OK_Default.png")
         texture_hovered = arcade.load_texture("resources/buttons/OK/OK_Hovered.png")
         texture_pressed = arcade.load_texture("resources/buttons/OK/OK_Hovered.png")
@@ -61,6 +57,7 @@ class StartView(arcade.View):
         def on_click_settings(event):
             result, error = self.check_user()
             if result:
+                self.window.db.close()
                 self.window.switch_view("main_menu")
                 self.login = self.login_input.text
             else:
@@ -68,21 +65,21 @@ class StartView(arcade.View):
         
         # надпись логин
         login_text = UILabel(
-            text='Логин',
+            text='ЛОГИН',
             x=center_x - part_x * 10,
             y=center_y + 23 * part_y,
-            text_color=arcade.color.AMARANTH_PURPLE,
-            font_size=30,
+            text_color=TEXT_COLOR,
+            font_size=18,
             multiline=True
         )
         
         # надпись пароль
         password_text = UILabel(
-            text='Пароль',
+            text='ПАРОЛЬ',
             x=center_x - 10 * part_x,
             y=center_y + 5 * part_y,
-            text_color=arcade.color.AMARANTH_PURPLE,
-            font_size=30,
+            text_color=TEXT_COLOR,
+            font_size=18,
             multiline=True
         )
         
@@ -92,9 +89,9 @@ class StartView(arcade.View):
             width=300, height=30,
             text="",
             font_size=16,
-            style=styles.input_text_style,
-            text_color=arcade.color.AMARANTH_PURPLE,
-            border_color=arcade.color.AMARANTH_PURPLE
+            style=input_text_style,
+            text_color=TEXT_COLOR,
+            border_color=TEXT_COLOR
         )
         
         # объект для ввода пароля
@@ -103,9 +100,9 @@ class StartView(arcade.View):
             width=300, height=30,
             text="",
             font_size=16,
-            style=styles.input_text_style,
-            text_color=arcade.color.AMARANTH_PURPLE,
-            border_color=arcade.color.AMARANTH_PURPLE
+            style=input_text_style,
+            text_color=TEXT_COLOR,
+            border_color=TEXT_COLOR
         )
         
         # Добавляем все виджеты
@@ -113,8 +110,8 @@ class StartView(arcade.View):
         self.box_layout.add(self.login_input)
         self.box_layout.add(password_text)
         self.box_layout.add(self.password_input)
-        self.box_layout.add(reg_btn)
         self.box_layout.add(log_in_btn)
+        self.box_layout.add(reg_btn)
         
         self.anchor_layout.add(self.box_layout)  # Box в anchor
         self.manager.add(self.anchor_layout)  # Всё в manager

@@ -24,8 +24,6 @@ class BaseWindow(arcade.Window):
         
         # База данных
         self.db = database
-        # Открываем соединение
-        self.db.open()
     
     def on_mouse_motion(self, x, y, dx, dy):
         self.mouse.center_x = x
@@ -47,6 +45,9 @@ class BaseWindow(arcade.Window):
             elif view_name == "prehistory": # окно предыстории
                 from src.windows.prehistory_view import PrehistoryView
                 self.views[view_name] = PrehistoryView(self)
+            elif view_name == "main_game": # главное окно игры
+                from src.windows.game.main_game_view import MainGameView
+                self.views[view_name] = MainGameView(self)
 
         return self.views[view_name]
     

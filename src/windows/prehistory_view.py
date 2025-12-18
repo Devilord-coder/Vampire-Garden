@@ -70,10 +70,10 @@ class PrehistoryView(arcade.View):
             text.draw()
             height -= 50
 
-        rect = arcade.rect.XYWH(
-            self.width // 2 + 40 * self.width // 100, self.height // 2, 280, 500
-        )
-        arcade.draw_texture_rect(texture=self.vampire_picture, rect=rect)
+        # rect = arcade.rect.XYWH(
+        #     self.width // 2 + 40 * self.width // 100, self.height // 2, 280, 500
+        # )
+        # arcade.draw_texture_rect(texture=self.vampire_picture, rect=rect)
 
         self.ui_manager.draw()
 

@@ -7,21 +7,25 @@ class RegistryDataBase:
     """ База данных для авторизации пользователей """
 
     def __init__(self):
+        # Изначально соединение закрыто
         self.con = None
         self.cur = None
     
     def open(self):
+        # открываем, если оно не открыто
         if not self.con:
             self.con = sqlite3.connect("vampire_garden_db.db")
             self.cur = self.con.cursor()
     
     def close(self):
+        # закрываем, если открыто
         if self.con:
             self.con.close()
         self.con = None
         self.cur = None
     
     def update(self):
+        # если соединени есть, обновляем
         if self.con:
             self.con.commit()
 
@@ -35,17 +39,18 @@ class RegistryDataBase:
     def check_login(self, login):
         """ Метод проверки наличия логина в базе данных """
 
+        # Если есть соединение проверить наличие
         if self.con:
             return self.cur.execute(
                 "SELECT id FROM Registry WHERE login=?", (login,)
             ).fetchall()
-        else:
+        else: # иначе ошибка
             raise DataBaseError("There is no opened database")
 
     def add_user(self, name, email, login, password):
         """ Метод для добавления игроков в базу данных """
         
-        if not self.con:
+        if not self.con: # если нет открытой бд - ошибка
             raise DataBaseError("There is no opened database")
         if not all([name, email, login, password]):
             return "Все поля должны быть заполнены."
@@ -57,19 +62,13 @@ class RegistryDataBase:
             "INSERT INTO Registry(name, login, password, email) VALUES (?, ?, ?, ?)",
             (name, login, hash_password, email),
         )
-        self.con.commit()
-        self.con.close()
-        return "OK"
-
-    def enter_user(self, login, password):
-        # Метод для проверки правильности ввода данных для входа под существующим аккаунтом
-        self.update()
+        self.update() # обновляем бд
         return "OK"
 
     def check_user(self, login, password):
         """ Метод для проверки правильности ввода данных для входа под существующим аккаунтом """
 
-        if not self.con:
+        if not self.con: # если нет открытой бд - ошибка
             raise DataBaseError("There is no opened database")
         if not self.check_login(login):
             return "Пользователя с данным логином не существует."
