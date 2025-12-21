@@ -102,20 +102,3 @@ class MainMenuView(arcade.View):
             anchor_y="center",
             batch=self.batch,
         )
-
-        # Создаем рамку
-        text_width = self.name_game.content_width
-        text_height = self.name_game.content_height
-        padding = int(min(self.window.width, self.window.height) * 0.05)
-        rect_width = text_width + padding
-        rect_height = text_height + padding
-
-        self.rect_outline = arcade.shape_list.create_rectangle_outline(
-            center_x=center_x,
-            center_y=center_y,
-            width=rect_width,
-            height=rect_height,
-            color=arcade.color.RED,
-            border_width=2
-        )
-        self.shape_list.append(self.rect_outline)
