@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="11">
- <tileset firstgid="1" source="../../../../../VSProjects/lyceum 2/tilemap.tsx"/>
+ <tileset firstgid="1" source="tilemap.tsx"/>
  <imagelayer id="2" name="background">
   <image source="../resources/Background/main_background.png" width="1280" height="800"/>
  </imagelayer>
@@ -17,12 +17,12 @@
  </objectgroup>
  <layer id="5" name="path" width="80" height="50">
   <data encoding="base64" compression="zlib">
-   eJzt1QEJADAMBLGXMQ/z768iCmsHCZyGSwAAAAAAAAAAAAAAANjsqtWRJEnPm/7/78GkAv3VR+E=
+   eJzt1UEJADAMBMGTUQ/17y8G8moeoTADq2ETAAAAAAAAAAAAAAAAgN7VqCNJ0kPb//o9ZgrwdkBh
   </data>
  </layer>
  <layer id="6" name="collisions" width="80" height="50">
   <data encoding="base64" compression="zlib">
-   eJzt1UENACAQA0EE4l8PHtjHETKT1MB+uhYAAAAAAAAAAAAAAAAv25bHHf0a/Rr9Gv0a/Zrp3/9hMOkAsxEzEQ==
+   eJzt1TENACAQBMEXiH89GKBiC0Iyk5yBbW4GAAAAAAAAAAAAAAAA4GxZHvf0a/Rr9Gv0a15/1++j2SS7MP0=
   </data>
  </layer>
 </map>
