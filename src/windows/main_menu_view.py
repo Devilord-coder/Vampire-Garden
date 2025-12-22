@@ -36,7 +36,7 @@ class MainMenuView(arcade.View):
                                         scale=1.0)
         @play_btn.event("on_click")
         def on_click_settings(event):
-            self.window.switch_view("main_game")
+            self.window.switch_view("main_map")
         
         # Добавляем все виджеты
         self.box_layout.add(play_btn)

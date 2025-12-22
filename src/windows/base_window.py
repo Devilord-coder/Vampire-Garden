@@ -1,6 +1,7 @@
 import arcade
 from src.settings import settings
 from data.registry_data import database
+from src.windows.main_map_view import MainMapView
 
 
 class BaseWindow(arcade.Window):
@@ -33,21 +34,23 @@ class BaseWindow(arcade.Window):
         """ Получить или создать представление по имени """
 
         if view_name not in self.views:
-            if view_name == "start": # начальное окно - авторизация
+            if view_name == "start":  # начальное окно - авторизация
                 from src.windows.start_view import StartView
                 self.views[view_name] = StartView(self)
-            elif view_name == "registration": # окно регистрации
+            elif view_name == "registration":  # окно регистрации
                 from src.windows.registration_view import RegistrationView
                 self.views[view_name] = RegistrationView(self)
-            elif view_name == "main_menu": # главное окно
+            elif view_name == "main_menu":  # главное окно
                 from src.windows.main_menu_view import MainMenuView
                 self.views[view_name] = MainMenuView(self)
-            elif view_name == "prehistory": # окно предыстории
+            elif view_name == "prehistory":  # окно предыстории
                 from src.windows.prehistory_view import PrehistoryView
                 self.views[view_name] = PrehistoryView(self)
             elif view_name == "main_game": # главное окно игры
                 from src.windows.game.main_game_view import MainGameView
                 self.views[view_name] = MainGameView(self)
+            elif view_name == 'main_map':  # основная карта
+                self.views[view_name] = MainMapView(self)
 
         return self.views[view_name]
     

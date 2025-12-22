@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="11">
+ <tileset firstgid="1" source="tilemap.tsx"/>
+ <imagelayer id="2" name="background">
+  <image source="../resources/Background/main_background.png" width="1280" height="800"/>
+ </imagelayer>
+ <objectgroup id="4" name="buildings_territories">
+  <object id="1" name="main_house" x="530" y="410" width="180" height="220"/>
+  <object id="2" name="portal" x="0" y="200" width="150" height="170"/>
+  <object id="4" name="library" x="30" y="440" width="200" height="200"/>
+  <object id="5" name="bat_house" x="280" y="480" width="140" height="140"/>
+  <object id="6" name="sport_hall" x="820" y="440" width="200" height="200"/>
+  <object id="7" name="sceleton_house" x="800" y="130" width="170" height="170"/>
+  <object id="8" name="vampire_house" x="260" y="180" width="200" height="200"/>
+  <object id="9" name="werewolf_house" x="520" y="130" width="200" height="220"/>
+  <object id="10" name="garden" x="1100" y="440" width="150" height="170"/>
+ </objectgroup>
+ <layer id="5" name="path" width="80" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt1UEJADAMBMGTUQ/17y8G8moeoTADq2ETAAAAAAAAAAAAAAAAgN7VqCNJ0kPb//o9ZgrwdkBh
+  </data>
+ </layer>
+ <layer id="6" name="collisions" width="80" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt1TENACAQBMEXiH89GKBiC0Iyk5yBbW4GAAAAAAAAAAAAAAAA4GxZHvf0a/Rr9Gv0a15/1++j2SS7MP0=
+  </data>
+ </layer>
+</map>
