@@ -5,21 +5,21 @@ import arcade
 Стиль для виджетов для ввода текста
 """
 
-bg_color = arcade.color.BLACK
+INPUT_TEXT_BG_COLOR = arcade.color.BLACK
 
 input_text_style = {
     "normal": UIInputText.UIStyle(
-        bg=bg_color
+        bg=INPUT_TEXT_BG_COLOR
     ),
     "hover": UIInputText.UIStyle(
         border=arcade.color.RED,
-        bg=bg_color
+        bg=INPUT_TEXT_BG_COLOR
     ),
     "press": UIInputText.UIStyle(
-        bg=bg_color),
+        bg=INPUT_TEXT_BG_COLOR),
     "disabled": UIInputText.UIStyle(
-        bg=bg_color),
+        bg=INPUT_TEXT_BG_COLOR),
     "invalid": UIInputText.UIStyle(
-        bg=bg_color
+        bg=INPUT_TEXT_BG_COLOR
     )
 }

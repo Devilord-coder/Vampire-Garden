@@ -4,6 +4,7 @@ import arcade
 """
 Стиль для кнопок
 """
+
 button_style = {
     "normal": UIFlatButton.UIStyle(
         font_color=arcade.color.AMARANTH,

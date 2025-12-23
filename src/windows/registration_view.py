@@ -1,7 +1,6 @@
-import src.styles as styles
+from src.styles import *
 import arcade
 import arcade.gui
-import arcade.gui.widgets.buttons
 from arcade.gui import UIManager, UITextureButton, UILabel
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
@@ -24,8 +23,6 @@ class RegistrationView(arcade.View):
         # Layout для организации — как полки в шкафу
         self.anchor_layout = UIAnchorLayout()  # Центрирует виджеты
         self.box_layout = UIBoxLayout(vertical=True, space_between=20)  # Вертикальный стек
-
-        part_x, part_y, center_x, center_y = self.window.get_parts()
         
         texture_normal = arcade.load_texture("resources/buttons/OK/OK_Default.png")
         texture_hovered = arcade.load_texture("resources/buttons/OK/OK_Hovered.png")
@@ -55,8 +52,8 @@ class RegistrationView(arcade.View):
         self.name_input = arcade.gui.UIInputText(
             width=300, height=30,
             text="",
-            font_size=16,
-            style=styles.input_text_style,
+            font_size=FONT_SIZE,
+            style=input_text_style,
             text_color=arcade.color.AMARANTH_PURPLE,
             border_color=arcade.color.AMARANTH_PURPLE
         )
@@ -72,8 +69,8 @@ class RegistrationView(arcade.View):
         self.email_input = arcade.gui.UIInputText(
             width=300, height=30,
             text="",
-            font_size=16,
-            style=styles.input_text_style,
+            font_size=FONT_SIZE,
+            style=input_text_style,
             text_color=arcade.color.AMARANTH_PURPLE,
             border_color=arcade.color.AMARANTH_PURPLE
         )
@@ -81,8 +78,6 @@ class RegistrationView(arcade.View):
         # надпись логин
         login_text = UILabel(
             text='Логин',
-            x=center_x - part_x * 10,
-            y=center_y + 23 * part_y,
             text_color=arcade.color.AMARANTH_PURPLE,
             font_size=30,
             multiline=True
@@ -91,8 +86,6 @@ class RegistrationView(arcade.View):
         # надпись пароль
         password_text = UILabel(
             text='Пароль',
-            x=center_x - 10 * part_x,
-            y=center_y + 5 * part_y,
             text_color=arcade.color.AMARANTH_PURPLE,
             font_size=30,
             multiline=True
@@ -100,22 +93,20 @@ class RegistrationView(arcade.View):
         
         # объект для ввода логина
         self.login_input = arcade.gui.UIInputText(
-            x=center_x - part_x * 9, y=center_y + 15 * part_y,
             width=300, height=30,
             text="",
-            font_size=16,
-            style=styles.input_text_style,
+            font_size=FONT_SIZE,
+            style=input_text_style,
             text_color=arcade.color.AMARANTH_PURPLE,
             border_color=arcade.color.AMARANTH_PURPLE
         )
         
         # объект для ввода пароля
         self.password_input = arcade.gui.UIInputText(
-            x=center_x - part_x * 9, y=center_y - 3 * part_y,
             width=300, height=30,
             text="",
-            font_size=16,
-            style=styles.input_text_style,
+            font_size=FONT_SIZE,
+            style=input_text_style,
             text_color=arcade.color.AMARANTH_PURPLE,
             border_color=arcade.color.AMARANTH_PURPLE
         )

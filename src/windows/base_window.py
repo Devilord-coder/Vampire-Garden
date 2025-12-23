@@ -49,10 +49,13 @@ class BaseWindow(arcade.Window):
                 from src.windows.game.main_game_view import MainGameView
                 self.views[view_name] = MainGameView(self)
             elif view_name == 'main_map':  # основная карта
-                from windows.game.main_map_view import MainMapView
+                from src.windows.game.main_map_view import MainMapView
                 self.views[view_name] = MainMapView(self)
             elif view_name == "settings": # настройки игры
                 ...
+            elif view_name == "choose_game": # выбор сохраения игры
+                from src.windows.choose_game_view import ChooseGameView
+                self.views[view_name] = ChooseGameView(self)
 
         return self.views[view_name]
     

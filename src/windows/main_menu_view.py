@@ -1,5 +1,4 @@
 import arcade
-from pyglet.graphics import Batch
 from src.settings import settings
 from arcade.gui import UIManager, UITextureButton, UILabel, UIFlatButton
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
@@ -13,7 +12,6 @@ class MainMenuView(arcade.View):
         super().__init__()
         self.window = window  # Ссылка на главное окно
         self.background = arcade.load_texture('resources/Background/start_background.jpeg')
-        self.batch = Batch()
         self.shape_list = arcade.shape_list.ShapeElementList()
         self.name_game = None
         self.rect_outline = None
@@ -25,8 +23,6 @@ class MainMenuView(arcade.View):
         # Layout для организации — как полки в шкафу
         self.anchor_layout = UIAnchorLayout()  # Центрирует виджеты
         self.box_layout = UIBoxLayout(vertical=True, space_between=20)  # Вертикальный стек
-
-        part_x, part_y, center_x, center_y = self.window.get_parts()
         
         # надпись "ГЛАВНОЕ МЕНЮ"
         mainmenu_text = UILabel(
@@ -53,7 +49,7 @@ class MainMenuView(arcade.View):
         )
         @play_btn.event("on_click")
         def on_click_settings(event):
-            self.window.switch_view("main_map")
+            self.window.switch_view("choose_game")
         
         # кнопка для открытия окна настроек
         settings_btn = UIFlatButton(

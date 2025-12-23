@@ -1,7 +1,6 @@
 from src.styles import *
 import arcade
 import arcade.gui
-import arcade.gui.widgets.buttons
 from arcade.gui import UIManager, UITextureButton, UILabel, UIFlatButton
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
@@ -27,8 +26,6 @@ class StartView(arcade.View):
         # Layout для организации — как полки в шкафу
         self.anchor_layout = UIAnchorLayout()  # Центрирует виджеты
         self.box_layout = UIBoxLayout(vertical=True, space_between=20)  # Вертикальный стек
-
-        part_x, part_y, center_x, center_y = self.window.get_parts()
         
         # кнопка для регистрации
         reg_btn = UIFlatButton(
@@ -82,7 +79,7 @@ class StartView(arcade.View):
         self.login_input = arcade.gui.UIInputText(
             width=300, height=30,
             text="",
-            font_size=16,
+            font_size=FONT_SIZE,
             style=input_text_style,
             text_color=TEXT_COLOR,
             border_color=TEXT_COLOR
@@ -92,7 +89,7 @@ class StartView(arcade.View):
         self.password_input = arcade.gui.UIInputText(
             width=300, height=30,
             text="",
-            font_size=16,
+            font_size=FONT_SIZE,
             style=input_text_style,
             text_color=TEXT_COLOR,
             border_color=TEXT_COLOR
