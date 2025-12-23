@@ -22,7 +22,7 @@ class MainMapView(arcade.View):
             "portal": "resources/Portal/portal1.png",
             "vampire_house": "resources/Buildings/vampire_house.png",
             "werewolf_house": "resources/Buildings/werewolf_house.png",
-            "garden": "resources/Buildings/garden.png",
+            "garden": "resources/Buildings/garden.jpg",
         }
         self.window = window
         self.batch = Batch()
