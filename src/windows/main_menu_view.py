@@ -44,6 +44,7 @@ class MainMenuView(arcade.View):
         #                                 texture_hovered=texture_hovered,
         #                                 texture_pressed=texture_pressed,
         #                                 scale=1.0)
+        
         # кнопка для начатия игры
         play_btn = UIFlatButton(
             text="ИГРАТЬ",
@@ -54,6 +55,7 @@ class MainMenuView(arcade.View):
         def on_click_settings(event):
             self.window.switch_view("main_map")
         
+        # кнопка для открытия окна настроек
         settings_btn = UIFlatButton(
             text="НАСТРОЙКИ",
             style=button_style,
@@ -63,6 +65,7 @@ class MainMenuView(arcade.View):
         def on_click_settings(event):
             self.window.switch_view("settings")
         
+        # выход из аккаунта
         escape_btn = UIFlatButton(
             text='ВЫХОД',
             style=button_style,
@@ -72,11 +75,22 @@ class MainMenuView(arcade.View):
         def on_click_settings(event):
             self.window.switch_view("start")
         
+        # закрытие игры
+        close_btn = UIFlatButton(
+            text='ЗАКРЫТЬ',
+            style=button_style,
+            width=200
+        )
+        @close_btn.event("on_click")
+        def on_click_settings(event):
+            self.window.close()
+        
         # ==== ДОБАВЛЯЕМ ВИДЖЕТЫ ПО ПОРЯДКУ ====
         self.box_layout.add(mainmenu_text)
         self.box_layout.add(play_btn)
         self.box_layout.add(settings_btn)
         self.box_layout.add(escape_btn)
+        self.box_layout.add(close_btn)
         
         self.anchor_layout.add(self.box_layout)  # Box в anchor
         self.manager.add(self.anchor_layout)  # Всё в manager
