@@ -13,7 +13,7 @@
   <object id="7" name="sceleton_house" x="800" y="130" width="170" height="170"/>
   <object id="8" name="vampire_house" x="260" y="180" width="200" height="200"/>
   <object id="9" name="werewolf_house" x="520" y="130" width="200" height="220"/>
-  <object id="10" name="garden" x="1100" y="440" width="150" height="170"/>
+  <object id="10" name="garden" x="1100" y="440" width="150" height="150"/>
  </objectgroup>
  <layer id="5" name="path" width="80" height="50">
   <data encoding="base64" compression="zlib">
