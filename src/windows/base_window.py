@@ -2,6 +2,7 @@ import arcade
 from src.settings import settings
 from data.registry_data import database
 from src.windows.main_map_view import MainMapView
+from src.windows.shop_view import ShopView
 
 
 class BaseWindow(arcade.Window):
@@ -51,6 +52,8 @@ class BaseWindow(arcade.Window):
                 self.views[view_name] = MainGameView(self)
             elif view_name == 'main_map':  # основная карта
                 self.views[view_name] = MainMapView(self)
+            elif view_name == 'shop':  # пркдставление магазина
+                self.views[view_name] = ShopView(self)
 
         return self.views[view_name]
     
