@@ -1,7 +1,6 @@
 import arcade
 from src.settings import settings
-from data.registry_data import database
-from src.windows.main_map_view import MainMapView
+from data.registry_data import registry_database
 
 
 class BaseWindow(arcade.Window):
@@ -24,7 +23,7 @@ class BaseWindow(arcade.Window):
         self.views = {}
         
         # База данных
-        self.db = database
+        self.reg_db = registry_database
     
     def on_mouse_motion(self, x, y, dx, dy):
         self.mouse.center_x = x
@@ -50,7 +49,10 @@ class BaseWindow(arcade.Window):
                 from src.windows.game.main_game_view import MainGameView
                 self.views[view_name] = MainGameView(self)
             elif view_name == 'main_map':  # основная карта
+                from windows.game.main_map_view import MainMapView
                 self.views[view_name] = MainMapView(self)
+            elif view_name == "settings": # настройки игры
+                ...
 
         return self.views[view_name]
     
@@ -83,6 +85,8 @@ class BaseWindow(arcade.Window):
         self.show_view(view)
 
     def on_key_press(self, key, modifiers):
+        """ Нажаьте клафиши """
+        
         # выйти при нажатии COMMAND + Q или CTRL + Q
         if key == arcade.key.Q and modifiers in {arcade.key.MOD_COMMAND, arcade.key.MOD_CTRL}:
             self.close()
@@ -91,5 +95,5 @@ class BaseWindow(arcade.Window):
         """ Закрытие окна """
         
         # Перед закрытием отключаемя от БД
-        self.db.close()
+        self.reg_db.close()
         return super().close()

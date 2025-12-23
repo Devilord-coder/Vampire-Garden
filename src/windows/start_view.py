@@ -2,7 +2,7 @@ from src.styles import *
 import arcade
 import arcade.gui
 import arcade.gui.widgets.buttons
-from arcade.gui import UIManager, UITextureButton, UILabel
+from arcade.gui import UIManager, UITextureButton, UILabel, UIFlatButton
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
 
@@ -18,7 +18,7 @@ class StartView(arcade.View):
         """Инициализация представления"""
         
         # открываем соединение с БД
-        self.window.db.open()
+        self.window.reg_db.open()
         
         # UIManager — сердце GUI
         self.manager = UIManager()
@@ -31,11 +31,10 @@ class StartView(arcade.View):
         part_x, part_y, center_x, center_y = self.window.get_parts()
         
         # кнопка для регистрации
-        reg_btn = arcade.gui.widgets.buttons.UIFlatButton(
-            x=center_x + 5 * part_x,
-            y=center_y - 12 * part_y,
+        reg_btn = UIFlatButton(
             style=button_style,
-            text="РЕГИСТРАЦИЯ", width=200
+            text="РЕГИСТРАЦИЯ",
+            width=200
         )
         
         # Это пока тестовый вариант кнопки (потом я её уменьшу)
@@ -57,7 +56,7 @@ class StartView(arcade.View):
         def on_click_settings(event):
             result, error = self.check_user()
             if result:
-                self.window.db.close()
+                self.window.reg_db.close()
                 self.window.switch_view("main_menu")
                 self.login = self.login_input.text
             else:
@@ -66,8 +65,6 @@ class StartView(arcade.View):
         # надпись логин
         login_text = UILabel(
             text='ЛОГИН',
-            x=center_x - part_x * 10,
-            y=center_y + 23 * part_y,
             text_color=TEXT_COLOR,
             font_size=18,
             multiline=True
@@ -76,8 +73,6 @@ class StartView(arcade.View):
         # надпись пароль
         password_text = UILabel(
             text='ПАРОЛЬ',
-            x=center_x - 10 * part_x,
-            y=center_y + 5 * part_y,
             text_color=TEXT_COLOR,
             font_size=18,
             multiline=True
@@ -85,7 +80,6 @@ class StartView(arcade.View):
         
         # объект для ввода логина
         self.login_input = arcade.gui.UIInputText(
-            x=center_x - part_x * 9, y=center_y + 15 * part_y,
             width=300, height=30,
             text="",
             font_size=16,
@@ -96,7 +90,6 @@ class StartView(arcade.View):
         
         # объект для ввода пароля
         self.password_input = arcade.gui.UIInputText(
-            x=center_x - part_x * 9, y=center_y - 3 * part_y,
             width=300, height=30,
             text="",
             font_size=16,
@@ -105,7 +98,7 @@ class StartView(arcade.View):
             border_color=TEXT_COLOR
         )
         
-        # Добавляем все виджеты
+        # ==== ДОБАВЛЯЕМ ВИДЖЕТЫ ПО ПОРЯДКУ ====
         self.box_layout.add(login_text)
         self.box_layout.add(self.login_input)
         self.box_layout.add(password_text)
@@ -127,7 +120,7 @@ class StartView(arcade.View):
         password = self.password_input.text
         if not login or not password:
             return False, "Все поля должны быть заполнены"
-        result = self.window.db.check_user(login, password)
+        result = self.window.reg_db.check_user(login, password)
         if result == "OK":
             return True, None
         else:
@@ -142,13 +135,13 @@ class StartView(arcade.View):
         """Рисование"""
         self.clear()
         
-        # рисуем задний фон
+        # ------------- ЗАДНИЙ ФОН -------------
         arcade.draw_texture_rect(self.background, arcade.rect.XYWH(
             self.width // 2, self.height // 2,
             self.width, self.height
         ))
         
-        # только после этого все остальное
+        # --- ПОСЛЕ ЗАДНЕГО ФОНА ВСЕ ОСТАЛЬНОЕ ---
         self.manager.draw()
 
     def on_update(self, delta_time):

@@ -8,10 +8,9 @@ import arcade
 bg_color = arcade.color.BLACK
 
 input_text_style = {
-    # You should provide a style for each widget state
     "normal": UIInputText.UIStyle(
         bg=bg_color
-    ), # use default values for `normal` state
+    ),
     "hover": UIInputText.UIStyle(
         border=arcade.color.RED,
         bg=bg_color

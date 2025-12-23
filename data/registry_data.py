@@ -82,4 +82,4 @@ class RegistryDataBase:
         return "OK"
 
 
-database = RegistryDataBase()
+registry_database = RegistryDataBase()

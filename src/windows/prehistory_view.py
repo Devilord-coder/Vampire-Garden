@@ -15,9 +15,10 @@ class PrehistoryView(arcade.View):
     def setup(self):
         """ Метод настройки вида (чтение текста предыстрории из файла, загрузка картинок, включение озвучки,
         создание кнопки для продолжения) """
+        
         with open("resources/prehistory.txt", "r") as file:
             self.text = file.readlines()
-        self.background = arcade.load_texture("resources/Moon/png/orig.png")
+        self.background = arcade.load_texture("resources/Moon/orig.png")
         self.vampire_picture = arcade.load_texture("resources/prehistory_vampire.jpg")
         arcade.play_sound(self.sound, volume=0.5, loop=False)
         
