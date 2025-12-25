@@ -41,6 +41,7 @@ class ShopView(arcade.View):
         )
         self.money_texture = arcade.load_texture("resources/money.png")
         self.cart_texture = arcade.load_texture("resources/shop_pictures/cart.png")
+        self.exit_texture = arcade.load_texture("resources/buttons/exit.png")
 
         width = self.width // 2 - 200
         height = self.height // 2 - 150
@@ -83,6 +84,26 @@ class ShopView(arcade.View):
         for plant in self.plants.keys():
             x, y = self.plants[plant]
             self.buttons_init(plant, x, y)
+        self.exit_button_init()
+
+    def exit_button_init(self):
+        # Инициализация кнопки для перехода на представление главной карты
+        x = self.width // 2 - self.exit_texture.width // 2
+        y = self.height // 2 - self.exit_texture.height // 2
+        button = arcade.gui.UITextureButton(
+            x=x,
+            y=y,
+            texture=self.exit_texture,
+            texture_hovered=self.exit_texture,
+            texture_pressed=self.exit_texture,
+            scale=1.0,
+        )
+
+        @button.event("on_click")
+        def on_click(event):
+            self.window.switch_view("main_map")
+
+        self.ui_manager.add(button)
 
     def buttons_init(self, plant, x, y):
         # Инициализация кнопок для покупки семян
@@ -160,8 +181,8 @@ class ShopView(arcade.View):
         rect = arcade.rect.XYWH(40, self.height - 40, 60, 60)
         arcade.draw_texture_rect(self.money_texture, rect)
 
-        self.batch.draw()
         self.ui_manager.draw()
+        self.batch.draw()
 
     def on_update(self, delta_time):
         # Вывод текста, если была ошибка в недостатке средств
