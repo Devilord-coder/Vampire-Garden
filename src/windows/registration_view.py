@@ -1,7 +1,7 @@
 from src.styles import *
 import arcade
 import arcade.gui
-from arcade.gui import UIManager, UITextureButton, UILabel
+from arcade.gui import UIManager, UITextureButton, UILabel, UIFlatButton
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
 
@@ -24,22 +24,23 @@ class RegistrationView(arcade.View):
         self.anchor_layout = UIAnchorLayout()  # Центрирует виджеты
         self.box_layout = UIBoxLayout(vertical=True, space_between=20)  # Вертикальный стек
         
-        texture_normal = arcade.load_texture("resources/buttons/OK/OK_Default.png")
-        texture_hovered = arcade.load_texture("resources/buttons/OK/OK_Hovered.png")
-        texture_pressed = arcade.load_texture("resources/buttons/OK/OK_Hovered.png")
-        reg_btn = UITextureButton(texture=texture_normal, 
-                                        texture_hovered=texture_hovered,
-                                        texture_pressed=texture_pressed,
-                                        scale=1.0)
+        reg_btn = UIFlatButton(
+            style=button_style,
+            text="ЗАРЕГИСТРИРОВАТЬСЯ",
+            width=200
+        )
         
         # при нажатии кнопки окно меняется на регистрацию
         @reg_btn.event("on_click")
         def on_click_settings(event):
             result, error = self.add_user()
             if result:
+                self.error_text.text = ""
+                self.error_shadow.text = ""
                 self.window.switch_view("start")
             else:
-                ... # Если не получилось зарегаться
+                self.error_text.text = error.upper()
+                self.error_shadow.text = error.upper()
             
         name_text = UILabel(
             text='Имя',
@@ -111,6 +112,27 @@ class RegistrationView(arcade.View):
             border_color=arcade.color.AMARANTH_PURPLE
         )
         
+        part_x, part_y, c_x, c_y = self.window.get_parts()
+        self.error_text = arcade.Text(
+            text="",
+            font_size=18,
+            multiline=True,
+            width=500,
+            x=c_x - 15 * part_x,
+            y=90 * part_y,
+            color=TEXT_COLOR
+        )
+        self.error_shadow = arcade.Text(
+            text="",
+            font_size=18,
+            multiline=True,
+            width=500,
+            x=c_x - 15 * part_x + 3,
+            y=90 * part_y,
+            color=arcade.color.BLACK
+        )
+        
+        # ==== ДОБАВЛЯЕМ ВИДЖЕТЫ ПО ПОРЯДКУ ====
         self.box_layout.add(name_text)
         self.box_layout.add(self.name_input)
         self.box_layout.add(email_text)
@@ -140,7 +162,7 @@ class RegistrationView(arcade.View):
         login = self.login_input.text
         password = self.password_input.text
         
-        result =  self.window.db.add_user(name, email, login, password)
+        result =  self.window.reg_db.add_user(name, email, login, password)
         if result == "OK":
             return True, None
         else:
@@ -157,7 +179,7 @@ class RegistrationView(arcade.View):
         # Очищаем
         self.clear()
         
-        # рисуем задний фон
+        # ------------- ЗАДНИЙ ФОН -------------
         arcade.draw_texture_rect(self.background, arcade.rect.XYWH(
             self.width // 2, self.height // 2,
             self.width, self.height
@@ -165,6 +187,8 @@ class RegistrationView(arcade.View):
         
         # только после этого все остальное
         self.manager.draw()
+        self.error_shadow.draw()
+        self.error_text.draw()
 
     def on_update(self, delta_time):
         """Обновление логики"""

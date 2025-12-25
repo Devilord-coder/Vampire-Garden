@@ -16,6 +16,8 @@ class StartView(arcade.View):
     def setup(self):
         """Инициализация представления"""
         
+        self.shape_list = arcade.shape_list.ShapeElementList()
+        
         # открываем соединение с БД
         self.window.reg_db.open()
         
@@ -46,6 +48,7 @@ class StartView(arcade.View):
         # при нажатии кнопки окно меняется на регистрацию
         @reg_btn.event("on_click")
         def on_click_settings(event):
+            self.error_text.text = ""
             self.window.switch_view("registration")
         
         # при нажатии войти
@@ -53,11 +56,34 @@ class StartView(arcade.View):
         def on_click_settings(event):
             result, error = self.check_user()
             if result:
+                self.error_text.text = ""
+                self.error_shadow.text = ""
                 self.window.reg_db.close()
                 self.window.switch_view("main_menu")
                 self.login = self.login_input.text
             else:
-                ... # Если не получилось войти
+                self.error_text.text = error.upper()
+                self.error_shadow.text = error.upper()
+        
+        part_x, part_y, c_x, c_y = self.window.get_parts()
+        self.error_text = arcade.Text(
+            text="",
+            font_size=18,
+            multiline=True,
+            width=500,
+            x=c_x - 15 * part_x,
+            y=90 * part_y,
+            color=TEXT_COLOR
+        )
+        self.error_shadow = arcade.Text(
+            text="",
+            font_size=18,
+            multiline=True,
+            width=500,
+            x=c_x - 15 * part_x + 3,
+            y=90 * part_y,
+            color=arcade.color.BLACK
+        )
         
         # надпись логин
         login_text = UILabel(
@@ -140,6 +166,9 @@ class StartView(arcade.View):
         
         # --- ПОСЛЕ ЗАДНЕГО ФОНА ВСЕ ОСТАЛЬНОЕ ---
         self.manager.draw()
+        self.shape_list.draw()
+        self.error_shadow.draw()
+        self.error_text.draw()
 
     def on_update(self, delta_time):
         """Обновление логики"""
