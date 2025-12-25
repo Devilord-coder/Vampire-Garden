@@ -23,6 +23,7 @@ class MainMapView(arcade.View):
             "vampire_house": "resources/Buildings/vampire_house.png",
             "werewolf_house": "resources/Buildings/werewolf_house.png",
             "garden": "resources/Buildings/garden.jpg",
+            'gates': 'resources/Buildings/gates.png'
         }
         self.window = window
         self.batch = Batch()
@@ -45,9 +46,9 @@ class MainMapView(arcade.View):
                 break
 
         self.center_map()
-        self.buttons_init()
+        self.init_buildings_buttons()
 
-    def buttons_init(self):
+    def init_buildings_buttons(self):
         # Инициализация всех кнопок зданий
         for building in self.buildings_territories:
             building_name = building.name
@@ -101,6 +102,8 @@ class MainMapView(arcade.View):
                     print("Дом оборотней")
                 elif building_name == "sceleton_house":
                     print("Дом скелетов")
+                elif building_name == 'gates':
+                    self.window.switch_view('shop')
 
             self.ui_manager.add(button)
 
