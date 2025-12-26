@@ -24,6 +24,7 @@ class RegistrationView(arcade.View):
         self.anchor_layout = UIAnchorLayout()  # Центрирует виджеты
         self.box_layout = UIBoxLayout(vertical=True, space_between=20)  # Вертикальный стек
         
+        # кнопка регистрации
         reg_btn = UIFlatButton(
             style=button_style,
             text="ЗАРЕГИСТРИРОВАТЬСЯ",
@@ -41,7 +42,8 @@ class RegistrationView(arcade.View):
             else:
                 self.error_text.text = error.upper()
                 self.error_shadow.text = error.upper()
-            
+        
+        # надпись имя
         name_text = UILabel(
             text='Имя',
             text_color=arcade.color.AMARANTH_PURPLE,
@@ -113,6 +115,7 @@ class RegistrationView(arcade.View):
         )
         
         part_x, part_y, c_x, c_y = self.window.get_parts()
+        # текст для вывода ошибок
         self.error_text = arcade.Text(
             text="",
             font_size=18,
@@ -122,6 +125,7 @@ class RegistrationView(arcade.View):
             y=90 * part_y,
             color=TEXT_COLOR
         )
+        # тень текста
         self.error_shadow = arcade.Text(
             text="",
             font_size=18,
@@ -162,6 +166,7 @@ class RegistrationView(arcade.View):
         login = self.login_input.text
         password = self.password_input.text
         
+        # добавление пользователя
         result =  self.window.reg_db.add_user(name, email, login, password)
         if result == "OK":
             return True, None

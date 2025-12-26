@@ -16,6 +16,8 @@ class StartView(arcade.View):
     def setup(self):
         """Инициализация представления"""
         
+        arcade.play_sound(self.window.bg_sound, loop=True, volume=0.75)
+        
         self.shape_list = arcade.shape_list.ShapeElementList()
         
         # открываем соединение с БД
@@ -40,7 +42,7 @@ class StartView(arcade.View):
         texture_normal = arcade.load_texture("resources/buttons/OK/OK_Default.png")
         texture_hovered = arcade.load_texture("resources/buttons/OK/OK_Hovered.png")
         texture_pressed = arcade.load_texture("resources/buttons/OK/OK_Hovered.png")
-        log_in_btn = UITextureButton(texture=texture_normal, 
+        self.log_in_btn = UITextureButton(texture=texture_normal, 
                                         texture_hovered=texture_hovered,
                                         texture_pressed=texture_pressed,
                                         scale=1.0)
@@ -52,7 +54,7 @@ class StartView(arcade.View):
             self.window.switch_view("registration")
         
         # при нажатии войти
-        @log_in_btn.event("on_click")
+        @self.log_in_btn.event("on_click")
         def on_click_settings(event):
             result, error = self.check_user()
             if result:
@@ -126,7 +128,7 @@ class StartView(arcade.View):
         self.box_layout.add(self.login_input)
         self.box_layout.add(password_text)
         self.box_layout.add(self.password_input)
-        self.box_layout.add(log_in_btn)
+        self.box_layout.add(self.log_in_btn)
         self.box_layout.add(reg_btn)
         
         self.anchor_layout.add(self.box_layout)  # Box в anchor

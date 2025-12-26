@@ -1,6 +1,7 @@
 import arcade
 from src.settings import settings
 from data.registry_data import registry_database
+from src.registry import reg
 
 
 class BaseWindow(arcade.Window):
@@ -24,6 +25,8 @@ class BaseWindow(arcade.Window):
         
         # База данных
         self.reg_db = registry_database
+        
+        self.bg_sound = reg.background_sound
     
     def on_mouse_motion(self, x, y, dx, dy):
         self.mouse.center_x = x
@@ -54,6 +57,13 @@ class BaseWindow(arcade.Window):
             elif view_name == 'shop':  # пркдставление магазина
                 from src.windows.shop_view import ShopView
                 self.views[view_name] = ShopView(self)
+            elif view_name == "choose_game":
+                from src.windows.choose_game_view import ChooseGameView
+                self.views[view_name] = ChooseGameView(self)
+            elif view_name in {"game_1", "game_2", "game_3"}:
+                ... # Заглушка - пока просто открывается главное окно игры
+                from src.windows.prehistory_view import PrehistoryView
+                self.views[view_name] = PrehistoryView(self)
 
         return self.views[view_name]
     

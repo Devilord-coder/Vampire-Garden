@@ -32,7 +32,7 @@ class MainMenuView(arcade.View):
             multiline=True
         )
         
-        # кнопка для начатия игры красивая - не подходит по стилю
+        # кнопка для начатия игры красивая - но не подходит по стилю
         # texture_normal = arcade.load_texture("resources/buttons/PLAY/PLAY_Default.png")
         # texture_hovered = arcade.load_texture("resources/buttons/PLAY/PLAY_Hovered.png")
         # texture_pressed = arcade.load_texture("resources/buttons/PLAY/PLAY_Hovered.png")

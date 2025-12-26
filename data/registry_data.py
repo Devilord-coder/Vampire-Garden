@@ -1,6 +1,5 @@
 import sqlite3
 import hashlib
-from .database_error import DataBaseError
 
 
 class RegistryDataBase:
@@ -45,7 +44,8 @@ class RegistryDataBase:
                 "SELECT id FROM Registry WHERE login=?", (login,)
             ).fetchall()
         else: # иначе ошибка
-            raise DataBaseError("There is no opened database")
+            self.open()
+            self.check_login(login)
 
     def add_user(self, name, email, login, password) -> str:
         """ Метод для добавления игроков в базу данных
@@ -54,13 +54,11 @@ class RegistryDataBase:
             "OK" - если все прошло успешно
             "Пользователь с данным логином уже существует." - надо изменить логин
             "Все поля должны быть заполнены." - все значения не должны быть пустыми
-        
-        ==== RAISES ====
-            DataBaseError - если нет открытой БД
         """
         
         if not self.con: # если нет открытой бд - ошибка
-            raise DataBaseError("There is no opened database")
+            self.open()
+            self.add_user(name, email, login, password)
         if not all([name, email, login, password]):
             return "Все поля должны быть заполнены."
         if self.check_login(login):
@@ -81,13 +79,11 @@ class RegistryDataBase:
             "OK" - если все прошло успешно
             "Пользователя с данным логином не существует." - неверный логин
             "Пароль введён неккоректно." - неверный пароль
-        
-        ==== RAISES ====
-            DataBaseError - если нет открытой БД
         """
 
         if not self.con: # если нет открытой бд - ошибка
-            raise DataBaseError("There is no opened database")
+            self.open()
+            self.check_user(login, password)
         if not self.check_login(login):
             return "Пользователя с данным логином не существует."
 

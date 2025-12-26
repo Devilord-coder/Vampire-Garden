@@ -8,7 +8,7 @@ class PrehistoryView(arcade.View):
     def __init__(self, window):
         super().__init__()
         self.window = window
-        self.sound = arcade.load_sound('resources/sounds/prehistory_sound.mp3')
+        self.sound = reg.prehistory_voice
         self.ui_manager = arcade.gui.UIManager()
         self.ui_manager.enable()
 
@@ -16,14 +16,16 @@ class PrehistoryView(arcade.View):
         """ Метод настройки вида (чтение текста предыстрории из файла, загрузка картинок, включение озвучки,
         создание кнопки для продолжения) """
         
+        # настройка текста сообщения
         with open("resources/prehistory.txt", "r") as file:
             self.text = file.readlines()
         self.background = arcade.load_texture("resources/Moon/orig.png")
         self.vampire_picture = arcade.load_texture("resources/prehistory_vampire.jpg")
-        arcade.play_sound(self.sound, volume=0.5, loop=False)
+        self.voice_playback = arcade.play_sound(self.sound, volume=0.5, loop=False)
         
         part_x, part_y, center_x, center_y = self.window.get_parts()
-
+        
+        # кнопка продолжить
         button = arcade.gui.UIFlatButton(
             text="Продолжить",
             width=20 * part_x,
@@ -32,13 +34,16 @@ class PrehistoryView(arcade.View):
             y=center_y - 15 * part_y,
             style=styles.button_style
         )
-
+        
         button.on_click = self.continue_history
         self.ui_manager.add(button)
 
     def continue_history(self, event):
         """ Метод переключения на следующий вид """
-        print("OK")
+        
+        #  при нажатии прекратить голос и переключиться на карту
+        arcade.stop_sound(self.voice_playback)
+        self.window.switch_view("main_map")
 
     def on_show_view(self):
         self.setup()
