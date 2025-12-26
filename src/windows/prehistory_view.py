@@ -8,7 +8,7 @@ class PrehistoryView(arcade.View):
     def __init__(self, window):
         super().__init__()
         self.window = window
-        self.sound = reg.prehistory_voice
+        self.sound = arcade.load_sound('resources/sounds/prehistory_sound.mp3')
         self.ui_manager = arcade.gui.UIManager()
         self.ui_manager.enable()
 
