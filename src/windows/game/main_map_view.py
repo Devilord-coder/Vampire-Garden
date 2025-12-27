@@ -4,7 +4,7 @@ from src.settings import settings
 from src.auxiliary_classes.portal_animated_button import AnimatedPortalButton
 import arcade.gui
 
-TILE_SCALING = 1
+TILE_SCALING = 1.1
 
 
 class MainMapView(arcade.View):
