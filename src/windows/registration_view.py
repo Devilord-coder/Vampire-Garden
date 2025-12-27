@@ -3,6 +3,7 @@ import arcade
 import arcade.gui
 from arcade.gui import UIManager, UITextureButton, UILabel, UIFlatButton
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
+from src.registry import reg
 
 
 class RegistrationView(arcade.View):
@@ -39,9 +40,11 @@ class RegistrationView(arcade.View):
                 self.error_text.text = ""
                 self.error_shadow.text = ""
                 self.window.switch_view("start")
+                arcade.play_sound(reg.button_click_sound)
             else:
                 self.error_text.text = error.upper()
                 self.error_shadow.text = error.upper()
+                ... # звук ошибки
         
         # надпись имя
         name_text = UILabel(

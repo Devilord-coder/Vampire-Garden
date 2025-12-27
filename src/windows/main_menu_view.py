@@ -1,5 +1,5 @@
 import arcade
-from src.settings import settings
+from src.registry import reg
 from arcade.gui import UIManager, UITextureButton, UILabel, UIFlatButton
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 from src.styles import *
@@ -49,6 +49,7 @@ class MainMenuView(arcade.View):
         )
         @play_btn.event("on_click")
         def on_click_settings(event):
+            arcade.play_sound(reg.button_click_sound)
             self.window.switch_view("choose_game")
         
         # кнопка для открытия окна настроек
@@ -59,6 +60,7 @@ class MainMenuView(arcade.View):
         )
         @settings_btn.event("on_click")
         def on_click_settings(event):
+            arcade.play_sound(reg.button_click_sound)
             self.window.switch_view("settings")
         
         # выход из аккаунта
@@ -69,6 +71,7 @@ class MainMenuView(arcade.View):
         )
         @escape_btn.event("on_click")
         def on_click_settings(event):
+            arcade.play_sound(reg.button_click_sound)
             self.window.switch_view("start")
         
         # закрытие игры

@@ -1,6 +1,7 @@
 from src.styles import *
 import arcade
 import arcade.gui
+from src.registry import reg
 from arcade.gui import UIManager, UITextureButton, UILabel, UIFlatButton
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
@@ -52,6 +53,7 @@ class StartView(arcade.View):
         def on_click_settings(event):
             self.error_text.text = ""
             self.window.switch_view("registration")
+            arcade.play_sound(reg.button_click_sound)
         
         # при нажатии войти
         @self.log_in_btn.event("on_click")
@@ -63,9 +65,11 @@ class StartView(arcade.View):
                 self.window.reg_db.close()
                 self.window.switch_view("main_menu")
                 self.login = self.login_input.text
+                arcade.play_sound(reg.button_click_sound)
             else:
                 self.error_text.text = error.upper()
                 self.error_shadow.text = error.upper()
+                ... # звук ошибки
         
         part_x, part_y, c_x, c_y = self.window.get_parts()
         self.error_text = arcade.Text(

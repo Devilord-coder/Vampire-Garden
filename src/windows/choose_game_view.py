@@ -1,6 +1,6 @@
 import arcade
 from src.styles import *
-from src.settings import settings
+from src.registry import reg
 from arcade.gui import UIManager, UIFlatButton, UILabel
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
@@ -37,6 +37,7 @@ class ChooseGameView(arcade.View):
         @game_1_btn.event("on_click")
         def on_click_settings(event):
             self.window.switch_view("game_1")
+            arcade.play_sound(reg.button_click_sound)
         
         # кнопка для открытия 2 ячейки для сохранения игры
         game_2_btn = UIFlatButton(
@@ -47,6 +48,7 @@ class ChooseGameView(arcade.View):
         @game_2_btn.event("on_click")
         def on_click_settings(event):
             self.window.switch_view("game_2")
+            arcade.play_sound(reg.button_click_sound)
         
         # кнопка для открытия 3 ячейки для сохранения игры
         game_3_btn = UIFlatButton(
@@ -57,6 +59,7 @@ class ChooseGameView(arcade.View):
         @game_3_btn.event("on_click")
         def on_click_settings(event):
             self.window.switch_view("game_3")
+            arcade.play_sound(reg.button_click_sound)
         
         # ==== ДОБАВЛЯЕМ ВИДЖЕТЫ ПО ПОРЯДКУ ====
         self.box_layout.add(choose_game_text)
