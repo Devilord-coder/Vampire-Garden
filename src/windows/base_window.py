@@ -1,8 +1,7 @@
 import arcade
 from src.settings import settings
-from data.registry_data import database
-from src.windows.main_map_view import MainMapView
-from src.windows.shop_view import ShopView
+from data.registry_data import registry_database
+from src.registry import reg
 
 
 class BaseWindow(arcade.Window):
@@ -25,7 +24,9 @@ class BaseWindow(arcade.Window):
         self.views = {}
         
         # База данных
-        self.db = database
+        self.reg_db = registry_database
+        
+        self.bg_sound = reg.background_sound
     
     def on_mouse_motion(self, x, y, dx, dy):
         self.mouse.center_x = x
@@ -51,9 +52,18 @@ class BaseWindow(arcade.Window):
                 from src.windows.game.main_game_view import MainGameView
                 self.views[view_name] = MainGameView(self)
             elif view_name == 'main_map':  # основная карта
+                from src.windows.game.main_map_view import MainMapView
                 self.views[view_name] = MainMapView(self)
             elif view_name == 'shop':  # пркдставление магазина
+                from src.windows.shop_view import ShopView
                 self.views[view_name] = ShopView(self)
+            elif view_name == "choose_game":
+                from src.windows.choose_game_view import ChooseGameView
+                self.views[view_name] = ChooseGameView(self)
+            elif view_name in {"game_1", "game_2", "game_3"}:
+                ... # Заглушка - пока просто открывается главное окно игры
+                from src.windows.prehistory_view import PrehistoryView
+                self.views[view_name] = PrehistoryView(self)
 
         return self.views[view_name]
     
@@ -86,6 +96,8 @@ class BaseWindow(arcade.Window):
         self.show_view(view)
 
     def on_key_press(self, key, modifiers):
+        """ Нажаьте клафиши """
+        
         # выйти при нажатии COMMAND + Q или CTRL + Q
         if key == arcade.key.Q and modifiers in {arcade.key.MOD_COMMAND, arcade.key.MOD_CTRL}:
             self.close()
@@ -94,5 +106,5 @@ class BaseWindow(arcade.Window):
         """ Закрытие окна """
         
         # Перед закрытием отключаемя от БД
-        self.db.close()
+        self.reg_db.close()
         return super().close()

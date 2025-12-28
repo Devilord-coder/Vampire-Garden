@@ -8,7 +8,7 @@ class Settings:
         self.resolution = self.width, self.height = monitor.width, monitor.height  # Разрешение экрана
         # Минимальное разрешение экрана
         self.resolution_min = self.width_min, self.height_min = 800, 600
-        self.resizable = True  # Флажок для редактирования размера окна
+        self.resizable = False  # Флажок для редактирования размера окна
         self.fullscreen = False  # Полноэкранный режим экрана тогда берется размер экрана
 
         self.title = "Vampire Garden"  # Название приложения
