@@ -94,7 +94,7 @@ class MainMapView(arcade.View):
                 elif building_name == "garden":
                     print("Огород")
                 elif building_name == "portal":
-                    print("Портал")
+                    self.window.switch_view("portal")
                 elif building_name == "vampire_house":
                     print("Дом вампиров")
                 elif building_name == "werewolf_house":
@@ -140,3 +140,7 @@ class MainMapView(arcade.View):
             if hasattr(widget, "child") and widget.child is not None:
                 if isinstance(widget.child, AnimatedPortalButton):
                     widget.child.on_update(delta_time)
+    
+    def on_key_press(self, key, modifiers):
+        if key == arcade.key.ESCAPE:
+            self.window.switch_view("main_menu")

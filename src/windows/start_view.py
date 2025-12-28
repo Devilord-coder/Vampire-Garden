@@ -15,7 +15,7 @@ class StartView(arcade.View):
         self.background = arcade.load_texture('resources/Background/start_background.jpeg')
         
     def setup(self):
-        """Инициализация представления"""
+        """ Инициализация представления """
         
         arcade.play_sound(self.window.bg_sound, loop=True, volume=0.75)
         

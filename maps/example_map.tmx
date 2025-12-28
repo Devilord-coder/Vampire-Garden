@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="70" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" source="dungeoun_tilesheet.tsx"/>
+ <layer id="1" name="flat" width="70" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzdmF0KwyAQhDftewuFHqFJ36Q/F8j9L1UDFWRwrYrrbjPwPanEncwayUJEC7Ay4LySNVbI7Z2rYc9CX0pqtuaL+6Ita74EaXsT8rV3OarLokZeXAOjNZPNPuI0yrd/82WUevryZtBUa5+2+iJdt/b3WqOPLOYKZfX+oq3c/eXheXpeibFf73lEFiS/6zX3Oot5lxL6Yqn22gz0zE6Pc7ekZ6yfs6hw7k6eg+eoux0zCn10i7jAHAvv+cogpa2PNl/OlPemVBMQ//viautBi2YgPk9CXk7CrJmxeG93IPU/EutJ1cfNza3H53wAbmQ5XQ==
+  </data>
+ </layer>
+</map>

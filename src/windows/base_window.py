@@ -64,6 +64,12 @@ class BaseWindow(arcade.Window):
                 ... # Заглушка - пока просто открывается главное окно игры
                 from src.windows.prehistory_view import PrehistoryView
                 self.views[view_name] = PrehistoryView(self)
+            elif view_name == "portal":
+                from src.windows.game.portal_view import PortalView
+                self.views[view_name] = PortalView(self)
+            elif view_name == "battle":
+                from src.windows.game.battle_view import BattleView
+                self.views[view_name] = BattleView(self)
 
         return self.views[view_name]
     

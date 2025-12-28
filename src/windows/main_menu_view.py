@@ -15,6 +15,8 @@ class MainMenuView(arcade.View):
         self.shape_list = arcade.shape_list.ShapeElementList()
         self.name_game = None
         self.rect_outline = None
+    
+    def setup(self):
         
         # UIManager — сердце GUI
         self.manager = UIManager()
@@ -96,7 +98,7 @@ class MainMenuView(arcade.View):
 
     def on_show_view(self):
         """ Вызывается при показе этого представления """
-        self.create_text()
+        self.setup()
 
     def on_draw(self):
         """Рисование"""
