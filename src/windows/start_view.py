@@ -21,7 +21,7 @@ class StartView(arcade.View):
         self.shape_list = arcade.shape_list.ShapeElementList()
         
         # открываем соединение с БД
-        self.window.reg_db.open()
+        # self.window.reg_db.open()
         
         # UIManager — сердце GUI
         self.manager = UIManager()
@@ -60,9 +60,10 @@ class StartView(arcade.View):
             if result:
                 self.error_text.text = ""
                 self.error_shadow.text = ""
-                self.window.reg_db.close()
+                # self.window.reg_db.close() Оставляем бд открытой до самого закрытия приложения
                 self.window.switch_view("main_menu")
                 self.login = self.login_input.text
+                self.window.login = self.login
             else:
                 self.error_text.text = error.upper()
                 self.error_shadow.text = error.upper()

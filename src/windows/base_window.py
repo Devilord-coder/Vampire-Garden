@@ -1,7 +1,14 @@
 import arcade
+import sqlite3
 from src.settings import settings
-from data.registry_data import registry_database
+from data.registry_data import RegistryDataBase
 from src.registry import reg
+from data.game_data import GameData
+
+from src.windows.game.main_map_view import MainMapView
+from src.windows.shop_view import ShopView
+from src.windows.prehistory_view import PrehistoryView
+from src.windows.game.garden import GardenView
 
 
 class BaseWindow(arcade.Window):
@@ -24,9 +31,13 @@ class BaseWindow(arcade.Window):
         self.views = {}
         
         # База данных
-        self.reg_db = registry_database
+        self.con = sqlite3.connect("vampire_garden_db.db")
+        self.reg_db = RegistryDataBase(self.con)
         
         self.bg_sound = reg.background_sound
+        
+        self.game_number = 0
+        self.login = None
     
     def on_mouse_motion(self, x, y, dx, dy):
         self.mouse.center_x = x
@@ -46,24 +57,35 @@ class BaseWindow(arcade.Window):
                 from src.windows.main_menu_view import MainMenuView
                 self.views[view_name] = MainMenuView(self)
             elif view_name == "prehistory":  # окно предыстории
-                from src.windows.prehistory_view import PrehistoryView
                 self.views[view_name] = PrehistoryView(self)
             elif view_name == "main_game": # главное окно игры
                 from src.windows.game.main_game_view import MainGameView
                 self.views[view_name] = MainGameView(self)
             elif view_name == 'main_map':  # основная карта
-                from src.windows.game.main_map_view import MainMapView
                 self.views[view_name] = MainMapView(self)
-            elif view_name == 'shop':  # пркдставление магазина
-                from src.windows.shop_view import ShopView
+            elif view_name == 'shop':  # представление магазина
                 self.views[view_name] = ShopView(self)
             elif view_name == "choose_game":
                 from src.windows.choose_game_view import ChooseGameView
                 self.views[view_name] = ChooseGameView(self)
             elif view_name in {"game_1", "game_2", "game_3"}:
-                ... # Заглушка - пока просто открывается главное окно игры
-                from src.windows.prehistory_view import PrehistoryView
-                self.views[view_name] = PrehistoryView(self)
+                if view_name == 'game_1':
+                    self.game_number = 1
+                elif view_name == "game_2":
+                    self.game_number = 2
+                elif view_name == 'game_3':
+                    self.game_number = 3
+                
+                game_data = GameData(self)
+                result = game_data.get_game_state()
+                if result:
+                    self.views[view_name] = MainMapView(self)
+                else:
+                    self.views[view_name] = PrehistoryView(self)
+            elif view_name == 'garden':  # Представление огорода
+                self.views[view_name] = GardenView(self)
+            elif view_name == 'settings':
+                pass
 
         return self.views[view_name]
     
@@ -91,7 +113,6 @@ class BaseWindow(arcade.Window):
 
     def switch_view(self, view_name):
         """ Переключиться на представление """
-
         view = self.get_view(view_name)
         self.show_view(view)
 

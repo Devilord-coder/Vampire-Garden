@@ -93,7 +93,8 @@ class MainMenuView(arcade.View):
 
     def on_show_view(self):
         """ Вызывается при показе этого представления """
-        self.create_text()
+        # self.create_text()
+        pass
 
     def on_draw(self):
         """Рисование"""
