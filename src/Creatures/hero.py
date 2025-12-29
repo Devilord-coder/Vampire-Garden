@@ -25,14 +25,19 @@ class Hero(arcade.Sprite):
         self.texture_change_time = 0
         self.texture_change_delay = 0.1  # секунд на кадр
         
+        # ---- Параметры состояния персонажа ----
         # идет вперед
         self.walk_f = False
         # идет назад
         self.walk_b = False
+        # получает ли урон
         self.hurting = False
+        # умер ли
         self.dead = False
+        # является ли летучей мышью
         self.bat = False
-        
+        # атакует назад или вперед
+        self.attack_f = self.attack_b = False
         # Персонаж не может двигаться
         self.disabled = False
     
@@ -51,11 +56,14 @@ class Hero(arcade.Sprite):
         self.walk_b_textures = self.idle_textures = self.walk_f_textures
         # получение урона
         self.hurt_textures = self.idle_textures # заглушка
-        
+        # смерть
         self.death_textures = []
         for i in range(18):
             texture = arcade.load_texture(f"resources/Hero/bat/death/{i}.png")
             self.death_textures.append(texture)
+        
+        # атака
+        self.attack_f_textures = self.attack_b_textures = self.idle_textures # заглушка
     
     def create_vampire_textures(self):
         """ изменение внешнего вида на вампирский """
@@ -82,11 +90,21 @@ class Hero(arcade.Sprite):
         for i in range(11):
             texture = arcade.load_texture(f"resources/Hero/vampire/death/{i}.png")
             self.death_textures.append(texture)
+        
+        self.attack_f_textures = []
+        for i in range(12):
+            texture = arcade.load_texture(f"resources/Hero/vampire/attack_forward/{i}.png")
+            self.attack_f_textures.append(texture)
+        
+        self.attack_b_textures = []
+        for i in range(12):
+            texture = arcade.load_texture(f"resources/Hero/vampire/attack_back/{i}.png")
+            self.attack_b_textures.append(texture)
 
     def update_animation(self, delta_time: float = 1/60):
         """ Обновление анимации """
         
-        if self.dead:
+        if self.dead: # смерть
             self.texture_change_time += delta_time
             if self.texture_change_time >= self.texture_change_delay:
                 self.texture_change_time = 0
@@ -96,6 +114,23 @@ class Hero(arcade.Sprite):
                     ... # конец игры
                 else:
                     self.texture = self.death_textures[self.current_texture]
+        elif self.attack_f or self.attack_b: # если атакуем
+            self.texture_change_time += delta_time
+            if self.texture_change_time >= self.texture_change_delay:
+                self.texture_change_time = 0
+                self.current_texture += 1
+            if self.attack_b: # атака назад
+                if self.current_texture >= len(self.attack_b_textures):
+                    self.attack_b= False
+                    self.current_texture = 0
+                else:
+                    self.texture = self.attack_b_textures[self.current_texture]
+            else: # в другом случае атакуем вперед
+                if self.current_texture >= len(self.attack_f_textures):
+                    self.attack_f = False
+                    self.current_texture = 0
+                else:
+                    self.texture = self.attack_f_textures[self.current_texture]
         elif self.hurting:
             self.texture_change_time += delta_time
             if self.texture_change_time >= self.texture_change_delay:
@@ -188,10 +223,21 @@ class Hero(arcade.Sprite):
             self.bat = False
             self.create_vampire_textures()
             self.scale = 1.2
+            self.texture_change_delay = 0.1  # секунд на кадр
         else:
             self.bat = True
             self.create_bat_textures()
-            self.scale = 0.2
+            self.scale = 0.13
+            self.texture_change_delay = 0.05  # секунд на кадр
+    
+    def attack(self):
+        if not self.attack_b and not self.attack_f:
+            if self.change_x >= 0:
+                self.attack_f = True
+                self.attack_b = False
+            else:
+                self.attack_b = True
+                self.attack_f = False
 
     def update(self, delta_time):
         """ Перемещение персонажа """

@@ -156,11 +156,16 @@ class BattleView(arcade.View):
             self.hero.walk_forward()
         elif key in {arcade.key.A, arcade.key.DOWN}:
             self.hero.down()
+        elif key == arcade.key.SPACE:
+            self.hero.attack()
         elif key == arcade.key.B and modifiers in {arcade.key.MOD_COMMAND, arcade.key.MOD_CTRL}:
             self.hero.transform()
+        elif key == arcade.key.ESCAPE:
+            self.window.switch_view("main_map")
 
     def on_key_release(self, key, modifiers):
         """Обработка отпускания клавиш."""
+        
         if key in (arcade.key.UP, arcade.key.DOWN, arcade.key.W, arcade.key.S):
             self.hero.change_y = 0
         elif key in (arcade.key.LEFT, arcade.key.RIGHT, arcade.key.A, arcade.key.D):
