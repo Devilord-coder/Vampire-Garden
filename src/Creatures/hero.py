@@ -186,12 +186,12 @@ class Hero(arcade.Sprite):
     def transform(self):
         if self.bat:
             self.bat = False
-            self.scale = 1.2
             self.create_vampire_textures()
+            self.scale = 1.2
         else:
             self.bat = True
-            self.scale = 0.2
             self.create_bat_textures()
+            self.scale = 0.2
 
     def update(self, delta_time):
         """ Перемещение персонажа """
