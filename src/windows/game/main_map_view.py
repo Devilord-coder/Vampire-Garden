@@ -13,6 +13,11 @@ class MainMapView(arcade.View):
     def __init__(self, window):
         super().__init__()
         arcade.set_background_color(arcade.color.ANTIQUE_RUBY)
+        self.window = window
+        self.setup()
+
+    def setup(self):
+        
         self.buildings = {
             "library": "resources/Buildings/library.png",
             "bat_house": "resources/Buildings/bat_house.png",
@@ -24,13 +29,11 @@ class MainMapView(arcade.View):
             "werewolf_house": "resources/Buildings/werewolf_house.png",
             "garden": "resources/Buildings/garden.jpg",
         }
-        self.window = window
+        
         self.batch = Batch()
         self.ui_manager = arcade.gui.UIManager()
         self.ui_manager.enable()
-        self.setup()
-
-    def setup(self):
+        
         # Загрузка карты
         self.tilemap = arcade.load_tilemap("maps/main_map.tmx", TILE_SCALING)
 
@@ -46,6 +49,9 @@ class MainMapView(arcade.View):
 
         self.center_map()
         self.buttons_init()
+    
+    def on_show_view(self):
+        self.setup()
 
     def buttons_init(self):
         # Инициализация всех кнопок зданий
@@ -83,6 +89,7 @@ class MainMapView(arcade.View):
             def on_click(event):
                 # Обработка клика по кнопке (перемещение на следующие виды игры для каждого здания)
                 building_name = event.source.building_name
+                self.ui_manager.disable()
                 if building_name == "main_house":
                     print("Главное здание")
                 elif building_name == "library":
@@ -143,4 +150,5 @@ class MainMapView(arcade.View):
     
     def on_key_press(self, key, modifiers):
         if key == arcade.key.ESCAPE:
+            self.ui_manager.disable()
             self.window.switch_view("main_menu")

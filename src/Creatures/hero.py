@@ -181,7 +181,7 @@ class Hero(arcade.Sprite):
             self.walk_f = False
     
     def run_forward(self):
-        """ Беш вперед """
+        """ Бег вперед """
         
         if not self.disabled:
             self.change_x = self.run_speed
@@ -201,6 +201,8 @@ class Hero(arcade.Sprite):
             self.change_y = self.jump_speed
     
     def down(self):
+        """ Падение или спуск """
+        
         if self.bat:
             self.change_y = -self.walk_speed
     
@@ -215,10 +217,14 @@ class Hero(arcade.Sprite):
             self.walk_b = self.walk_f = False
     
     def death(self):
+        """ Смерть """
+        
         self.disabled = True
         self.dead = True
 
     def transform(self):
+        """ Преврещение """
+        
         if self.bat:
             self.bat = False
             self.create_vampire_textures()
@@ -231,6 +237,8 @@ class Hero(arcade.Sprite):
             self.texture_change_delay = 0.05  # секунд на кадр
     
     def attack(self):
+        """ Атака """
+        
         if not self.attack_b and not self.attack_f:
             if self.change_x >= 0:
                 self.attack_f = True

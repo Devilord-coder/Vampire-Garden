@@ -43,6 +43,7 @@ class PrehistoryView(arcade.View):
         
         #  при нажатии прекратить голос и переключиться на карту
         arcade.stop_sound(self.voice_playback)
+        self.ui_manager.disable()
         self.window.switch_view("main_map")
 
     def on_show_view(self):

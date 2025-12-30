@@ -1,7 +1,7 @@
 import arcade
 from arcade.gui import (UIManager, UIAnchorLayout, UIBoxLayout,
                         UIFlatButton, UILabel)
-from .portal_btn_styles import *
+from src.styles import *
 
 
 class PortalView(arcade.View):
@@ -92,6 +92,7 @@ class PortalView(arcade.View):
         """ Нажатие клавиш """
         
         if key == arcade.key.ESCAPE:
+            self.manager.disable()
             self.window.switch_view("main_map")
     
     def start_game(self, degree: str):
@@ -101,4 +102,5 @@ class PortalView(arcade.View):
             degree (str): "easy", "medium" или "hard" - степень сложности игры
         """
         
+        self.manager.disable()
         self.window.switch_view("battle")

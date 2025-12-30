@@ -12,12 +12,15 @@ class BaseWindow(arcade.Window):
                          resizable=settings.resizable, fullscreen=settings.fullscreen)
         self.set_minimum_size(settings.width_min, settings.height_min)
         # self.center_window() - не работает (по крайней мере на Маке)
+    
+    def setup(self):
         self.background_color = arcade.color.BLACK
         self.sprites = arcade.SpriteList()
         self.set_mouse_visible(False)
         self.mouse = arcade.Sprite('resources/Cursor.png', scale=2)
         self.mouse.center_x = self.width // 2
         self.mouse.center_y = self.height // 2
+        self.mouse.visible = True
         self.sprites.append(self.mouse)
 
         # Храним представления
@@ -27,6 +30,7 @@ class BaseWindow(arcade.Window):
         self.reg_db = registry_database
         
         self.bg_sound = reg.background_sound
+        self.bg_sound_playback = arcade.play_sound(self.bg_sound)
     
     def on_mouse_motion(self, x, y, dx, dy):
         self.mouse.center_x = x
@@ -60,7 +64,15 @@ class BaseWindow(arcade.Window):
             elif view_name == "choose_game":
                 from src.windows.choose_game_view import ChooseGameView
                 self.views[view_name] = ChooseGameView(self)
-            elif view_name in {"game_1", "game_2", "game_3"}:
+            elif view_name == "game_1":
+                ... # Заглушка - пока просто открывается главное окно игры
+                from src.windows.prehistory_view import PrehistoryView
+                self.views[view_name] = PrehistoryView(self)
+            elif view_name == "game_2":
+                ... # Заглушка - пока просто открывается главное окно игры
+                from src.windows.prehistory_view import PrehistoryView
+                self.views[view_name] = PrehistoryView(self)
+            elif view_name == "game_3":
                 ... # Заглушка - пока просто открывается главное окно игры
                 from src.windows.prehistory_view import PrehistoryView
                 self.views[view_name] = PrehistoryView(self)
@@ -77,6 +89,12 @@ class BaseWindow(arcade.Window):
         
         self.sprites.draw()
         return super().on_draw()
+    
+    def on_update(self, delta_time):
+        if self.mouse.visible and self.mouse not in self.sprites:
+            self.sprites.append(self.mouse)
+        elif not self.mouse.visible and self.mouse in self.sprites:
+            self.sprites.pop(self.sprites.index(self.mouse))
     
     def get_parts(self) -> tuple[int, int, int, int]:
         """ Функция для разделения экрана на равные части
@@ -102,7 +120,7 @@ class BaseWindow(arcade.Window):
         self.show_view(view)
 
     def on_key_press(self, key, modifiers):
-        """ Нажаьте клафиши """
+        """ Нажатие клавиши """
         
         # выйти при нажатии COMMAND + Q или CTRL + Q
         if key == arcade.key.Q and modifiers in {arcade.key.MOD_COMMAND, arcade.key.MOD_CTRL}:

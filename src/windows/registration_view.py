@@ -39,6 +39,7 @@ class RegistrationView(arcade.View):
             if result:
                 self.error_text.text = ""
                 self.error_shadow.text = ""
+                self.manager.disable()
                 self.window.switch_view("start")
                 arcade.play_sound(reg.button_click_sound)
             else:
@@ -155,6 +156,7 @@ class RegistrationView(arcade.View):
     
     def on_key_press(self, key, modifiers):
         if key == arcade.key.ESCAPE:
+            self.manager.disable()
             self.window.switch_view("start")
 
     def add_user(self) -> tuple[bool, None | str]:

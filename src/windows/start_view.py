@@ -17,8 +17,6 @@ class StartView(arcade.View):
     def setup(self):
         """ Инициализация представления """
         
-        arcade.play_sound(self.window.bg_sound, loop=True, volume=0.75)
-        
         self.shape_list = arcade.shape_list.ShapeElementList()
         
         # открываем соединение с БД
@@ -52,6 +50,7 @@ class StartView(arcade.View):
         @reg_btn.event("on_click")
         def on_click_settings(event):
             self.error_text.text = ""
+            self.manager.disable()
             self.window.switch_view("registration")
             arcade.play_sound(reg.button_click_sound)
         
@@ -63,6 +62,7 @@ class StartView(arcade.View):
                 self.error_text.text = ""
                 self.error_shadow.text = ""
                 self.window.reg_db.close()
+                self.manager.disable()
                 self.window.switch_view("main_menu")
                 self.login = self.login_input.text
                 arcade.play_sound(reg.button_click_sound)

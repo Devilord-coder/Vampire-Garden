@@ -25,6 +25,10 @@ class ShopView(arcade.View):
         self.ui_manager = arcade.gui.UIManager()
         self.ui_manager.enable()
         self.error = False
+        
+        self.setup()
+    
+    def setup(self):
 
         self.backgound_texture = arcade.load_texture(
             "resources/Background/shop_background.png"
@@ -60,10 +64,7 @@ class ShopView(arcade.View):
                 self.height // 4 - delta_height,
             ),
         }
-
-        self.setup()
-
-    def setup(self):
+        
         # Загрузка представления, подготовка всех текстов
         x = 80
         y = self.height - 60

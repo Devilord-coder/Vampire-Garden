@@ -12,6 +12,8 @@ class ChooseGameView(arcade.View):
         super().__init__()
         self.window = window  # Ссылка на главное окно
         self.background = arcade.load_texture('resources/Background/start_background.jpeg')
+    
+    def setup(self):
         
         # UIManager — сердце GUI
         self.manager = UIManager()
@@ -36,6 +38,7 @@ class ChooseGameView(arcade.View):
         )
         @game_1_btn.event("on_click")
         def on_click_settings(event):
+            self.manager.disable()
             self.window.switch_view("game_1")
             arcade.play_sound(reg.button_click_sound)
         
@@ -47,6 +50,7 @@ class ChooseGameView(arcade.View):
         )
         @game_2_btn.event("on_click")
         def on_click_settings(event):
+            self.manager.disable()
             self.window.switch_view("game_2")
             arcade.play_sound(reg.button_click_sound)
         
@@ -58,6 +62,7 @@ class ChooseGameView(arcade.View):
         )
         @game_3_btn.event("on_click")
         def on_click_settings(event):
+            self.manager.disable()
             self.window.switch_view("game_3")
             arcade.play_sound(reg.button_click_sound)
         
@@ -73,7 +78,7 @@ class ChooseGameView(arcade.View):
     def on_show_view(self):
         """Вызывается при показе этого представления"""
         
-        ...
+        self.setup()
 
     def on_draw(self):
         """Рисование"""

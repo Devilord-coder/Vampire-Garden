@@ -52,6 +52,7 @@ class MainMenuView(arcade.View):
         @play_btn.event("on_click")
         def on_click_settings(event):
             arcade.play_sound(reg.button_click_sound)
+            self.manager.disable()
             self.window.switch_view("choose_game")
         
         # кнопка для открытия окна настроек
@@ -63,6 +64,7 @@ class MainMenuView(arcade.View):
         @settings_btn.event("on_click")
         def on_click_settings(event):
             arcade.play_sound(reg.button_click_sound)
+            self.manager.disable()
             self.window.switch_view("settings")
         
         # выход из аккаунта
@@ -74,6 +76,7 @@ class MainMenuView(arcade.View):
         @escape_btn.event("on_click")
         def on_click_settings(event):
             arcade.play_sound(reg.button_click_sound)
+            self.manager.disable()
             self.window.switch_view("start")
         
         # закрытие игры
@@ -98,6 +101,7 @@ class MainMenuView(arcade.View):
 
     def on_show_view(self):
         """ Вызывается при показе этого представления """
+        
         self.setup()
 
     def on_draw(self):

@@ -10,6 +10,9 @@ class MainGameView(arcade.View):
     def __init__(self, window):
         super().__init__()
         self.window = window  # Ссылка на главное окно
+    
+    def setup(self):
+        
         self.background = arcade.load_texture('resources/Background/start_background.jpeg')
         self.shape_list = arcade.shape_list.ShapeElementList()
         
@@ -32,7 +35,7 @@ class MainGameView(arcade.View):
     def on_show_view(self):
         """Вызывается при показе этого представления"""
         
-        ...
+        self.setup()
 
     def on_draw(self):
         """Рисование"""
@@ -54,4 +57,5 @@ class MainGameView(arcade.View):
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.ESCAPE:
+            self.manager.disable()
             self.window.switch_view("start")
