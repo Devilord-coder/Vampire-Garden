@@ -1,26 +1,26 @@
 import arcade
 from pyglet.graphics import Batch
 import arcade.gui
+from data.shop_data import ShopData
+from src.auxiliary_classes.scale import scale
+from src.settings import settings
 
 MANDRAGORA_PRICE = 20
 BELLADONNA_PRICE = 50
 ROSE_PRICE = 100
 ERROR_TIME_VISIBLE = 1
 
+PLATS_SCALE = scale(540, settings.height)
+PRICELIST_SCALE = scale(300, settings.height)
+EXIT_SCALE = scale(120, settings.height)
+
 
 class ShopView(arcade.View):
     """Представление магазина для покупки семян"""
 
     def __init__(self, window):
-        # Инициализация представления, переменные из прошлых окон, загрузка текстур, координаты кнопок
+        '''Инициализация представления, переменные из прошлых окон, загрузка текстур, координаты кнопок'''
         self.window = window
-        self.left_money = (
-            200  # Потом надо будет вытаскивать кол-во денег из предыдущих окон/бд
-        )
-        # Потом надо будет вытаскивать кол-во семян из предыдущих окон/бд
-        self.quantity_mandragora = 0
-        self.quantity_belladonna = 0
-        self.quantity_rose = 0
         self.batch = Batch()
         self.ui_manager = arcade.gui.UIManager()
         self.ui_manager.enable()
@@ -41,7 +41,7 @@ class ShopView(arcade.View):
         )
         self.money_texture = arcade.load_texture("resources/money.png")
         self.cart_texture = arcade.load_texture("resources/shop_pictures/cart.png")
-        self.exit_texture = arcade.load_texture("resources/buttons/exit.png")
+        self.exit_texture = arcade.load_texture("resources/buttons/exit/shop_exit.png")
 
         width = self.width // 2 - 200
         height = self.height // 2 - 150
@@ -65,7 +65,12 @@ class ShopView(arcade.View):
         self.setup()
 
     def setup(self):
-        # Загрузка представления, подготовка всех текстов
+        '''Загрузка представления, подготовка всех текстов'''
+        self.information = ShopData(self.window)
+        self.left_money = self.information.quantity_money
+        self.quantity_mandragora = self.information.quantity_mandragora_seeds
+        self.quantity_belladonna = self.information.quantity_belladonna_seeds
+        self.quantity_rose = self.information.quantity_rose_seeds
         x = 80
         y = self.height - 60
         self.left_money_text = arcade.Text(
@@ -87,7 +92,7 @@ class ShopView(arcade.View):
         self.exit_button_init()
 
     def exit_button_init(self):
-        # Инициализация кнопки для перехода на представление главной карты
+        '''Инициализация кнопки для перехода на представление главной карты'''
         x = self.width // 2 - self.exit_texture.width // 2
         y = self.height // 2 - self.exit_texture.height // 2
         button = arcade.gui.UITextureButton(
@@ -96,7 +101,7 @@ class ShopView(arcade.View):
             texture=self.exit_texture,
             texture_hovered=self.exit_texture,
             texture_pressed=self.exit_texture,
-            scale=1.0,
+            scale=EXIT_SCALE,
         )
 
         @button.event("on_click")
@@ -106,14 +111,14 @@ class ShopView(arcade.View):
         self.ui_manager.add(button)
 
     def buttons_init(self, plant, x, y):
-        # Инициализация кнопок для покупки семян
+        '''Инициализация кнопок для покупки семян'''
         button = arcade.gui.UITextureButton(
             x=x,
             y=y,
             texture=self.cart_texture,
             texture_hovered=self.cart_texture,
             texture_pressed=self.cart_texture,
-            scale=1.0,
+            scale=PLATS_SCALE,
         )
         button.name = plant
 
@@ -127,6 +132,7 @@ class ShopView(arcade.View):
                     self.error_text.batch = self.batch
                 else:
                     self.quantity_mandragora += 1
+                    self.information.quantity_mandragora_seeds = self.quantity_mandragora
             elif plant == "belladonna":
                 self.left_money -= BELLADONNA_PRICE
                 if self.left_money <= 0:
@@ -134,6 +140,7 @@ class ShopView(arcade.View):
                     self.error_text.batch = self.batch
                 else:
                     self.quantity_belladonna += 1
+                    self.information.quantity_belladonna_seeds = self.quantity_belladonna
             elif plant == "rose":
                 self.left_money -= ROSE_PRICE
                 if self.left_money <= 0:
@@ -141,12 +148,15 @@ class ShopView(arcade.View):
                     self.error_text.batch = self.batch
                 else:
                     self.quantity_rose += 1
+                    self.information.quantity_rose_seedsua = self.quantity_rose
             self.left_money_text.text = str(self.left_money)
+            self.information.quantity_money = self.left_money
+            self.information.save()
 
         self.ui_manager.add(button)
 
     def on_draw(self):
-        # Отрисовка всех картинок, текстов, кнопок
+        '''Отрисовка всех картинок, текстов, кнопок'''
         rect = arcade.rect.XYWH(
             self.width // 2, self.height // 2, self.width, self.height
         )
@@ -185,9 +195,19 @@ class ShopView(arcade.View):
         self.batch.draw()
 
     def on_update(self, delta_time):
-        # Вывод текста, если была ошибка в недостатке средств
+        '''Вывод текста, если была ошибка в недостатке средств'''
         if self.error:
             self.error_time += delta_time
         if self.error_time >= ERROR_TIME_VISIBLE:
             self.error_text.batch = None
             self.error_time = 0
+            
+    def on_show_view(self):
+        """Активация ui менеджера"""
+        if self.ui_manager:
+            self.ui_manager.enable()
+
+    def on_hide_view(self):
+        """Выключение ui менеджера"""
+        if self.ui_manager:
+            self.ui_manager.disable()
