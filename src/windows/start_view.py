@@ -12,6 +12,7 @@ class StartView(arcade.View):
         super().__init__()
         self.window = window  # Ссылка на главное окно
         self.background = arcade.load_texture('resources/Background/start_background.jpeg')
+        self.manager = None  # Значение ui менеджера для первого запуска
         
     def setup(self):
         """Инициализация представления"""
@@ -183,3 +184,14 @@ class StartView(arcade.View):
         
         super().on_resize(width, height)
         self.setup()
+        
+    def on_show_view(self):
+        """Активация ui менеджера"""
+        if self.manager:
+            self.manager.enable()
+
+    def on_hide_view(self):
+        """Выключение ui менеджера"""
+        if self.manager:
+            self.manager.disable()
+            

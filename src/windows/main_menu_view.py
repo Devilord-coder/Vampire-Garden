@@ -115,3 +115,13 @@ class MainMenuView(arcade.View):
     def on_key_press(self, key, modifiers):
         if key == arcade.key.ESCAPE:
             self.window.switch_view("start")
+            
+    def on_show_view(self):
+        """Активация ui менеджера"""
+        if self.manager:
+            self.manager.enable()
+
+    def on_hide_view(self):
+        """Выключение ui менеджера"""
+        if self.manager:
+            self.manager.disable()
