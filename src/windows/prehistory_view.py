@@ -9,12 +9,13 @@ class PrehistoryView(arcade.View):
         super().__init__()
         self.window = window
         self.sound = reg.prehistory_voice
-        self.ui_manager = arcade.gui.UIManager()
-        self.ui_manager.enable()
 
     def setup(self):
         """ Метод настройки вида (чтение текста предыстрории из файла, загрузка картинок, включение озвучки,
         создание кнопки для продолжения) """
+        
+        self.ui_manager = arcade.gui.UIManager()
+        self.ui_manager.enable()
         
         # настройка текста сообщения
         with open("resources/prehistory.txt", "r") as file:
