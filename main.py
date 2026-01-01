@@ -8,7 +8,7 @@ def main():
     window.setup()
 
     # Показываем стартовый экран
-    window.switch_view("start")
+    window.switch_view("battle")
 
     # Запускаем игровой цикл
     arcade.run()

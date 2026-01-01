@@ -198,6 +198,7 @@ class Hero(arcade.Sprite):
         if self.bat:
             self.change_y = self.walk_speed
         elif not self.disabled and self.change_y == 0:
+            self.jumping = True
             self.change_y = self.jump_speed
     
     def down(self):
@@ -209,6 +210,10 @@ class Hero(arcade.Sprite):
     def hurt(self, damage):
         """ Получение урона """
         
+        if self.hurting:
+            return
+        self.hurting = True
+        self.jump()
         self.health -= damage
         if self.health <= 0:
             self.death()
@@ -258,5 +263,8 @@ class Hero(arcade.Sprite):
             self.walk_f = False
         else:
             self.walk_b = self.walk_f = False
+        
+        if self.change_y == 0:
+            self.jumping = False
         
         self.update_animation()

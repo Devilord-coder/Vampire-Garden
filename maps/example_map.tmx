@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="70" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="43">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="70" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="45">
  <tileset firstgid="1" source="dungeoun_tilesheet.tsx"/>
+ <tileset firstgid="97" source="colored_tiles.tsx"/>
  <layer id="1" name="walls" width="70" height="20">
   <data encoding="base64" compression="zlib">
    eJztWE1vwyAMRZ2mHHbeh7TDtEsadR+5ROm9f2T//18Mr0HzHNsYsLoc+qQnFATGfRib0ocQesKnK394xV9sUZeR8D+Q02VC9MBI2pI5l0TS5RJ7Q9cYhf4tYIvnSMOUYUKrzlQXrz0sOXfSOjTHWP3RxlltlMQLlws1/aS8VJNjLLDupWUM1kXbtxrbOXC5psZGTWznxnPxUlt7WuqWJe60fMLhPvJB4aMyFzTpBV+s8K7htaB+vEd+CARdPhVbWn7R9obTgtYDKQa0e5tHzbbYsJwjLl40TEK7BXhoAii9v1jipgZeceIxBmDRxeu/inR+rHbpmebuca1+plydyy8lqNHPu9632AVN6DvDDvGm1sFCSBq+RR4abYRMP53HaZJy735pXyJvjX55AzQ5Rs7Brg2FdG+R7iuSJkmXr/D7Xvea8Qv834V1nGE/7gjp+MQDsgmanMJ5j5I20N8R0t+M10nzTwypnU4YR7XB7SzY6Rb/07whrN8+4ft54bCQWxOvcwxrP2ayluWddU/scDGAvwc0Z0D939ccOMA=
+  </data>
+ </layer>
+ <layer id="4" name="spikes" width="70" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzt1bEKACAIBUD7/73vbQpaBKMmuQMXn+hoBAAAcGuOvJ9lAEBPlf+/Z856ufVjFz0sve0JcQ==
+  </data>
+ </layer>
+ <layer id="3" name="exit" width="70" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzt0DERACAQxMB77eADpEKLAr7YVZBJAgAAAK9RyazfFf2s+2T7AkAjB1UkAks=
   </data>
  </layer>
  <objectgroup id="2" name="money">
@@ -28,9 +39,5 @@
   <object id="40" name="gold" x="1931.27" y="271.108"/>
   <object id="41" name="gold" x="1933.77" y="367.647"/>
  </objectgroup>
- <layer id="3" name="exit" width="70" height="20">
-  <data encoding="base64" compression="zlib">
-   eJztwQENAAAAwqD3T20ON6AAAAAAAHg0FeAAAQ==
-  </data>
- </layer>
+ <objectgroup id="5" name="enemies"/>
 </map>

@@ -1,9 +1,9 @@
 import arcade
 import arcade.gui
-from src.Creatures import Hero
+from src.creatures import Hero
 from src.settings import settings
 from src.registry import reg
-from src.Objects import Money
+from src.objects import Money
 
 SCREEN_WIDTH = settings.width
 SCREEN_HEIGHT = settings.height
@@ -71,6 +71,8 @@ class BattleView(arcade.View):
         # --- Достаём слои из карты как спрайт-листы ---
         self.wall_list = tile_map.sprite_lists["walls"]
         self.money_teritories_list = tile_map.object_lists["money"]
+        self.exit_list = tile_map.sprite_lists["exit"]
+        self.spikes_list = tile_map.sprite_lists["spikes"]
         self.money_init()
         self.collision_list = self.wall_list
         # --- Создаём игрока. ---
@@ -149,6 +151,8 @@ class BattleView(arcade.View):
         # Отрисовка объектов
         self.world_camera.use()
         self.wall_list.draw()
+        self.spikes_list.draw()
+        self.exit_list.draw()
         self.money_list.draw()
         self.player_list.draw()
         
@@ -236,6 +240,11 @@ class BattleView(arcade.View):
             self.money_count[money.type] += 1
             self.money_list.pop(self.money_list.index(money))
             arcade.play_sound(reg.money_claim_sound)
+        
+        hero_hurt = arcade.check_for_collision_with_list(self.hero, self.spikes_list)
+        if hero_hurt and not self.hero.hurting:
+            self.hero.hurt(damage=1)
+            print(self.hero.health)
 
         # Двигаем камеру за игроком (центрируем)
         # self.camera.move_to((self.player_sprite.center_x, self.player_sprite.center_y))
