@@ -9,6 +9,7 @@ from src.windows.game.main_map_view import MainMapView
 from src.windows.shop_view import ShopView
 from src.windows.prehistory_view import PrehistoryView
 from src.windows.game.garden import GardenView
+from src.windows.game.buildings.library import Library
 
 
 class BaseWindow(arcade.Window):
@@ -79,8 +80,9 @@ class BaseWindow(arcade.Window):
                 self.views[view_name] = ShopView(self)
             elif view_name == "choose_game":
                 from src.windows.choose_game_view import ChooseGameView
-
                 self.views[view_name] = ChooseGameView(self)
+            elif view_name == 'library':  # Представление библиотеки с информацией игры
+                self.views[view_name] = Library(self)
             elif view_name in {"game_1", "game_2", "game_3"}:
                 if view_name == "game_1":
                     self.game_number = 1

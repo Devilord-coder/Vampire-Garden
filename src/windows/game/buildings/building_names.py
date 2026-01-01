@@ -2,7 +2,7 @@ from .bat_house import bat_house
 from .estate import estate
 from .skeleton_house import skeleton_house
 from .werewolf_house import werewolf_house
-from .library import library
+from .library import Library
 from .sports_hall import sports_hall
 
 """
@@ -14,6 +14,6 @@ BUILDINGS = {
     "estate": estate,
     "skeleton_house": skeleton_house,
     "werewolf_house": werewolf_house,
-    "library": library,
-    "sports_hall": sports_hall
+    "library": Library,
+    "sports_hall": sports_hall,
 }

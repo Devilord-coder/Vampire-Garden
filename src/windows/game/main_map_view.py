@@ -87,7 +87,7 @@ class MainMapView(arcade.View):
                 if building_name == "main_house":
                     print("Главное здание")
                 elif building_name == "library":
-                    print("Библиотека")
+                    self.window.switch_view('library')
                 elif building_name == "bat_house":
                     print("Дом летучих мышей")
                 elif building_name == "sport_hall":
