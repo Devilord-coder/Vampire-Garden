@@ -80,8 +80,11 @@ class BaseWindow(arcade.Window):
                 from src.windows.game.portal_view import PortalView
                 self.views[view_name] = PortalView(self)
             elif view_name == "battle":
-                from src.windows.game.battle_view import BattleView
+                from windows.game.battle import BattleView
                 self.views[view_name] = BattleView(self)
+            elif view_name == "battle_win":
+                from windows.game.battle import WinBattleView
+                self.views[view_name] = WinBattleView(self)
 
         return self.views[view_name]
     

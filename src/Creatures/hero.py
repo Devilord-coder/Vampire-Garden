@@ -55,7 +55,10 @@ class Hero(arcade.Sprite):
         self.walk_b_textures = []
         self.walk_b_textures = self.idle_textures = self.walk_f_textures
         # получение урона
-        self.hurt_textures = self.idle_textures # заглушка
+        self.hurt_textures = []
+        for i in range(4):
+            texture = arcade.load_texture(f"resources/Hero/vampire/hurt/{i}.png")
+            self.hurt_textures.append(texture)
         # смерть
         self.death_textures = []
         for i in range(18):
@@ -213,6 +216,7 @@ class Hero(arcade.Sprite):
         if self.hurting:
             return
         self.hurting = True
+        self.current_texture = -1
         self.jump()
         self.health -= damage
         if self.health <= 0:

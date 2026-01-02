@@ -71,10 +71,18 @@ class BattleView(arcade.View):
         # --- Достаём слои из карты как спрайт-листы ---
         self.wall_list = tile_map.sprite_lists["walls"]
         self.money_teritories_list = tile_map.object_lists["money"]
+        self.money_init()
+        self.enemies_territory_list = tile_map.object_lists["enemies"]
+        self.enemy_init()
         self.exit_list = tile_map.sprite_lists["exit"]
         self.spikes_list = tile_map.sprite_lists["spikes"]
-        self.money_init()
+        self.spikes_collision = tile_map.sprite_lists["spikes_collision"]
         self.collision_list = self.wall_list
+        for spike in self.spikes_list:
+            self.collision_list.append(spike)
+        for enemy in self.enemies_list:
+            self.collision_list.append(enemy)
+        
         # --- Создаём игрока. ---
         # Карту загрузили, теперь создаём героя, который будет по ней бегать
         self.hero = Hero(
@@ -121,6 +129,12 @@ class BattleView(arcade.View):
         self.result_money_list = [self.result_gold_money,
                                   self.result_silver_money,
                                   self.result_bronze_money]
+        self.health_pic = arcade.load_texture("resources/heart.png")
+    
+    def enemy_init(self):
+        self.enemies_list = arcade.SpriteList()
+        for enemy_ter in self.enemies_territory_list:
+            enemy = ...
     
     def money_init(self):
         """ Инициализация монеток на карте """
@@ -171,7 +185,7 @@ class BattleView(arcade.View):
         # количество золота
         arcade.draw_text(
             str(self.money_count["gold"]),
-            150, self.height - 50,
+            150, self.height - 60,
             arcade.color.RED,
             font_size=16
         )
@@ -186,7 +200,7 @@ class BattleView(arcade.View):
         # количество серебра
         arcade.draw_text(
             str(self.money_count["silver"]),
-            150, self.height - 120,
+            150, self.height - 130,
             arcade.color.RED,
             font_size=16
         )
@@ -201,9 +215,21 @@ class BattleView(arcade.View):
         # количество бронзы
         arcade.draw_text(
             str(self.money_count["bronze"]),
-            150, self.height - 190,
+            150, self.height - 200,
             arcade.color.RED,
             font_size=16
+        )
+        
+        arcade.draw_texture_rect(
+            self.health_pic,
+            arcade.rect.XYWH(250, self.height - 50,
+                             50, 50)
+        )
+        arcade.draw_text(
+            text=str(self.hero.health),
+            x=275, y=self.height - 50,
+            color=arcade.color.RED,
+            font_size=15
         )
     
     def on_resize(self, width, height):
@@ -241,9 +267,9 @@ class BattleView(arcade.View):
             self.money_list.pop(self.money_list.index(money))
             arcade.play_sound(reg.money_claim_sound)
         
-        hero_hurt = arcade.check_for_collision_with_list(self.hero, self.spikes_list)
+        hero_hurt = arcade.check_for_collision_with_list(self.hero, self.spikes_collision)
         if hero_hurt and not self.hero.hurting:
-            self.hero.hurt(damage=1)
+            self.hero.hurt(damage=20)
             print(self.hero.health)
 
         # Двигаем камеру за игроком (центрируем)
@@ -277,6 +303,10 @@ class BattleView(arcade.View):
             self.window.mouse.visible = True
             self.manager.disable()
             self.window.switch_view("main_map")
+        elif key == arcade.key.P and modifiers in {arcade.key.MOD_COMMAND, arcade.key.MOD_CTRL}:
+            self.hero.hurt(damage=20)
+        elif key == arcade.key.R and modifiers in {arcade.key.MOD_COMMAND, arcade.key.MOD_CTRL}:
+            self.setup()
 
     def on_key_release(self, key, modifiers):
         """ Обработка отпускания клавиш """

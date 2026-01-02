@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="70" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="45">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="70" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="46">
  <tileset firstgid="1" source="dungeoun_tilesheet.tsx"/>
  <tileset firstgid="97" source="colored_tiles.tsx"/>
  <layer id="1" name="walls" width="70" height="20">
@@ -39,5 +39,12 @@
   <object id="40" name="gold" x="1931.27" y="271.108"/>
   <object id="41" name="gold" x="1933.77" y="367.647"/>
  </objectgroup>
- <objectgroup id="5" name="enemies"/>
+ <objectgroup id="5" name="enemies">
+  <object id="45" name="skeleton" x="1805.41" y="240.271"/>
+ </objectgroup>
+ <layer id="6" name="spikes_collision" width="70" height="20" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJzt1jEKwDAIBVDPKb3/ObJ0jCGQJlDyHrj4QUeNAACAWg76VXaD561eP4oMAP5u5v5np1Z2fTFrt5N3v9rl97hXA/+ECCU=
+  </data>
+ </layer>
 </map>
