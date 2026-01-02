@@ -10,6 +10,9 @@ from src.windows.shop_view import ShopView
 from src.windows.prehistory_view import PrehistoryView
 from src.windows.game.garden import GardenView
 from src.windows.game.buildings.library import Library
+from src.windows.game.buildings.bat_house import BatHouse
+from src.windows.game.buildings.skeleton_house import SkeletonHouse
+from src.windows.game.buildings.werewolf_house import WerewolfHouse
 
 
 class BaseWindow(arcade.Window):
@@ -80,9 +83,8 @@ class BaseWindow(arcade.Window):
                 self.views[view_name] = ShopView(self)
             elif view_name == "choose_game":
                 from src.windows.choose_game_view import ChooseGameView
+
                 self.views[view_name] = ChooseGameView(self)
-            elif view_name == 'library':  # Представление библиотеки с информацией игры
-                self.views[view_name] = Library(self)
             elif view_name in {"game_1", "game_2", "game_3"}:
                 if view_name == "game_1":
                     self.game_number = 1
@@ -101,6 +103,14 @@ class BaseWindow(arcade.Window):
                 self.views[view_name] = GardenView(self)
             elif view_name == "settings":
                 pass
+            elif view_name == "library":  # Представление библиотеки с информацией игры
+                self.views[view_name] = Library(self)
+            elif view_name == "bat_house":  # Представление дома летучих мышей
+                self.views[view_name] = BatHouse(self)
+            elif view_name == "sceleton_house":  # Представление дома скелетов
+                self.views[view_name] = SkeletonHouse(self)
+            elif view_name == "werewolf_house":  # Представление дома оборотней
+                self.views[view_name] = WerewolfHouse(self)
 
         return self.views[view_name]
 
