@@ -11,6 +11,7 @@ class PrehistoryView(arcade.View):
         self.sound = reg.prehistory_voice
         self.ui_manager = arcade.gui.UIManager()
         self.ui_manager.enable()
+        self.setup()
 
     def setup(self):
         """ Метод настройки вида (чтение текста предыстрории из файла, загрузка картинок, включение озвучки,
@@ -82,3 +83,13 @@ class PrehistoryView(arcade.View):
     def on_resize(self, width: float, height: float):
         """ Метод отработки изменения окна """
         super().on_resize(width, height)
+        
+    def on_show_view(self):
+        """Активация ui менеджера"""
+        if self.ui_manager:
+            self.ui_manager.enable()
+
+    def on_hide_view(self):
+        """Выключение ui менеджера"""
+        if self.ui_manager:
+            self.ui_manager.disable()

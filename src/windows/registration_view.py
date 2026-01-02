@@ -6,31 +6,33 @@ from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
 
 class RegistrationView(arcade.View):
-    """ Экран для регистрации """
+    """Экран для регистрации"""
 
     def __init__(self, window):
         super().__init__()
         self.window = window  # Ссылка на главное окно
-        self.background = arcade.load_texture('resources/Background/start_background.jpeg')
+        self.background = arcade.load_texture(
+            "resources/Background/start_background.jpeg"
+        )
+        self.manager = None  # Значение ui менеджера для первого запуска
+        self.setup()
 
     def setup(self):
         """Инициализация представления"""
-        
+
         # UIManager — сердце GUI
         self.manager = UIManager()
         self.manager.enable()  # Включить, чтоб виджеты работали
-        
+
         # Layout для организации — как полки в шкафу
         self.anchor_layout = UIAnchorLayout()  # Центрирует виджеты
-        self.box_layout = UIBoxLayout(vertical=True, space_between=20)  # Вертикальный стек
-        
+        self.box_layout = UIBoxLayout(
+            vertical=True, space_between=20
+        )  # Вертикальный стек
+
         # кнопка регистрации
-        reg_btn = UIFlatButton(
-            style=button_style,
-            text="ЗАРЕГИСТРИРОВАТЬСЯ",
-            width=200
-        )
-        
+        reg_btn = UIFlatButton(style=button_style, text="ЗАРЕГИСТРИРОВАТЬСЯ", width=200)
+
         # при нажатии кнопки окно меняется на регистрацию
         @reg_btn.event("on_click")
         def on_click_settings(event):
@@ -42,78 +44,82 @@ class RegistrationView(arcade.View):
             else:
                 self.error_text.text = error.upper()
                 self.error_shadow.text = error.upper()
-        
+
         # надпись имя
         name_text = UILabel(
-            text='Имя',
+            text="Имя",
             text_color=arcade.color.AMARANTH_PURPLE,
             font_size=30,
-            multiline=True
+            multiline=True,
         )
-        
+
         # объект для ввода имени
         self.name_input = arcade.gui.UIInputText(
-            width=300, height=30,
+            width=300,
+            height=30,
             text="",
             font_size=FONT_SIZE,
             style=input_text_style,
             text_color=arcade.color.AMARANTH_PURPLE,
-            border_color=arcade.color.AMARANTH_PURPLE
+            border_color=arcade.color.AMARANTH_PURPLE,
         )
-        
+
         email_text = UILabel(
-            text='Почта',
+            text="Почта",
             text_color=arcade.color.AMARANTH_PURPLE,
             font_size=30,
-            multiline=True
+            multiline=True,
         )
-        
+
         # объект для ввода имени
         self.email_input = arcade.gui.UIInputText(
-            width=300, height=30,
+            width=300,
+            height=30,
             text="",
             font_size=FONT_SIZE,
             style=input_text_style,
             text_color=arcade.color.AMARANTH_PURPLE,
-            border_color=arcade.color.AMARANTH_PURPLE
+            border_color=arcade.color.AMARANTH_PURPLE,
         )
-        
+
         # надпись логин
         login_text = UILabel(
-            text='Логин',
+            text="Логин",
             text_color=arcade.color.AMARANTH_PURPLE,
             font_size=30,
-            multiline=True
+            multiline=True,
         )
-        
+
         # надпись пароль
         password_text = UILabel(
-            text='Пароль',
+            text="Пароль",
             text_color=arcade.color.AMARANTH_PURPLE,
             font_size=30,
-            multiline=True
+            multiline=True,
         )
-        
+
         # объект для ввода логина
         self.login_input = arcade.gui.UIInputText(
-            width=300, height=30,
+            width=300,
+            height=30,
             text="",
             font_size=FONT_SIZE,
             style=input_text_style,
             text_color=arcade.color.AMARANTH_PURPLE,
-            border_color=arcade.color.AMARANTH_PURPLE
+            border_color=arcade.color.AMARANTH_PURPLE,
         )
-        
+
         # объект для ввода пароля
         self.password_input = arcade.gui.UIInputText(
-            width=300, height=30,
+            width=300,
+            height=30,
             text="",
             font_size=FONT_SIZE,
             style=input_text_style,
             text_color=arcade.color.AMARANTH_PURPLE,
-            border_color=arcade.color.AMARANTH_PURPLE
+            border_color=arcade.color.AMARANTH_PURPLE,
         )
-        
+
         part_x, part_y, c_x, c_y = self.window.get_parts()
         # текст для вывода ошибок
         self.error_text = arcade.Text(
@@ -123,7 +129,7 @@ class RegistrationView(arcade.View):
             width=500,
             x=c_x - 15 * part_x,
             y=90 * part_y,
-            color=TEXT_COLOR
+            color=TEXT_COLOR,
         )
         # тень текста
         self.error_shadow = arcade.Text(
@@ -133,9 +139,9 @@ class RegistrationView(arcade.View):
             width=500,
             x=c_x - 15 * part_x + 3,
             y=90 * part_y,
-            color=arcade.color.BLACK
+            color=arcade.color.BLACK,
         )
-        
+
         # ==== ДОБАВЛЯЕМ ВИДЖЕТЫ ПО ПОРЯДКУ ====
         self.box_layout.add(name_text)
         self.box_layout.add(self.name_input)
@@ -146,16 +152,16 @@ class RegistrationView(arcade.View):
         self.box_layout.add(password_text)
         self.box_layout.add(self.password_input)
         self.box_layout.add(reg_btn)
-        
+
         self.anchor_layout.add(self.box_layout)  # Box в anchor
         self.manager.add(self.anchor_layout)  # Всё в manager
-    
+
     def on_key_press(self, key, modifiers):
         if key == arcade.key.ESCAPE:
             self.window.switch_view("start")
 
     def add_user(self) -> tuple[bool, None | str]:
-        """ Добавление пользователя в БД
+        """Добавление пользователя в БД
 
         Returns:
             tuple[bool, None | str]: результат и ошибка (если есть)
@@ -165,9 +171,9 @@ class RegistrationView(arcade.View):
         email = self.email_input.text
         login = self.login_input.text
         password = self.password_input.text
-        
+
         # добавление пользователя
-        result =  self.window.reg_db.add_user(name, email, login, password)
+        result = self.window.reg_db.add_user(name, email, login, password)
         if result == "OK":
             return True, None
         else:
@@ -180,16 +186,18 @@ class RegistrationView(arcade.View):
 
     def on_draw(self):
         """Рисование"""
-        
+
         # Очищаем
         self.clear()
-        
+
         # ------------- ЗАДНИЙ ФОН -------------
-        arcade.draw_texture_rect(self.background, arcade.rect.XYWH(
-            self.width // 2, self.height // 2,
-            self.width, self.height
-        ))
-        
+        arcade.draw_texture_rect(
+            self.background,
+            arcade.rect.XYWH(
+                self.width // 2, self.height // 2, self.width, self.height
+            ),
+        )
+
         # только после этого все остальное
         self.manager.draw()
         self.error_shadow.draw()
@@ -199,9 +207,19 @@ class RegistrationView(arcade.View):
         """Обновление логики"""
 
         ...
-    
+
     def on_resize(self, width, height):
-        """ Изменение размера окна """
-        
+        """Изменение размера окна"""
+
         super().on_resize(width, height)
         self.setup()
+
+    def on_show_view(self):
+        """Активация ui менеджера"""
+        if self.manager:
+            self.manager.enable()
+
+    def on_hide_view(self):
+        """Выключение ui менеджера"""
+        if self.manager:
+            self.manager.disable()

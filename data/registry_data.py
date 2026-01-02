@@ -1,19 +1,17 @@
-import sqlite3
 import hashlib
 
 
 class RegistryDataBase:
     """ База данных для авторизации пользователей """
 
-    def __init__(self):
+    def __init__(self, con):
         # Изначально соединение закрыто
-        self.con = None
-        self.cur = None
+        self.con = con
+        self.cur = self.con.cursor()
     
     def open(self):
         # открываем, если оно не открыто
         if not self.con:
-            self.con = sqlite3.connect("vampire_garden_db.db")
             self.cur = self.con.cursor()
     
     def close(self):
@@ -24,7 +22,7 @@ class RegistryDataBase:
         self.cur = None
     
     def update(self):
-        # если соединени есть, обновляем
+        # если соединение есть, обновляем
         if self.con:
             self.con.commit()
 
@@ -94,6 +92,3 @@ class RegistryDataBase:
         if hash_password != correct_password[0][0]:
             return "Пароль введён неккоректно."
         return "OK"
-
-
-registry_database = RegistryDataBase()

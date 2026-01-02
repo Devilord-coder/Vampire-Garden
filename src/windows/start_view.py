@@ -12,6 +12,7 @@ class StartView(arcade.View):
         super().__init__()
         self.window = window  # Ссылка на главное окно
         self.background = arcade.load_texture('resources/Background/start_background.jpeg')
+        self.manager = None  # Значение ui менеджера для первого запуска
         
     def setup(self):
         """Инициализация представления"""
@@ -21,7 +22,7 @@ class StartView(arcade.View):
         self.shape_list = arcade.shape_list.ShapeElementList()
         
         # открываем соединение с БД
-        self.window.reg_db.open()
+        # self.window.reg_db.open()
         
         # UIManager — сердце GUI
         self.manager = UIManager()
@@ -60,9 +61,10 @@ class StartView(arcade.View):
             if result:
                 self.error_text.text = ""
                 self.error_shadow.text = ""
-                self.window.reg_db.close()
+                # self.window.reg_db.close() Оставляем бд открытой до самого закрытия приложения
                 self.window.switch_view("main_menu")
                 self.login = self.login_input.text
+                self.window.login = self.login
             else:
                 self.error_text.text = error.upper()
                 self.error_shadow.text = error.upper()
@@ -182,3 +184,14 @@ class StartView(arcade.View):
         
         super().on_resize(width, height)
         self.setup()
+        
+    def on_show_view(self):
+        """Активация ui менеджера"""
+        if self.manager:
+            self.manager.enable()
+
+    def on_hide_view(self):
+        """Выключение ui менеджера"""
+        if self.manager:
+            self.manager.disable()
+            

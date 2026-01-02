@@ -4,7 +4,7 @@ from src.settings import settings
 from src.auxiliary_classes.portal_animated_button import AnimatedPortalButton
 import arcade.gui
 
-TILE_SCALING = 1.1
+TILE_SCALING = 1
 
 
 class MainMapView(arcade.View):
@@ -23,7 +23,7 @@ class MainMapView(arcade.View):
             "vampire_house": "resources/Buildings/vampire_house.png",
             "werewolf_house": "resources/Buildings/werewolf_house.png",
             "garden": "resources/Buildings/garden.jpg",
-            'gates': 'resources/Buildings/gates.png'
+            "gates": "resources/Buildings/gates.png",
         }
         self.window = window
         self.batch = Batch()
@@ -87,13 +87,13 @@ class MainMapView(arcade.View):
                 if building_name == "main_house":
                     print("Главное здание")
                 elif building_name == "library":
-                    print("Библиотека")
+                    self.window.switch_view('library')
                 elif building_name == "bat_house":
                     print("Дом летучих мышей")
                 elif building_name == "sport_hall":
                     print("Спортзал")
                 elif building_name == "garden":
-                    print("Огород")
+                    self.window.switch_view("garden")
                 elif building_name == "portal":
                     print("Портал")
                 elif building_name == "vampire_house":
@@ -102,8 +102,8 @@ class MainMapView(arcade.View):
                     print("Дом оборотней")
                 elif building_name == "sceleton_house":
                     print("Дом скелетов")
-                elif building_name == 'gates':
-                    self.window.switch_view('shop')
+                elif building_name == "gates":
+                    self.window.switch_view("shop")
 
             self.ui_manager.add(button)
 
@@ -143,3 +143,13 @@ class MainMapView(arcade.View):
             if hasattr(widget, "child") and widget.child is not None:
                 if isinstance(widget.child, AnimatedPortalButton):
                     widget.child.on_update(delta_time)
+
+    def on_show_view(self):
+        """Активация ui менеджера"""
+        if self.ui_manager:
+            self.ui_manager.enable()
+
+    def on_hide_view(self):
+        """Выключение ui менеджера"""
+        if self.ui_manager:
+            self.ui_manager.disable()
