@@ -1,12 +1,25 @@
+import arcade
 from .building import Building
 
 
 class WerewolfHouse(Building):
-    """ Дом оборотней """
-    
-    def __init__(self):
-        super().__init__()
-        self.name = "werewolf_house"
-        
+    """Дом оборотней"""
 
-werewolf_house = WerewolfHouse()
+    def __init__(self, window):
+        super().__init__()
+        self.window = window
+        self.name = "werewolf_house"
+
+        self.textures = []
+        self.fill_textures()
+        self.building_init("werewolf", self.textures)  # Метод родителя
+
+    def fill_textures(self):
+        """Метод загрузки текстур бойца для переключения"""
+        for i in range(18):
+            number = str(i)
+            number = number.rjust(3, "0")
+            texture = arcade.load_texture(
+                f"resources/Minions/Vampire_Bat/PNG/PNG Sequences/Fly/0_Monster_Fly_{number}.png"
+            )
+            self.textures.append(texture)

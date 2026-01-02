@@ -7,6 +7,3 @@ class Estate(Building):
     def __init__(self):
         super().__init__()
         self.name = "estate"
-
-
-estate = Estate()

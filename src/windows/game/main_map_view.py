@@ -89,7 +89,7 @@ class MainMapView(arcade.View):
                 elif building_name == "library":
                     self.window.switch_view('library')
                 elif building_name == "bat_house":
-                    print("Дом летучих мышей")
+                    self.window.switch_view("bat_house")
                 elif building_name == "sport_hall":
                     print("Спортзал")
                 elif building_name == "garden":
@@ -99,9 +99,9 @@ class MainMapView(arcade.View):
                 elif building_name == "vampire_house":
                     print("Дом вампиров")
                 elif building_name == "werewolf_house":
-                    print("Дом оборотней")
+                    self.window.switch_view('werewolf_house')
                 elif building_name == "sceleton_house":
-                    print("Дом скелетов")
+                    self.window.switch_view("sceleton_house")
                 elif building_name == "gates":
                     self.window.switch_view("shop")
 

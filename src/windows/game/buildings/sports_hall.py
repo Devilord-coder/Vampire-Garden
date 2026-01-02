@@ -8,5 +8,3 @@ class SportsHall(Building):
         super().__init__()
         self.name = "sports_hall"
         
-        
-sports_hall = SportsHall()
