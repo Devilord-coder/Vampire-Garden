@@ -255,6 +255,7 @@ class GardenView(arcade.View):
             f"Белладонна - {self.quantity_belladonna}\n"
             f"Красная роза - {self.quantity_rose}"
         )
+        self.manager.trigger_render()  # Полная очистка менеджера для корректной отрисовки текста
 
     def update_plant_growth(self, sprite, field_number, plant_name):
         """Метод смены текстуры по истечению времени"""
