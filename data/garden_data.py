@@ -7,6 +7,7 @@ class GardenData:
         self.cur = self.con.cursor()
         self.game_id = self.window.game_id
         self.garden_id = self.window.garden_id
+        self.login = self.window.login
         self.fields = []
         self.setup()
 
@@ -94,6 +95,34 @@ class GardenData:
             "SELECT id FROM Plants WHERE plant_name=?", (name,)
         ).fetchone()
         return id[0]
+
+    def update_quantity_bites(self, quantity_bites, field_number):
+        """Обновление количества укусов в бд"""
+        self.cur.execute(
+            """UPDATE Garden_field
+                         SET quantity_bites=?
+                         WHERE field=? and garden_id=?""",
+            (quantity_bites, field_number, self.garden_id),
+        )
+        self.con.commit()
+
+    def get_user_id(self):
+        """Метод получения id пользователя по логину"""
+        return self.cur.execute(
+            "SELECT id FROM Registry WHERE login=?", (self.login,)
+        ).fetchone()[0]
+
+    def check_final(self):
+        """Метод проверки конца игры"""
+        user_id = self.get_user_id()
+        plants = self.cur.execute(
+            """SELECT quantity_mandragora, quantity_belladonna, quantity_rose FROM Game
+                                  WHERE user_id=?""",
+            (user_id,),
+        ).fetchone()
+        if plants[0] >= 50 and plants[1] >= 30 and plants[2] >= 25:
+            return True
+        return False
 
     def update(self):
         """Метод обновления бд для синхронизации со всей игрой"""

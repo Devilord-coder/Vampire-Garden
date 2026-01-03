@@ -148,7 +148,7 @@ class ShopView(arcade.View):
                     self.error_text.batch = self.batch
                 else:
                     self.quantity_rose += 1
-                    self.information.quantity_rose_seedsua = self.quantity_rose
+                    self.information.quantity_rose_seeds = self.quantity_rose
             self.left_money_text.text = str(self.left_money)
             self.information.quantity_money = self.left_money
             self.information.save()
