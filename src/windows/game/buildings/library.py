@@ -78,7 +78,7 @@ class Library(arcade.View):
         )
         arcade.draw_texture_rect(self.background_texture, rect)
 
-        rect = arcade.rect.XYWH(self.width // 2, self.height // 2, 1350, 700)
+        rect = arcade.rect.XYWH(self.width // 2, self.height // 2, 700, 700)
         arcade.draw_texture_rect(self.paper_texture, rect)
 
         self.manager.draw()

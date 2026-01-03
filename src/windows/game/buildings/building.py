@@ -31,7 +31,7 @@ class Building(arcade.View):
             "resources/Background/minions_shops.jpeg"
         )
         self.exit_texture = arcade.load_texture("resources/buttons/exit/shop_exit.png")
-        self.buy_texture = arcade.load_texture("resources/buttons/exit/garden_back.png")
+        self.buy_texture = arcade.load_texture("resources/buttons/buy.png")
         self.paper_texture = arcade.load_texture("resources/Background/paper.png")
 
         self.texts = [
@@ -120,7 +120,6 @@ class Building(arcade.View):
         """Инициализация кнопки для перехода на представление главной карты"""
         x = 10 + self.exit_texture.width // 2 * EXIT_SCALE
         y = self.height - (self.exit_texture.height * EXIT_SCALE) - 10
-        print(x, y)
         button = UITextureButton(
             center_x=x,
             y=y,
@@ -168,9 +167,9 @@ class Building(arcade.View):
         rect = arcade.rect.XYWH(self.width // 3, self.height // 2, 1000, 800)
         arcade.draw_texture_rect(self.texture, rect)
 
-        width = 1000
+        width = 700
         height = 400
-        x = self.width - width // 2
+        x = self.width - width // 2 + 50
         y = self.height // 2
         rect = arcade.rect.XYWH(x, y, width, height)
         arcade.draw_texture_rect(self.paper_texture, rect)

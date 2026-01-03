@@ -16,10 +16,8 @@ class WerewolfHouse(Building):
 
     def fill_textures(self):
         """Метод загрузки текстур бойца для переключения"""
-        for i in range(18):
-            number = str(i)
-            number = number.rjust(3, "0")
+        for i in range(11):
             texture = arcade.load_texture(
-                f"resources/Minions/Vampire_Bat/PNG/PNG Sequences/Fly/0_Monster_Fly_{number}.png"
+                f"resources/Minions/Werewolf/Walk/sprite_0_{i}.png"
             )
             self.textures.append(texture)
