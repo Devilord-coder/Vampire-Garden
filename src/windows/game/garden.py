@@ -53,7 +53,7 @@ class GardenView(arcade.View):
         self.exit_texture = arcade.load_texture(
             "resources/buttons/exit/garden_back.png"
         )
-        
+
         self.door_sound = reg.door_sound
         self.haversting_mandragora_sound = reg.harvesting_mandragora_sound
         self.plants_sound = reg.plants_sound
@@ -133,6 +133,9 @@ class GardenView(arcade.View):
 
         for _ in range(4):
             self.create_rabbit()
+        arcade.schedule(
+            self.update_rabbits, 1 / 60
+        )  # Создание расписания работы метода, который обрабатывает состояния кроликов, для работы в фоновом режиме
 
     def on_draw(self):
         self.clear()
@@ -146,7 +149,7 @@ class GardenView(arcade.View):
         self.manager.draw()
         self.rabbits_list.draw()
 
-    def on_update(self, delta_time):
+    def update_rabbits(self, delta_time):
         """Обновление кроликов, проверка пересечения кролика с грядкой, поедание урожая"""
         self.time_from_last_rabbit += delta_time
         for rabbit in self.rabbits_list:
