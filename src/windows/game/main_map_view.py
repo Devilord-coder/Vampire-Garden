@@ -3,8 +3,10 @@ from pyglet.graphics import Batch
 from src.settings import settings
 from src.auxiliary_classes.portal_animated_button import AnimatedPortalButton
 import arcade.gui
+from src.auxiliary_classes.scale import scale
 
-TILE_SCALING = 1
+TILE_SCALING = scale(800, settings.height, 800)
+BUILDINGS_SCALE = TILE_SCALING
 
 
 class MainMapView(arcade.View):
@@ -64,7 +66,7 @@ class MainMapView(arcade.View):
                     x=building.shape[3][0],
                     y=building.shape[3][1],
                     texture_list=texture_list,
-                    scale=1.0,
+                    scale=BUILDINGS_SCALE,
                 )
 
             else:
@@ -76,7 +78,7 @@ class MainMapView(arcade.View):
                     texture=texture,
                     texture_hovered=texture,
                     texture_pressed=texture,
-                    scale=1.0,
+                    scale=BUILDINGS_SCALE,
                 )
             button.building_name = building_name
 
@@ -109,10 +111,10 @@ class MainMapView(arcade.View):
 
     def center_map(self):
         # Центрирование карты относительно окна
-        window_width, window_height = self.window.get_size()
+        window_width, window_height = settings.width, settings.height
 
-        map_width = self.tilemap.width * self.tilemap.tile_width
-        map_height = self.tilemap.height * self.tilemap.tile_height
+        map_width = self.tilemap.width * self.tilemap.tile_width * TILE_SCALING
+        map_height = self.tilemap.height * self.tilemap.tile_height * TILE_SCALING
 
         offset_x = (window_width - map_width) / 2
         offset_y = (window_height - map_height) / 2

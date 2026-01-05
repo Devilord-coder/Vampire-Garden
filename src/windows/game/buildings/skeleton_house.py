@@ -17,7 +17,6 @@ class SkeletonHouse(Building):
     def fill_textures(self):
         """Метод загрузки текстур бойца для переключения"""
         for i in range(7):
-            
             texture = arcade.load_texture(
                 f"resources/Minions/Skeleton_Spearman/Walk/sprite_0_{i}.png"
             )
