@@ -295,6 +295,7 @@ class GardenView(arcade.View):
                     self.quantity_mandragora
                 )
                 sprite.texture = self.sprouts_field_texture
+                self.garden_information.quantity_planted_mandragora += 1
                 self.garden_information.save()
                 timer = arcade.schedule_once(
                     lambda dt: self.update_plant_growth(
@@ -318,6 +319,7 @@ class GardenView(arcade.View):
                     self.quantity_belladonna
                 )
                 sprite.texture = self.sprouts_field_texture
+                self.garden_information.quantity_planted_belladonna += 1
                 self.garden_information.save()
                 timer = arcade.schedule_once(
                     lambda dt: self.update_plant_growth(
@@ -339,6 +341,7 @@ class GardenView(arcade.View):
                 ] = "Красная роза"
                 self.garden_information.quantity_rose_seeds = self.quantity_rose
                 sprite.texture = self.sprouts_field_texture
+                self.garden_information.quantity_planted_rose += 1
                 self.garden_information.save()
                 timer = arcade.schedule_once(
                     lambda dt: self.update_plant_growth(

@@ -28,14 +28,18 @@ class GardenData:
                 }
             )
 
-        quantity_seeds = self.cur.execute(
-            """SELECT quantity_mandragora_seeds, quantity_belladonna_seeds, quantity_rose_seeds FROM Game
+        quantity_plants = self.cur.execute(
+            """SELECT quantity_mandragora_seeds, quantity_belladonna_seeds, quantity_rose_seeds,
+            quantity_planted_mandragora, quantity_planted_belladonna, quantity_planted_rose FROM Game
                                            WHERE id=?""",
             (self.game_id,),
         ).fetchone()
-        self.quantity_mandragora_seeds = quantity_seeds[0]
-        self.quantity_belladonna_seeds = quantity_seeds[1]
-        self.quantity_rose_seeds = quantity_seeds[2]
+        self.quantity_mandragora_seeds = quantity_plants[0]
+        self.quantity_belladonna_seeds = quantity_plants[1]
+        self.quantity_rose_seeds = quantity_plants[2]
+        self.quantity_planted_mandragora = quantity_plants[3]
+        self.quantity_planted_belladonna = quantity_plants[4]
+        self.quantity_planted_rose = quantity_plants[5]
 
         quantity_plants = self.cur.execute(
             """SELECT quantity_mandragora, quantity_belladonna, quantity_rose
@@ -66,24 +70,20 @@ class GardenData:
 
         self.cur.execute(
             """UPDATE Game
-                         SET quantity_mandragora_seeds=?, quantity_belladonna_seeds=?, quantity_rose_seeds=?
+                         SET quantity_mandragora_seeds=?, quantity_belladonna_seeds=?, quantity_rose_seeds=?,
+                         quantity_mandragora=?, quantity_belladonna=?, quantity_rose=?,
+                         quantity_planted_mandragora=?, quantity_planted_belladonna=?, quantity_planted_rose=?
                          WHERE id=?""",
             (
                 self.quantity_mandragora_seeds,
                 self.quantity_belladonna_seeds,
                 self.quantity_rose_seeds,
-                self.game_id,
-            ),
-        )
-
-        self.cur.execute(
-            """UPDATE Game
-                         SET quantity_mandragora=?, quantity_belladonna=?, quantity_rose=?
-                         WHERE id=?""",
-            (
                 self.quantity_mandragora,
                 self.quantity_belladonna,
                 self.quantity_rose,
+                self.quantity_planted_mandragora,
+                self.quantity_planted_belladonna,
+                self.quantity_planted_rose,
                 self.game_id,
             ),
         )

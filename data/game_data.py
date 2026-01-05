@@ -37,8 +37,10 @@ class GameData:
         user_id = self.get_user_id()
         self.cur.execute(
             """INSERT INTO Game(user_id, game_number, quantity_money, quantity_mandragora_seeds,
-            quantity_belladonna_seeds, quantity_rose_seeds, quantity_mandragora, quantity_belladonna, quantity_rose, quantity_bats, quantity_sceletons, quantity_werewolves)
-            VALUES(?, ?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)""",
+            quantity_belladonna_seeds, quantity_rose_seeds, quantity_mandragora, quantity_belladonna, quantity_rose,
+            quantity_bats, quantity_sceletons, quantity_werewolves,
+            quantity_planted_mandragora, quantity_planted_belladonna, quantity_planted_rose)
+            VALUES(?, ?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)""",
             (user_id, self.game_number),
         )
         self.con.commit()
