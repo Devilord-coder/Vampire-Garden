@@ -6,6 +6,7 @@ from pyglet.graphics import Batch
 from data.statistic_data import StatisticData
 from src.auxiliary_classes.scale import scale
 from src.settings import settings
+from src.registry import reg
 
 TEXTURE_TIME = 0.1  # Таймер смены текстур
 ERROR_TIME_VISIBLE = 1  # Время отображения текста ошибки
@@ -33,6 +34,9 @@ class Building(arcade.View):
         self.exit_texture = arcade.load_texture("resources/buttons/exit/shop_exit.png")
         self.buy_texture = arcade.load_texture("resources/buttons/buy.png")
         self.paper_texture = arcade.load_texture("resources/Background/paper.png")
+        
+        self.door_sound = reg.door_sound
+        self.buy_sound = reg.buy_sound
 
         self.texts = [
             "Добро пожаловать!",
@@ -99,6 +103,7 @@ class Building(arcade.View):
 
         @button.event("on_click")
         def on_click(event):
+            arcade.play_sound(self.buy_sound, 1, loop=False)
             if (
                 self.quantity_money - self.prices[self.minion_name]
             ) < 0:  # Отрисовка текста ошибке при недостатке средств
@@ -131,6 +136,7 @@ class Building(arcade.View):
 
         @button.event("on_click")
         def on_click(event):
+            arcade.play_sound(self.door_sound, 1, loop=False)
             self.window.switch_view("main_map")
 
         self.manager.add(button)

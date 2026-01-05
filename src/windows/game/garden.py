@@ -5,6 +5,7 @@ from arcade.gui import UITextArea, UIManager, UITextureButton
 from src.auxiliary_classes.scale import scale
 from data.garden_data import GardenData
 from src.settings import settings
+from src.registry import reg
 from src.windows.game.sprites.rabbit import Rabbit
 
 FIELD_SCALE = scale(300, settings.height)
@@ -52,6 +53,10 @@ class GardenView(arcade.View):
         self.exit_texture = arcade.load_texture(
             "resources/buttons/exit/garden_back.png"
         )
+        
+        self.door_sound = reg.door_sound
+        self.haversting_mandragora_sound = reg.harvesting_mandragora_sound
+        self.plants_sound = reg.plants_sound
 
         self.seeds_textures = [
             self.shovel_texture,
@@ -257,16 +262,19 @@ class GardenView(arcade.View):
                     == "Мандрагора"
                 ):
                     self.garden_information.quantity_mandragora += 1
+                    arcade.play_sound(self.haversting_mandragora_sound, 1, loop=False)
                 elif (
                     self.garden_information.fields[field_number]["plant_name"]
                     == "Белладонна"
                 ):
                     self.garden_information.quantity_belladonna += 1
+                    arcade.play_sound(self.plants_sound, 1, loop=False)
                 elif (
                     self.garden_information.fields[field_number]["plant_name"]
                     == "Красная роза"
                 ):
                     self.garden_information.quantity_rose += 1
+                    arcade.play_sound(self.plants_sound, 1, loop=False)
                 sprite.texture = self.empty_field_texture
                 if sprite.rabbit:
                     # Если урожай собрали, кролик уходит
@@ -286,6 +294,7 @@ class GardenView(arcade.View):
                 self.garden_information.fields[field_number]["state"] == 0
                 and self.quantity_mandragora > 0
             ):
+                arcade.play_sound(self.plants_sound, 1, loop=False)
                 self.quantity_mandragora -= 1
                 self.garden_information.fields[field_number]["state"] = 1
                 self.garden_information.fields[field_number][
@@ -310,6 +319,7 @@ class GardenView(arcade.View):
                 self.garden_information.fields[field_number]["state"] == 0
                 and self.quantity_belladonna > 0
             ):
+                arcade.play_sound(self.plants_sound, 1, loop=False)
                 self.quantity_belladonna -= 1
                 self.garden_information.fields[field_number]["state"] = 1
                 self.garden_information.fields[field_number][
@@ -334,6 +344,7 @@ class GardenView(arcade.View):
                 self.garden_information.fields[field_number]["state"] == 0
                 and self.quantity_rose > 0
             ):
+                arcade.play_sound(self.plants_sound, 1, loop=False)
                 self.quantity_rose -= 1
                 self.garden_information.fields[field_number]["state"] = 1
                 self.garden_information.fields[field_number][
@@ -389,6 +400,7 @@ class GardenView(arcade.View):
 
         @button.event("on_click")
         def on_click(event):
+            arcade.play_sound(self.door_sound, 1, loop=False)
             self.window.switch_view("main_map")
 
         self.manager.add(button)

@@ -4,6 +4,7 @@ from src.settings import settings
 from src.auxiliary_classes.portal_animated_button import AnimatedPortalButton
 import arcade.gui
 from src.auxiliary_classes.scale import scale
+from src.registry import reg
 
 TILE_SCALING = scale(800, settings.height, 800)
 BUILDINGS_SCALE = TILE_SCALING
@@ -28,6 +29,7 @@ class MainMapView(arcade.View):
             "gates": "resources/Buildings/gates.png",
         }
         self.window = window
+        self.door_sound = reg.door_sound
         self.batch = Batch()
         self.ui_manager = arcade.gui.UIManager()
         self.ui_manager.enable()
@@ -85,6 +87,7 @@ class MainMapView(arcade.View):
             @button.event("on_click")
             def on_click(event):
                 # Обработка клика по кнопке (перемещение на следующие виды игры для каждого здания)
+                arcade.play_sound(self.door_sound, 1, loop=False)
                 building_name = event.source.building_name
                 if building_name == "main_house":
                     print("Главное здание")

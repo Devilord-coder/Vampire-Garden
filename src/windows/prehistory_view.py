@@ -9,6 +9,7 @@ class PrehistoryView(arcade.View):
         super().__init__()
         self.window = window
         self.sound = reg.prehistory_voice
+        self.book_sound = reg.book_sound
         self.ui_manager = arcade.gui.UIManager()
         self.ui_manager.enable()
         self.setup()
@@ -22,7 +23,7 @@ class PrehistoryView(arcade.View):
             self.text = file.readlines()
         self.background = arcade.load_texture("resources/Moon/orig.png")
         self.vampire_picture = arcade.load_texture("resources/prehistory_vampire.jpg")
-        self.voice_playback = arcade.play_sound(self.sound, volume=0.5, loop=False)
+        self.voice_playback = arcade.play_sound(self.sound, volume=0.9, loop=False)
         
         part_x, part_y, center_x, center_y = self.window.get_parts()
         
@@ -41,7 +42,7 @@ class PrehistoryView(arcade.View):
 
     def continue_history(self, event):
         """ Метод переключения на следующий вид """
-        
+        arcade.play_sound(self.book_sound, 1, loop=False)
         #  при нажатии прекратить голос и переключиться на карту
         arcade.stop_sound(self.voice_playback)
         self.window.switch_view("main_map")
