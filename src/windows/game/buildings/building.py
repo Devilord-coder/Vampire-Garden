@@ -6,6 +6,7 @@ from pyglet.graphics import Batch
 from data.statistic_data import StatisticData
 from src.auxiliary_classes.scale import scale
 from src.settings import settings
+from src.registry import reg
 
 TEXTURE_TIME = 0.1  # Таймер смены текстур
 ERROR_TIME_VISIBLE = 1  # Время отображения текста ошибки
@@ -31,8 +32,11 @@ class Building(arcade.View):
             "resources/Background/minions_shops.jpeg"
         )
         self.exit_texture = arcade.load_texture("resources/buttons/exit/shop_exit.png")
-        self.buy_texture = arcade.load_texture("resources/buttons/exit/garden_back.png")
+        self.buy_texture = arcade.load_texture("resources/buttons/buy.png")
         self.paper_texture = arcade.load_texture("resources/Background/paper.png")
+        
+        self.door_sound = reg.door_sound
+        self.buy_sound = reg.buy_sound
 
         self.texts = [
             "Добро пожаловать!",
@@ -99,6 +103,7 @@ class Building(arcade.View):
 
         @button.event("on_click")
         def on_click(event):
+            arcade.play_sound(self.buy_sound, 1, loop=False)
             if (
                 self.quantity_money - self.prices[self.minion_name]
             ) < 0:  # Отрисовка текста ошибке при недостатке средств
@@ -120,7 +125,6 @@ class Building(arcade.View):
         """Инициализация кнопки для перехода на представление главной карты"""
         x = 10 + self.exit_texture.width // 2 * EXIT_SCALE
         y = self.height - (self.exit_texture.height * EXIT_SCALE) - 10
-        print(x, y)
         button = UITextureButton(
             center_x=x,
             y=y,
@@ -132,6 +136,7 @@ class Building(arcade.View):
 
         @button.event("on_click")
         def on_click(event):
+            arcade.play_sound(self.door_sound, 1, loop=False)
             self.window.switch_view("main_map")
 
         self.manager.add(button)
@@ -168,9 +173,9 @@ class Building(arcade.View):
         rect = arcade.rect.XYWH(self.width // 3, self.height // 2, 1000, 800)
         arcade.draw_texture_rect(self.texture, rect)
 
-        width = 1000
+        width = 700
         height = 400
-        x = self.width - width // 2
+        x = self.width - width // 2 + 50
         y = self.height // 2
         rect = arcade.rect.XYWH(x, y, width, height)
         arcade.draw_texture_rect(self.paper_texture, rect)

@@ -7,6 +7,7 @@ class GardenData:
         self.cur = self.con.cursor()
         self.game_id = self.window.game_id
         self.garden_id = self.window.garden_id
+        self.login = self.window.login
         self.fields = []
         self.setup()
 
@@ -27,14 +28,18 @@ class GardenData:
                 }
             )
 
-        quantity_seeds = self.cur.execute(
-            """SELECT quantity_mandragora_seeds, quantity_belladonna_seeds, quantity_rose_seeds FROM Game
+        quantity_plants = self.cur.execute(
+            """SELECT quantity_mandragora_seeds, quantity_belladonna_seeds, quantity_rose_seeds,
+            quantity_planted_mandragora, quantity_planted_belladonna, quantity_planted_rose FROM Game
                                            WHERE id=?""",
             (self.game_id,),
         ).fetchone()
-        self.quantity_mandragora_seeds = quantity_seeds[0]
-        self.quantity_belladonna_seeds = quantity_seeds[1]
-        self.quantity_rose_seeds = quantity_seeds[2]
+        self.quantity_mandragora_seeds = quantity_plants[0]
+        self.quantity_belladonna_seeds = quantity_plants[1]
+        self.quantity_rose_seeds = quantity_plants[2]
+        self.quantity_planted_mandragora = quantity_plants[3]
+        self.quantity_planted_belladonna = quantity_plants[4]
+        self.quantity_planted_rose = quantity_plants[5]
 
         quantity_plants = self.cur.execute(
             """SELECT quantity_mandragora, quantity_belladonna, quantity_rose
@@ -65,24 +70,20 @@ class GardenData:
 
         self.cur.execute(
             """UPDATE Game
-                         SET quantity_mandragora_seeds=?, quantity_belladonna_seeds=?, quantity_rose_seeds=?
+                         SET quantity_mandragora_seeds=?, quantity_belladonna_seeds=?, quantity_rose_seeds=?,
+                         quantity_mandragora=?, quantity_belladonna=?, quantity_rose=?,
+                         quantity_planted_mandragora=?, quantity_planted_belladonna=?, quantity_planted_rose=?
                          WHERE id=?""",
             (
                 self.quantity_mandragora_seeds,
                 self.quantity_belladonna_seeds,
                 self.quantity_rose_seeds,
-                self.game_id,
-            ),
-        )
-
-        self.cur.execute(
-            """UPDATE Game
-                         SET quantity_mandragora=?, quantity_belladonna=?, quantity_rose=?
-                         WHERE id=?""",
-            (
                 self.quantity_mandragora,
                 self.quantity_belladonna,
                 self.quantity_rose,
+                self.quantity_planted_mandragora,
+                self.quantity_planted_belladonna,
+                self.quantity_planted_rose,
                 self.game_id,
             ),
         )
@@ -94,6 +95,34 @@ class GardenData:
             "SELECT id FROM Plants WHERE plant_name=?", (name,)
         ).fetchone()
         return id[0]
+
+    def update_quantity_bites(self, quantity_bites, field_number):
+        """Обновление количества укусов в бд"""
+        self.cur.execute(
+            """UPDATE Garden_field
+                         SET quantity_bites=?
+                         WHERE field=? and garden_id=?""",
+            (quantity_bites, field_number, self.garden_id),
+        )
+        self.con.commit()
+
+    def get_user_id(self):
+        """Метод получения id пользователя по логину"""
+        return self.cur.execute(
+            "SELECT id FROM Registry WHERE login=?", (self.login,)
+        ).fetchone()[0]
+
+    def check_final(self):
+        """Метод проверки конца игры"""
+        user_id = self.get_user_id()
+        plants = self.cur.execute(
+            """SELECT quantity_mandragora, quantity_belladonna, quantity_rose FROM Game
+                                  WHERE user_id=?""",
+            (user_id,),
+        ).fetchone()
+        if plants[0] >= 50 and plants[1] >= 30 and plants[2] >= 25:
+            return True
+        return False
 
     def update(self):
         """Метод обновления бд для синхронизации со всей игрой"""

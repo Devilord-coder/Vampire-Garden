@@ -5,6 +5,7 @@ from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 from data.statistic_data import StatisticData
 from src.auxiliary_classes.scale import scale
 from src.settings import settings
+from src.registry import reg
 
 EXIT_SCALE = scale(120, settings.height)
 
@@ -21,6 +22,9 @@ class Library(arcade.View):
         )
         self.paper_texture = arcade.load_texture("resources/Background/paper.png")
         self.exit_texture = arcade.load_texture("resources/buttons/exit/shop_exit.png")
+        
+        self.door_sound = reg.door_sound
+        
         self.manager = None
         self.text_color = arcade.color.CORDOVAN
         self.texts = [
@@ -78,7 +82,7 @@ class Library(arcade.View):
         )
         arcade.draw_texture_rect(self.background_texture, rect)
 
-        rect = arcade.rect.XYWH(self.width // 2, self.height // 2, 1350, 700)
+        rect = arcade.rect.XYWH(self.width // 2, self.height // 2, 700, 700)
         arcade.draw_texture_rect(self.paper_texture, rect)
 
         self.manager.draw()
@@ -98,6 +102,7 @@ class Library(arcade.View):
 
         @button.event("on_click")
         def on_click(event):
+            arcade.play_sound(self.door_sound, 1, loop=False)
             self.window.switch_view("main_map")
 
         self.manager.add(button)

@@ -4,6 +4,7 @@ import arcade.gui
 from data.shop_data import ShopData
 from src.auxiliary_classes.scale import scale
 from src.settings import settings
+from src.registry import reg
 
 MANDRAGORA_PRICE = 20
 BELLADONNA_PRICE = 50
@@ -42,6 +43,9 @@ class ShopView(arcade.View):
         self.money_texture = arcade.load_texture("resources/money.png")
         self.cart_texture = arcade.load_texture("resources/shop_pictures/cart.png")
         self.exit_texture = arcade.load_texture("resources/buttons/exit/shop_exit.png")
+        
+        self.door_sound = reg.door_sound
+        self.buy_sound = reg.buy_sound
 
         width = self.width // 2 - 200
         height = self.height // 2 - 150
@@ -106,6 +110,7 @@ class ShopView(arcade.View):
 
         @button.event("on_click")
         def on_click(event):
+            arcade.play_sound(self.door_sound, 1, loop=False)
             self.window.switch_view("main_map")
 
         self.ui_manager.add(button)
@@ -124,6 +129,7 @@ class ShopView(arcade.View):
 
         @button.event("on_click")
         def on_click(event):
+            arcade.play_sound(self.buy_sound, 1, loop=False)
             plant = event.source.name
             if plant == "mandragora":
                 self.left_money -= MANDRAGORA_PRICE
@@ -148,7 +154,7 @@ class ShopView(arcade.View):
                     self.error_text.batch = self.batch
                 else:
                     self.quantity_rose += 1
-                    self.information.quantity_rose_seedsua = self.quantity_rose
+                    self.information.quantity_rose_seeds = self.quantity_rose
             self.left_money_text.text = str(self.left_money)
             self.information.quantity_money = self.left_money
             self.information.save()
