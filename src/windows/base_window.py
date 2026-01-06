@@ -5,7 +5,7 @@ from src.registry import reg
 
 
 class BaseWindow(arcade.Window):
-    """Базовое окно для всех окон игры"""
+    """ Базовое окно для всех окон игры """
 
     def __init__(self):
         super().__init__(settings.width, settings.height, settings.title,
@@ -80,11 +80,13 @@ class BaseWindow(arcade.Window):
                 from src.windows.game.portal_view import PortalView
                 self.views[view_name] = PortalView(self)
             elif view_name == "battle":
-                from windows.game.battle import BattleView
+                from src.windows.game.battle import BattleView
                 self.views[view_name] = BattleView(self)
-            elif view_name == "battle_win":
-                from windows.game.battle import WinBattleView
-                self.views[view_name] = WinBattleView(self)
+            elif view_name == "battle_statistic":
+                from src.windows.game.battle import BattleStatisticView
+                self.views[view_name] = BattleStatisticView(self)
+            elif view_name == "settings":
+                ...
 
         return self.views[view_name]
     

@@ -55,10 +55,7 @@ class Hero(arcade.Sprite):
         self.walk_b_textures = []
         self.walk_b_textures = self.idle_textures = self.walk_f_textures
         # получение урона
-        self.hurt_textures = []
-        for i in range(4):
-            texture = arcade.load_texture(f"resources/Hero/vampire/hurt/{i}.png")
-            self.hurt_textures.append(texture)
+        self.hurt_textures = self.idle_textures # заглушка
         # смерть
         self.death_textures = []
         for i in range(18):
@@ -69,7 +66,7 @@ class Hero(arcade.Sprite):
         self.attack_f_textures = self.attack_b_textures = self.idle_textures # заглушка
     
     def create_vampire_textures(self):
-        """ изменение внешнего вида на вампирский """
+        """ Изменение внешнего вида на вампирский """
         
         # неподвижный режим
         self.idle_textures = []
@@ -87,7 +84,10 @@ class Hero(arcade.Sprite):
             texture = arcade.load_texture(f"resources/Hero/vampire/walk_back/{i}.png")
             self.walk_b_textures.append(texture)
         # получение урона
-        self.hurt_textures = self.idle_textures # заглушка
+        self.hurt_textures = []
+        for i in range(4):
+            texture = arcade.load_texture(f"resources/Hero/vampire/hurt/{i}.png")
+            self.hurt_textures.append(texture)
         
         self.death_textures = []
         for i in range(11):
@@ -114,6 +114,7 @@ class Hero(arcade.Sprite):
                 self.current_texture += 1
                 if self.current_texture >= len(self.death_textures):
                     self.disabled = True
+                    self.current_texture = -1
                     ... # конец игры
                 else:
                     self.texture = self.death_textures[self.current_texture]
@@ -167,6 +168,9 @@ class Hero(arcade.Sprite):
                     self.current_texture = 0
                 self.texture = self.idle_textures[self.current_texture]
     
+    def is_dead(self):
+        return self.dead
+    
     def walk_forward(self):
         """ Передвижение вперед """
         
@@ -198,7 +202,7 @@ class Hero(arcade.Sprite):
     def jump(self):
         """ Прыжок персонажа """
         
-        if self.bat:
+        if self.bat and not self.disabled:
             self.change_y = self.walk_speed
         elif not self.disabled and self.change_y == 0:
             self.jumping = True

@@ -1,35 +1,10 @@
 import arcade
 import arcade.gui
-from src.creatures import Hero
-from src.settings import settings
+from src.creatures import Hero, ENEMIES
+from .battle_physics import *
 from src.registry import reg
 from src.objects import Money
 
-SCREEN_WIDTH = settings.width
-SCREEN_HEIGHT = settings.height
-
-SCREEN_TITLE = "Level 1"
-TILE_SCALING = 1  # Если тайлы 64x64, а хотим чтобы на экране были 64x64 — ставим 1.0
-MAP_TILE = "maps/example_map.tmx"  # тайл карты
-
-# Физика и движение
-GRAVITY = 0.5           # Пикс/с^2
-
-# Качество жизни прыжка
-COYOTE_TIME = 0.08        # Сколько после схода с платформы можно ещё прыгнуть
-JUMP_BUFFER = 0.12        # Если нажали прыжок чуть раньше приземления, мы его «запомним» (тоже лайфхак для улучшения качества жизни игрока)
-MAX_JUMPS = 1             # С двойным прыжком всё лучше, но не сегодня
-
-# ---------- Камера ----------
-CAMERA_LERP = 0.12
-DEAD_ZONE_W = int(SCREEN_WIDTH * 0.35)
-DEAD_ZONE_H = int(SCREEN_HEIGHT * 0.45)
-
-# --------- Персонаж ---------
-PLAYER_SCALING = 1.2
-PLAYER_JUMP_SPEED = 10
-PLAYER_WALK_SPEED = 3
-PLAYER_RUN_SPEED = 6
 
 class BattleView(arcade.View):
     def __init__(self, window):
@@ -50,9 +25,10 @@ class BattleView(arcade.View):
         self.manager = arcade.gui.UIManager()
 
     def setup(self):
-        """Настраиваем игру здесь. Вызывается при старте и при рестарте."""
+        """ Настраиваем игру здесь. Вызывается при старте и при рестарте. """
         
         self.window.mouse.visible = False
+        self.manager.enable()
         
         self.bg_sound = reg.battle_background_sound
         arcade.stop_sound(self.window.bg_sound_playback)
@@ -73,15 +49,13 @@ class BattleView(arcade.View):
         self.money_teritories_list = tile_map.object_lists["money"]
         self.money_init()
         self.enemies_territory_list = tile_map.object_lists["enemies"]
-        self.enemy_init()
         self.exit_list = tile_map.sprite_lists["exit"]
         self.spikes_list = tile_map.sprite_lists["spikes"]
         self.spikes_collision = tile_map.sprite_lists["spikes_collision"]
         self.collision_list = self.wall_list
+        self.enemy_init()
         for spike in self.spikes_list:
             self.collision_list.append(spike)
-        for enemy in self.enemies_list:
-            self.collision_list.append(enemy)
         
         # --- Создаём игрока. ---
         # Карту загрузили, теперь создаём героя, который будет по ней бегать
@@ -115,6 +89,8 @@ class BattleView(arcade.View):
         
         # время игры
         self.main_time = 0
+        # время после смерти
+        self.time_after_death = 0
         
         # количество монеток
         self.money_count = {
@@ -132,9 +108,26 @@ class BattleView(arcade.View):
         self.health_pic = arcade.load_texture("resources/heart.png")
     
     def enemy_init(self):
+        """ Инициализация всех врагов """
+        
         self.enemies_list = arcade.SpriteList()
+        self.enemies_engine_list = []
         for enemy_ter in self.enemies_territory_list:
-            enemy = ...
+            enemy = ENEMIES[enemy_ter.name](walk_speed=0.5, scaling=0.75)
+            x, y = enemy_ter.shape[0], enemy_ter.shape[1]
+            enemy.center_x = x
+            enemy.center_y = y
+            enemy.boundary_left = x - 40
+            enemy.boundary_right = x + 40
+            enemy_engine = self.physics_engine = arcade.PhysicsEnginePlatformer(
+            player_sprite=enemy,
+            gravity_constant=GRAVITY,
+            walls=self.collision_list
+            )
+            self.enemies_engine_list.append(enemy_engine)
+            self.enemies_list.append(enemy)
+            
+            
     
     def money_init(self):
         """ Инициализация монеток на карте """
@@ -168,6 +161,7 @@ class BattleView(arcade.View):
         self.spikes_list.draw()
         self.exit_list.draw()
         self.money_list.draw()
+        self.enemies_list.draw()
         self.player_list.draw()
         
         # 2) GUI
@@ -219,12 +213,13 @@ class BattleView(arcade.View):
             arcade.color.RED,
             font_size=16
         )
-        
+        # отрисовка сердечка
         arcade.draw_texture_rect(
             self.health_pic,
             arcade.rect.XYWH(250, self.height - 50,
                              50, 50)
         )
+        # отрисовка количесвта жизней
         arcade.draw_text(
             text=str(self.hero.health),
             x=275, y=self.height - 50,
@@ -240,11 +235,18 @@ class BattleView(arcade.View):
 
     def on_update(self, delta_time):
         """ Обновление логики игры. """
+        
         # Обновляем физический движок (двигает игрока и проверяет стены)
         if not self.hero.bat:
             self.physics_engine.update()
         else:
             self.physics_engine_bat.update()
+        
+        for engine in self.enemies_engine_list:
+            engine.update()
+        
+        for enemy in self.enemies_list:
+            enemy.update(delta_time)
             
         position = (
             self.hero.center_x,
@@ -255,25 +257,46 @@ class BattleView(arcade.View):
             position,
             CAMERA_LERP  # Плавность следования камеры
         )
-        
+        # обновление персонажа
         self.hero.update(delta_time)
+
+        if self.hero.dead:
+            self.time_after_death += delta_time
+        # проверка смерти персонажа
+        if self.time_after_death >= 1.5:
+            self.end_game()
         
+        # обновление монеток
         for money in self.money_list:
             money.update(delta_time)
             
+        # проверка получения монеток
         claim_money = arcade.check_for_collision_with_list(self.hero, self.money_list)
-        for money in claim_money:
-            self.money_count[money.type] += 1
-            self.money_list.pop(self.money_list.index(money))
-            arcade.play_sound(reg.money_claim_sound)
+        if not self.hero.bat:
+            for money in claim_money:
+                self.money_count[money.type] += 1
+                self.money_list.pop(self.money_list.index(money))
+                arcade.play_sound(reg.money_claim_sound)
         
+        # проверка получения урона
         hero_hurt = arcade.check_for_collision_with_list(self.hero, self.spikes_collision)
         if hero_hurt and not self.hero.hurting:
             self.hero.hurt(damage=20)
-            print(self.hero.health)
 
         # Двигаем камеру за игроком (центрируем)
-        # self.camera.move_to((self.player_sprite.center_x, self.player_sprite.center_y))
+        # self.camera.move_to((self.hero.center_x, self.hero.center_y))
+    
+    def end_game(self):
+        arcade.stop_sound(self.bg_sound_playback)
+        self.window.bg_sound_playback = arcade.play_sound(self.window.bg_sound)
+        self.window.mouse.visible = True
+        self.manager.disable()
+        battle_statistic_view = self.window.get_view("battle_statistic")
+        battle_statistic_view.hero_health = self.hero.health
+        battle_statistic_view.gold = self.money_count["gold"]
+        battle_statistic_view.silver = self.money_count["silver"]
+        battle_statistic_view.bronze = self.money_count["bronze"]
+        self.window.switch_view("battle_statistic")
 
     def on_key_press(self, key, modifiers):
         """Обработка нажатий клавиш."""

@@ -89,7 +89,6 @@ class MainMapView(arcade.View):
             def on_click(event):
                 # Обработка клика по кнопке (перемещение на следующие виды игры для каждого здания)
                 building_name = event.source.building_name
-                self.ui_manager.disable()
                 if building_name == "main_house":
                     print("Главное здание")
                 elif building_name == "library":
@@ -101,6 +100,7 @@ class MainMapView(arcade.View):
                 elif building_name == "garden":
                     print("Огород")
                 elif building_name == "portal":
+                    self.ui_manager.disable()
                     self.window.switch_view("portal")
                 elif building_name == "vampire_house":
                     print("Дом вампиров")

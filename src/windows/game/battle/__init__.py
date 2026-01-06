@@ -1,5 +1,5 @@
 from .battle_view import BattleView
-from .battle_win_view import WinBattleView
+from .battle_statistic_view import BattleStatisticView
 
 """
 Модуль со всеми инструментами для битвы в портале
@@ -7,5 +7,5 @@ from .battle_win_view import WinBattleView
 
 __all__ = [
     "BattleView",
-    "WinBattleView"
+    "BattleStatisticView"
 ]

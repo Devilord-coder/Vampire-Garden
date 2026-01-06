@@ -64,8 +64,8 @@ class MainMenuView(arcade.View):
         @settings_btn.event("on_click")
         def on_click_settings(event):
             arcade.play_sound(reg.button_click_sound)
-            self.manager.disable()
-            self.window.switch_view("settings")
+            # self.manager.disable()
+            # self.window.switch_view("settings")
         
         # выход из аккаунта
         escape_btn = UIFlatButton(
