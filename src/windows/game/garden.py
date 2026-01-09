@@ -7,6 +7,8 @@ from data.garden_data import GardenData
 from src.settings import settings
 from src.registry import reg
 from src.windows.game.sprites.rabbit import Rabbit
+from src.windows.game.sprites.garden_minion import GardenMinion
+from src.windows.game.participles.rabbit_participles import Participle
 
 FIELD_SCALE = scale(300, settings.height)
 SEED_SCALE = scale(200, settings.height)
@@ -86,6 +88,8 @@ class GardenView(arcade.View):
         self.fields_list = arcade.SpriteList()
         self.seed_list = arcade.SpriteList()
         self.rabbits_list = arcade.SpriteList()
+        self.minion_list = arcade.SpriteList()
+        self.participles = arcade.SpriteList()
         self.garden_information = GardenData(self.window)
         self.database_setting()
 
@@ -136,8 +140,11 @@ class GardenView(arcade.View):
         for _ in range(4):
             self.create_rabbit()
         arcade.schedule(
-            self.update_rabbits, 1 / 60
+            self.update_sprites, 1 / 60
         )  # Создание расписания работы метода, который обрабатывает состояния кроликов, для работы в фоновом режиме
+
+        self.minion = GardenMinion()
+        self.minion_list.append(self.minion)
 
     def on_draw(self):
         self.clear()
@@ -156,13 +163,16 @@ class GardenView(arcade.View):
             arcade.draw_rect_filled(rect, color)
 
         self.rabbits_list.draw()
+        self.minion_list.draw()
+        self.participles.draw()
 
-    def update_rabbits(self, delta_time):
+    def update_sprites(self, delta_time):
         """Обновление кроликов, проверка пересечения кролика с грядкой, поедание урожая"""
         self.time_from_last_rabbit += delta_time
         for rabbit in self.rabbits_list:
             # Обновление состояния каждого кролика
             rabbit.update(delta_time)
+        self.minion.update(delta_time)  # Обновление состояние охранника
 
         if self.time_from_last_rabbit >= self.next_rabbit:
             # Создание кроликов через определённый промежуток времени
@@ -215,6 +225,28 @@ class GardenView(arcade.View):
                         del self.plants_timers[field.number]
                 self.make_life_indicator(field, field.number)
 
+        scared_rabbits = arcade.check_for_collision_with_list(
+            self.minion, self.rabbits_list
+        )
+        for rabbit in scared_rabbits:
+            """Проверка пересечения охранника с кроликами"""
+            rabbit.state = "run"  # Переводим кролика в состояние бегства
+            rabbit.max_visible_time = 1000  # Убираем таймер автоматического бегства
+            # Определение направления бегства кролика (от охранника); смена направления и скорости
+            if self.minion.left <= rabbit.left:
+                rabbit.direction = "right"
+                if rabbit.speed <= 0:
+                    rabbit.speed *= -1
+            else:
+                rabbit.direction = "left"
+                if rabbit.speed >= 0:
+                    rabbit.speed *= -1
+            self.create_participles(rabbit)  # Создаём частички
+
+        for participle in self.participles:
+            """Обновление всех частиц"""
+            participle.update(delta_time)
+
     def on_mouse_press(self, x, y, button, modifiers):
         # Проверка пересечения щелчка мыши со спрайтом семян для смены текстуры
         if self.seed.collides_with_point((x, y)):
@@ -225,6 +257,27 @@ class GardenView(arcade.View):
         for index, field_sprite in enumerate(self.fields_list):
             if field_sprite.collides_with_point((x, y)):
                 self.planting_harvesting(field_sprite, index)
+
+    def on_key_press(self, symbol, modifiers):
+        """Если нажата клавиша, передаём её спрайту охранника"""
+        self.minion.pressed_keys.add(symbol)
+
+    def on_key_release(self, symbol, modifiers):
+        """Если клавишу отпустили, убираем её из множества нажатых клавиш охранника"""
+        if symbol in self.minion.pressed_keys:
+            self.minion.pressed_keys.remove(symbol)
+
+    def create_participles(self, rabbit):
+        """Класс создания частиц в задних координатах кролика"""
+        if rabbit.direction == "left":
+            x = rabbit.right
+        elif rabbit.direction == "right":
+            x = rabbit.left
+
+        y = rabbit.bottom
+        for _ in range(20):
+            part = Participle(x, y)
+            self.participles.append(part)
 
     def create_rabbit(self):
         """Метод создания кроликов"""
