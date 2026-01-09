@@ -25,7 +25,7 @@ class MainMapView(arcade.View):
             "portal": "resources/Portal/portal1.png",
             "vampire_house": "resources/Buildings/vampire_house.png",
             "werewolf_house": "resources/Buildings/werewolf_house.png",
-            "garden": "resources/Buildings/garden.jpg",
+            "garden": "resources/Buildings/garden.png",
             "gates": "resources/Buildings/gates.png",
         }
         self.window = window
@@ -92,7 +92,7 @@ class MainMapView(arcade.View):
                 if building_name == "main_house":
                     print("Главное здание")
                 elif building_name == "library":
-                    self.window.switch_view('library')
+                    self.window.switch_view("library")
                 elif building_name == "bat_house":
                     self.window.switch_view("bat_house")
                 elif building_name == "sport_hall":
@@ -104,7 +104,7 @@ class MainMapView(arcade.View):
                 elif building_name == "vampire_house":
                     print("Дом вампиров")
                 elif building_name == "werewolf_house":
-                    self.window.switch_view('werewolf_house')
+                    self.window.switch_view("werewolf_house")
                 elif building_name == "sceleton_house":
                     self.window.switch_view("sceleton_house")
                 elif building_name == "gates":
