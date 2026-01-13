@@ -17,21 +17,29 @@ class BattleView(arcade.View):
         self.physics_engine = None
         
         self.background = arcade.load_texture("resources/Background/dungeon_background.png")
+        self.bg_sound = reg.battle_background_sound
+        self.bg_sound_playback = None
         
         # Камеры: мир и GUI
         self.world_camera = arcade.camera.Camera2D()  # Камера для игрового мира
         self.gui_camera = arcade.camera.Camera2D()  # Камера для объектов интерфейса
         
         self.manager = arcade.gui.UIManager()
+        
+        self.map_name = None
 
     def setup(self):
         """ Настраиваем игру здесь. Вызывается при старте и при рестарте. """
         
+        if not self.map_name:
+            return
+        
         self.window.mouse.visible = False
         self.manager.enable()
         
-        self.bg_sound = reg.battle_background_sound
         arcade.stop_sound(self.window.bg_sound_playback)
+        if self.bg_sound_playback:
+            arcade.stop_sound(self.bg_sound_playback)
         self.bg_sound_playback = arcade.play_sound(self.bg_sound)
         
         # Инициализируем списки спрайтов
@@ -39,10 +47,8 @@ class BattleView(arcade.View):
         self.wall_list = arcade.SpriteList()  # Сюда попадёт слой Collision!
 
         # ===== ВОЛШЕБСТВО ЗАГРУЗКИ КАРТЫ! (почти без магии). =====
-        # Грузим тайловую карту
-        map_name = MAP_TILE
         # Параметр 'scaling' ОЧЕНЬ важен! Умножает размер каждого тайла
-        tile_map = arcade.load_tilemap(map_name, scaling=TILE_SCALING)
+        tile_map = arcade.load_tilemap(self.map_name, scaling=TILE_SCALING)
 
         # --- Достаём слои из карты как спрайт-листы ---
         self.wall_list = tile_map.sprite_lists["walls"]
@@ -52,6 +58,7 @@ class BattleView(arcade.View):
         self.exit_list = tile_map.sprite_lists["exit"]
         self.spikes_list = tile_map.sprite_lists["spikes"]
         self.spikes_collision = tile_map.sprite_lists["spikes_collision"]
+        self.secret_list = tile_map.sprite_lists["secret"]
         self.collision_list = self.wall_list
         self.enemy_init()
         for spike in self.spikes_list:
@@ -67,7 +74,7 @@ class BattleView(arcade.View):
         )
         # Ставим игрока куда-нибудь на землю (посмотрите в Tiled, где у вас земля!)
         self.hero.center_x = 100  # Примерные координаты
-        self.hero.center_y = 300  # Примерные координаты
+        self.hero.center_y = 200  # Примерные координаты
         self.player_list.append(self.hero)
 
         # --- Физический движок ---
@@ -147,6 +154,9 @@ class BattleView(arcade.View):
     def on_draw(self):
         """ Отрисовка экрана. """
         
+        if not self.map_name:
+            return
+        
         self.clear()
         
         # ------------- ЗАДНИЙ ФОН -------------
@@ -162,6 +172,7 @@ class BattleView(arcade.View):
         self.exit_list.draw()
         self.money_list.draw()
         self.enemies_list.draw()
+        self.secret_list.draw()
         self.player_list.draw()
         
         # 2) GUI
@@ -232,9 +243,19 @@ class BattleView(arcade.View):
         
         super().on_resize(width, height)
         self.setup()
+    
+    def set_map(self, map_name):
+        self.map_name = f"maps/{map_name}"
+        self.setup()
 
     def on_update(self, delta_time):
         """ Обновление логики игры. """
+        
+        if not self.map_name:
+            return
+        
+        if not self.hero:
+            return
         
         # Обновляем физический движок (двигает игрока и проверяет стены)
         if not self.hero.bat:
@@ -264,6 +285,10 @@ class BattleView(arcade.View):
             self.time_after_death += delta_time
         # проверка смерти персонажа
         if self.time_after_death >= 1.5:
+            self.end_game()
+        
+        is_exit = arcade.check_for_collision_with_list(self.hero, self.exit_list)
+        if is_exit:
             self.end_game()
         
         # обновление монеток
@@ -301,6 +326,9 @@ class BattleView(arcade.View):
     def on_key_press(self, key, modifiers):
         """Обработка нажатий клавиш."""
         
+        if not self.hero:
+            return
+        
         # Стандартное управление для PhysicsEngineSimple (как в уроке 2)
         if key == arcade.key.UP or key == arcade.key.W:
             self.hero.jump()
@@ -333,6 +361,9 @@ class BattleView(arcade.View):
 
     def on_key_release(self, key, modifiers):
         """ Обработка отпускания клавиш """
+        
+        if not self.hero:
+            return
         
         if key in (arcade.key.UP, arcade.key.DOWN, arcade.key.W, arcade.key.S):
             self.hero.change_y = 0

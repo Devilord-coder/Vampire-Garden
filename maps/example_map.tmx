@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="70" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="48">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="70" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="48">
  <tileset firstgid="1" source="dungeoun_tilesheet.tsx"/>
  <tileset firstgid="97" source="colored_tiles.tsx"/>
+ <layer id="6" name="spikes_collision" width="70" height="20" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJzt1jEKwDAIBVDPKb3/ObJ0jCGQJlDyHrj4QUeNAACAWg76VXaD561eP4oMAP5u5v5np1Z2fTFrt5N3v9rl97hXA/+ECCU=
+  </data>
+ </layer>
  <layer id="1" name="walls" width="70" height="20">
   <data encoding="base64" compression="zlib">
    eJztWE1vwyAMRZ2mHHbeh7TDtEsadR+5ROm9f2T//18Mr0HzHNsYsLoc+qQnFATGfRib0ocQesKnK394xV9sUZeR8D+Q02VC9MBI2pI5l0TS5RJ7Q9cYhf4tYIvnSMOUYUKrzlQXrz0sOXfSOjTHWP3RxlltlMQLlws1/aS8VJNjLLDupWUM1kXbtxrbOXC5psZGTWznxnPxUlt7WuqWJe60fMLhPvJB4aMyFzTpBV+s8K7htaB+vEd+CARdPhVbWn7R9obTgtYDKQa0e5tHzbbYsJwjLl40TEK7BXhoAii9v1jipgZeceIxBmDRxeu/inR+rHbpmebuca1+plydyy8lqNHPu9632AVN6DvDDvGm1sFCSBq+RR4abYRMP53HaZJy735pXyJvjX55AzQ5Rs7Brg2FdG+R7iuSJkmXr/D7Xvea8Qv834V1nGE/7gjp+MQDsgmanMJ5j5I20N8R0t+M10nzTwypnU4YR7XB7SzY6Rb/07whrN8+4ft54bCQWxOvcwxrP2ayluWddU/scDGAvwc0Z0D939ccOMA=
@@ -44,9 +49,9 @@
   <object id="46" name="skeleton" x="766.497" y="529.611"/>
   <object id="47" name="skeleton" x="1406.93" y="248.918"/>
  </objectgroup>
- <layer id="6" name="spikes_collision" width="70" height="20" visible="0">
+ <layer id="7" name="secret" width="70" height="20">
   <data encoding="base64" compression="zlib">
-   eJzt1jEKwDAIBVDPKb3/ObJ0jCGQJlDyHrj4QUeNAACAWg76VXaD561eP4oMAP5u5v5np1Z2fTFrt5N3v9rl97hXA/+ECCU=
+   eJztwQENAAAAwqD3T20ON6AAAAAAAHg0FeAAAQ==
   </data>
  </layer>
 </map>

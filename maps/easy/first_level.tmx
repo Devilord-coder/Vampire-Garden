@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="9">
+ <tileset firstgid="1" source="../dungeoun_tilesheet.tsx"/>
+ <tileset firstgid="97" source="../colored_tiles.tsx"/>
+ <layer id="3" name="spikes_collision" width="50" height="20" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztxbEJAAAMw7Dc2f8P6Zq1dJXAOAEAAOBj6h1cLP6tAcM=
+  </data>
+ </layer>
+ <layer id="1" name="walls" width="50" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzdl90KgCAMRkdddl29RD/08wK+/0vlKGHIWkWRmx8cQjHYYWrkAMBlwp00N9elSG4e4zFeo6eVPOmH5uS2r7h0np5g1SOOJY/JM3sWZq0lDykWPMarhWDDI0T6bmjwqGGvA2nJ/Nm+4vqjwQPv0FDzQOavzgf10eCB4Wq2eM7feGBfLHvQc6/VY2LmQrh7K3hUDH9G6kdxUArvowfn8JYvPSiNQOr/VokN0bwrig==
+  </data>
+ </layer>
+ <layer id="2" name="spikes" width="50" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztzjEKACAMA8D8t/5/1tFB6NZB7iAUsqQJAAAAJHWyHnd6r/vj7n+yAbTPCNI=
+  </data>
+ </layer>
+ <layer id="6" name="exit" width="50" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztz8ENABAQAMG72umDUmnAi4TITAW7EQCwVjKi5u2KfW0+dB/P+OUDAE4akzEEzQ==
+  </data>
+ </layer>
+ <objectgroup id="4" name="money">
+  <object id="1" name="gold" x="47.9846" y="75.4044"/>
+  <object id="2" name="bronze" x="109.679" y="333.151"/>
+  <object id="3" name="bronze" x="174.116" y="363.312"/>
+  <object id="4" name="bronze" x="239.923" y="394.845"/>
+  <object id="5" name="silver" x="297.505" y="174.116"/>
+  <object id="7" name="gold" x="1551.96" y="494.927"/>
+ </objectgroup>
+ <objectgroup id="5" name="enemies">
+  <object id="8" name="skeleton" x="226.276" y="172.536"/>
+ </objectgroup>
+ <layer id="7" name="secret" width="50" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20MH6AAAACAtwEPoAAB
+  </data>
+ </layer>
+</map>

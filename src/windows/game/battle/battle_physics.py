@@ -3,9 +3,7 @@ from src.settings import settings
 SCREEN_WIDTH = settings.width
 SCREEN_HEIGHT = settings.height
 
-SCREEN_TITLE = "Level 1"
 TILE_SCALING = 1  # Если тайлы 64x64, а хотим чтобы на экране были 64x64 — ставим 1.0
-MAP_TILE = "maps/example_map.tmx"  # тайл карты
 
 # Физика и движение
 GRAVITY = 0.5           # Пикс/с^2

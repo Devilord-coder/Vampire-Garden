@@ -2,6 +2,8 @@ import arcade
 from arcade.gui import (UIManager, UIAnchorLayout, UIBoxLayout,
                         UIFlatButton, UILabel)
 from src.styles import *
+from random import choice
+from os import listdir
 
 
 class PortalView(arcade.View):
@@ -103,4 +105,7 @@ class PortalView(arcade.View):
         """
         
         self.manager.disable()
+        self.window.get_view("battle")
+        self.window.views["battle"].set_map(f"{degree}/{choice(list(filter(lambda x: x[-4:] == ".tmx",
+                                            listdir(f"maps/{degree}"))))}")
         self.window.switch_view("battle")

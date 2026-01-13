@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="10">
+ <tileset firstgid="1" source="../dungeoun_tilesheet.tsx"/>
+ <tileset firstgid="97" source="../colored_tiles.tsx"/>
+ <layer id="2" name="spikes_collision" width="50" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2D4gCgseLiDkeDHUTAKRsHgAwNdzo6WfaNgIMBIbGdQAkbDCAKGQzhEI7FjBswVIwMAAF4jB2Y=
+  </data>
+ </layer>
+ <layer id="1" name="walls" width="50" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzVVVsOhDAI7Gn80aw/3sf738LdxI+mKTADpFkmIWrLayzQrbW2vXJ37xWlTb4roWreIxAe56I4K/17OUm1rOl5/P+g5TjbQzhJeTG9Oq5pcZjcEGTODOQspXUvn13xmYUZHysmygep/WxYPJheWPH/JTDnYflhbLO5Rnmw9aPVHDqPJb+jH8Y2ou+dO9f7PL7y6XQlO6kPIvcTCzQWex6WjnfPAhMX0Y3wzLwHNd/MXS/p9LqRvrXizHpt3D8Nm3+CNvc0nQrQ6qGaPNQ+KZ4=
+  </data>
+ </layer>
+ <layer id="3" name="spikes" width="50" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUDDYwjRETD3cwEvw4CkbBKBh8IBuIc6D0QIDRsm8UDARATvcDmf6HCoCF00gHI6VNOtAAABkOCYI=
+  </data>
+ </layer>
+ <layer id="4" name="exit" width="50" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztz4ENABAABLE3O3swKjtIEGknuEsAAM6pJWnldsW+vh7GBx8AvGMCaYUCSw==
+  </data>
+ </layer>
+ <objectgroup id="5" name="money">
+  <object id="3" name="gold" x="247.542" y="585.309"/>
+  <object id="4" name="silver" x="557.548" y="458.068"/>
+  <object id="5" name="bronze" x="1036.44" y="321.573"/>
+  <object id="6" name="bronze" x="1075.77" y="321.573"/>
+  <object id="7" name="bronze" x="1122.04" y="321.573"/>
+  <object id="8" name="silver" x="1378.83" y="467.322"/>
+  <object id="9" name="silver" x="76.3447" y="127.241"/>
+ </objectgroup>
+ <objectgroup id="6" name="enemies">
+  <object id="1" name="skeleton" x="990.168" y="566.802"/>
+ </objectgroup>
+ <layer id="8" name="secret" width="50" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20MH6AAAACAtwEPoAAB
+  </data>
+ </layer>
+</map>
