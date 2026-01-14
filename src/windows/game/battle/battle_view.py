@@ -45,6 +45,7 @@ class BattleView(arcade.View):
         # Инициализируем списки спрайтов
         self.player_list = arcade.SpriteList()
         self.wall_list = arcade.SpriteList()  # Сюда попадёт слой Collision!
+        self.firebolls_list = arcade.SpriteList()
 
         # ===== ВОЛШЕБСТВО ЗАГРУЗКИ КАРТЫ! (почти без магии). =====
         # Параметр 'scaling' ОЧЕНЬ важен! Умножает размер каждого тайла
@@ -173,6 +174,7 @@ class BattleView(arcade.View):
         self.money_list.draw()
         self.enemies_list.draw()
         self.secret_list.draw()
+        self.firebolls_list.draw()
         self.player_list.draw()
         
         # 2) GUI
@@ -268,6 +270,12 @@ class BattleView(arcade.View):
         
         for enemy in self.enemies_list:
             enemy.update(delta_time)
+        
+        for boll in self.firebolls_list:
+            if boll.deleted:
+                self.firebolls_list.pop(self.firebolls_list.index(boll))
+            else:
+                boll.update(delta_time)
             
         position = (
             self.hero.center_x,
@@ -345,7 +353,22 @@ class BattleView(arcade.View):
         elif key in {arcade.key.A, arcade.key.DOWN}:
             self.hero.down()
         elif key == arcade.key.SPACE:
-            self.hero.attack()
+            if self.hero.change_x >= 0:
+                sx = 3
+            elif self.hero.change_x < 0:
+                sx = -3
+            if self.hero.change_y > 0:
+                 sy = 2
+            elif self.hero.change_y < 0:
+                sy = -2
+            else:
+                sy = 0
+            fireboll = self.hero.attack(
+                (self.hero.center_x, self.hero.center_y),
+                (sx, sy),
+                [self.wall_list, self.enemies_list]
+            )
+            self.firebolls_list.append(fireboll)
         elif key == arcade.key.B and modifiers in {arcade.key.MOD_COMMAND, arcade.key.MOD_CTRL}:
             self.hero.transform()
         elif key == arcade.key.ESCAPE:

@@ -1,4 +1,5 @@
 import arcade
+from src.objects import FireBoll
 
 
 class Hero(arcade.Sprite):
@@ -159,7 +160,7 @@ class Hero(arcade.Sprite):
                 self.current_texture += 1
                 self.current_texture %= len(self.walk_b_textures)
                 self.texture = self.walk_b_textures[self.current_texture]
-        else:
+        elif not self.dead:
             self.texture_change_time += delta_time
             if self.texture_change_time >= self.texture_change_delay:
                 self.texture_change_time = 0
@@ -249,7 +250,10 @@ class Hero(arcade.Sprite):
             self.scale = 0.13
             self.texture_change_delay = 0.05  # секунд на кадр
     
-    def attack(self):
+    def attack(self,
+               coords: tuple[int, int],
+               speed: tuple[int, int],
+               collision: list[arcade.SpriteList]) -> FireBoll:
         """ Атака """
         
         if not self.attack_b and not self.attack_f:
@@ -259,6 +263,15 @@ class Hero(arcade.Sprite):
             else:
                 self.attack_b = True
                 self.attack_f = False
+        
+        return FireBoll(
+                    scale=0.05,
+                    center_x=coords[0],
+                    center_y=coords[1],
+                    change_x=speed[0],
+                    change_y=speed[1],
+                    collision=collision
+                )
 
     def update(self, delta_time):
         """ Перемещение персонажа """
@@ -275,4 +288,4 @@ class Hero(arcade.Sprite):
         if self.change_y == 0:
             self.jumping = False
         
-        self.update_animation()
+        self.update_animation(delta_time)
