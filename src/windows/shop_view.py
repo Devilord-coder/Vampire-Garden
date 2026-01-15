@@ -9,10 +9,11 @@ ERROR_TIME_VISIBLE = 1
 
 
 class ShopView(arcade.View):
-    """Представление магазина для покупки семян"""
+    """ Представление магазина для покупки семян """
 
     def __init__(self, window):
-        # Инициализация представления, переменные из прошлых окон, загрузка текстур, координаты кнопок
+        """ Инициализация представления, переменные из прошлых окон, загрузка текстур, координаты кнопок """
+        
         self.window = window
         self.left_money = (
             200  # Потом надо будет вытаскивать кол-во денег из предыдущих окон/бд
@@ -86,7 +87,7 @@ class ShopView(arcade.View):
             self.buttons_init(plant, x, y)
 
     def buttons_init(self, plant, x, y):
-        # Инициализация кнопок для покупки семян
+        """ Инициализация кнопок для покупки семян """
         button = arcade.gui.UITextureButton(
             x=x,
             y=y,
@@ -126,7 +127,8 @@ class ShopView(arcade.View):
         self.ui_manager.add(button)
 
     def on_draw(self):
-        # Отрисовка всех картинок, текстов, кнопок
+        """ Отрисовка всех картинок, текстов, кнопок """
+        
         rect = arcade.rect.XYWH(
             self.width // 2, self.height // 2, self.width, self.height
         )
@@ -165,7 +167,7 @@ class ShopView(arcade.View):
         self.ui_manager.draw()
 
     def on_update(self, delta_time):
-        # Вывод текста, если была ошибка в недостатке средств
+        """ Обновление логики """
         if self.error:
             self.error_time += delta_time
         if self.error_time >= ERROR_TIME_VISIBLE:

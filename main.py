@@ -8,7 +8,7 @@ def main():
     window.setup()
 
     # Показываем стартовый экран
-    window.switch_view("portal")
+    window.switch_view("start")
 
     # Запускаем игровой цикл
     arcade.run()

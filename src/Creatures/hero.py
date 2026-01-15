@@ -115,7 +115,6 @@ class Hero(arcade.Sprite):
                 self.current_texture += 1
                 if self.current_texture >= len(self.death_textures):
                     self.disabled = True
-                    self.current_texture = -1
                     ... # конец игры
                 else:
                     self.texture = self.death_textures[self.current_texture]
@@ -160,7 +159,7 @@ class Hero(arcade.Sprite):
                 self.current_texture += 1
                 self.current_texture %= len(self.walk_b_textures)
                 self.texture = self.walk_b_textures[self.current_texture]
-        elif not self.dead:
+        elif not self.dead and not self.disabled:
             self.texture_change_time += delta_time
             if self.texture_change_time >= self.texture_change_delay:
                 self.texture_change_time = 0
