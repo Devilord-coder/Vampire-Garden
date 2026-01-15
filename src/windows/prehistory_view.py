@@ -45,6 +45,7 @@ class PrehistoryView(arcade.View):
 
     def continue_history(self, event):
         """ Метод переключения на следующий вид """
+        
         arcade.play_sound(self.book_sound, 1, loop=False)
         #  при нажатии прекратить голос и переключиться на карту
         arcade.stop_sound(self.voice_playback)

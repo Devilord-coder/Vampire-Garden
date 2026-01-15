@@ -65,7 +65,6 @@ class StartView(arcade.View):
                 self.error_shadow.text = ""
                 self.login = self.login_input.text
                 self.window.login = self.login
-                self.window.reg_db.close()
                 self.manager.disable()
                 self.window.switch_view("main_menu")
             else:
