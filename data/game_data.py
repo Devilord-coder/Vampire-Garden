@@ -1,3 +1,6 @@
+import sqlite3
+
+
 class GameData:
     """Класс для работы с бд для отслеживания состояния игры в целом"""
 
@@ -12,6 +15,7 @@ class GameData:
 
     def get_user_id(self):
         """Метод получения id пользователя по логину"""
+        
         self.login = self.window.login
         id = self.cur.execute(
             "SELECT id FROM Registry WHERE login=?", (self.login,)
@@ -20,6 +24,7 @@ class GameData:
 
     def get_game_state(self):
         """Метод получения id игры (ели игры ещё не было, создаём новую)"""
+        
         self.login = self.window.login
         res = self.cur.execute(
             """SELECT Game.id, quantity_money FROM Game

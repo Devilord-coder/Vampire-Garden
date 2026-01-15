@@ -60,14 +60,14 @@ class StartView(arcade.View):
         def on_click_settings(event):
             result, error = self.check_user()
             if result:
+                arcade.play_sound(reg.button_click_sound)
                 self.error_text.text = ""
                 self.error_shadow.text = ""
+                self.login = self.login_input.text
                 self.window.login = self.login
                 self.window.reg_db.close()
                 self.manager.disable()
                 self.window.switch_view("main_menu")
-                self.login = self.login_input.text
-                arcade.play_sound(reg.button_click_sound)
             else:
                 self.error_text.text = error.upper()
                 self.error_shadow.text = error.upper()

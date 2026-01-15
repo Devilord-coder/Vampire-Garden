@@ -14,6 +14,8 @@ class ChooseGameView(arcade.View):
         self.background = arcade.load_texture(
             "resources/Background/start_background.jpeg"
         )
+        
+        self.setup()
     
     def setup(self):
         

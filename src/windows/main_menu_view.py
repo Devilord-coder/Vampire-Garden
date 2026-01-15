@@ -15,6 +15,8 @@ class MainMenuView(arcade.View):
         self.shape_list = arcade.shape_list.ShapeElementList()
         self.name_game = None
         self.rect_outline = None
+        
+        self.setup()
     
     def setup(self):
         

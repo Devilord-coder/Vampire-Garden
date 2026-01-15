@@ -98,6 +98,7 @@ class BaseWindow(arcade.Window):
 
                 game_data = GameData(self)
                 result = game_data.get_game_state()
+                result = False
                 if result:
                     self.views[view_name] = MainMapView(self)
                 else:
@@ -114,11 +115,11 @@ class BaseWindow(arcade.Window):
                 self.views[view_name] = SkeletonHouse(self)
             elif view_name == "werewolf_house":  # Представление дома оборотней
                 self.views[view_name] = WerewolfHouse(self)
-            elif view_name == "portal":
+            elif view_name == "portal": # представление портала
                 self.views[view_name] = PortalView(self)
-            elif view_name == "battle":
+            elif view_name == "battle": # битва
                 self.views[view_name] = BattleView(self)
-            elif view_name == "battle_statistic":
+            elif view_name == "battle_statistic": # итоги сражения
                 self.views[view_name] = BattleStatisticView(self)
 
         return self.views[view_name]
@@ -173,4 +174,5 @@ class BaseWindow(arcade.Window):
 
         # Перед закрытием отключаемя от БД
         self.reg_db.close()
+        self.con.close()
         return super().close()
