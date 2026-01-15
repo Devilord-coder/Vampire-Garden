@@ -13,10 +13,18 @@ from src.windows.game.buildings.library import Library
 from src.windows.game.buildings.bat_house import BatHouse
 from src.windows.game.buildings.skeleton_house import SkeletonHouse
 from src.windows.game.buildings.werewolf_house import WerewolfHouse
+from src.windows.choose_game_view import ChooseGameView
+from src.windows.game.battle import BattleStatisticView
+from src.windows.main_menu_view import MainMenuView
+from src.windows.game.main_game_view import MainGameView
+from src.windows.registration_view import RegistrationView
+from src.windows.start_view import StartView
+from src.windows.game.portal_view import PortalView
+from src.windows.game.battle import BattleView
 
 
 class BaseWindow(arcade.Window):
-    """Базовое окно для всех окон игры"""
+    """ Базовое окно для всех окон игры """
 
     def __init__(self):
         super().__init__(
@@ -28,12 +36,15 @@ class BaseWindow(arcade.Window):
         )
         self.set_minimum_size(settings.width_min, settings.height_min)
         # self.center_window() - не работает (по крайней мере на Маке)
+    
+    def setup(self):
         self.background_color = arcade.color.BLACK
         self.sprites = arcade.SpriteList()
         self.set_mouse_visible(False)
         self.mouse = arcade.Sprite("resources/Cursor.png", scale=2)
         self.mouse.center_x = self.width // 2
         self.mouse.center_y = self.height // 2
+        self.mouse.visible = True
         self.sprites.append(self.mouse)
 
         # Храним представления
@@ -51,6 +62,8 @@ class BaseWindow(arcade.Window):
         self.garden_id = None  # Индекс огорода
         self.quantity_money = None  # Количество денег
 
+        self.bg_sound_playback = arcade.play_sound(self.bg_sound)
+    
     def on_mouse_motion(self, x, y, dx, dy):
         self.mouse.center_x = x
         self.mouse.center_y = y
@@ -60,30 +73,20 @@ class BaseWindow(arcade.Window):
 
         if view_name not in self.views:
             if view_name == "start":  # начальное окно - авторизация
-                from src.windows.start_view import StartView
-
                 self.views[view_name] = StartView(self)
             elif view_name == "registration":  # окно регистрации
-                from src.windows.registration_view import RegistrationView
-
                 self.views[view_name] = RegistrationView(self)
             elif view_name == "main_menu":  # главное окно
-                from src.windows.main_menu_view import MainMenuView
-
                 self.views[view_name] = MainMenuView(self)
             elif view_name == "prehistory":  # окно предыстории
                 self.views[view_name] = PrehistoryView(self)
             elif view_name == "main_game":  # главное окно игры
-                from src.windows.game.main_game_view import MainGameView
-
                 self.views[view_name] = MainGameView(self)
             elif view_name == "main_map":  # основная карта
                 self.views[view_name] = MainMapView(self)
             elif view_name == "shop":  # представление магазина
                 self.views[view_name] = ShopView(self)
             elif view_name == "choose_game":
-                from src.windows.choose_game_view import ChooseGameView
-
                 self.views[view_name] = ChooseGameView(self)
             elif view_name in {"game_1", "game_2", "game_3"}:
                 if view_name == "game_1":
@@ -102,7 +105,7 @@ class BaseWindow(arcade.Window):
             elif view_name == "garden":  # Представление огорода
                 self.views[view_name] = GardenView(self)
             elif view_name == "settings":
-                pass
+                ...
             elif view_name == "library":  # Представление библиотеки с информацией игры
                 self.views[view_name] = Library(self)
             elif view_name == "bat_house":  # Представление дома летучих мышей
@@ -111,6 +114,12 @@ class BaseWindow(arcade.Window):
                 self.views[view_name] = SkeletonHouse(self)
             elif view_name == "werewolf_house":  # Представление дома оборотней
                 self.views[view_name] = WerewolfHouse(self)
+            elif view_name == "portal":
+                self.views[view_name] = PortalView(self)
+            elif view_name == "battle":
+                self.views[view_name] = BattleView(self)
+            elif view_name == "battle_statistic":
+                self.views[view_name] = BattleStatisticView(self)
 
         return self.views[view_name]
 
@@ -118,7 +127,15 @@ class BaseWindow(arcade.Window):
 
         self.sprites.draw()
         return super().on_draw()
-
+    
+    def on_update(self, delta_time):
+        """ Обновление логики """
+        
+        if self.mouse.visible and self.mouse not in self.sprites:
+            self.sprites.append(self.mouse)
+        elif not self.mouse.visible and self.mouse in self.sprites:
+            self.sprites.pop(self.sprites.index(self.mouse))
+    
     def get_parts(self) -> tuple[int, int, int, int]:
         """Функция для разделения экрана на равные части
 
@@ -142,7 +159,7 @@ class BaseWindow(arcade.Window):
         self.show_view(view)
 
     def on_key_press(self, key, modifiers):
-        """Нажаьте клафиши"""
+        """ Нажатие клавиши """
 
         # выйти при нажатии COMMAND + Q или CTRL + Q
         if key == arcade.key.Q and modifiers in {

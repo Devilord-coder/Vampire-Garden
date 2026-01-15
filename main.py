@@ -5,6 +5,7 @@ from src.windows.base_window import BaseWindow
 def main():
     # Создаем главное окно
     window = BaseWindow()
+    window.setup()
 
     # Показываем стартовый экран
     window.switch_view("start")

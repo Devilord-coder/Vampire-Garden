@@ -18,6 +18,9 @@ class PrehistoryView(arcade.View):
         """ Метод настройки вида (чтение текста предыстрории из файла, загрузка картинок, включение озвучки,
         создание кнопки для продолжения) """
         
+        self.ui_manager = arcade.gui.UIManager()
+        self.ui_manager.enable()
+        
         # настройка текста сообщения
         with open("resources/prehistory.txt", "r") as file:
             self.text = file.readlines()
@@ -45,6 +48,7 @@ class PrehistoryView(arcade.View):
         arcade.play_sound(self.book_sound, 1, loop=False)
         #  при нажатии прекратить голос и переключиться на карту
         arcade.stop_sound(self.voice_playback)
+        self.ui_manager.disable()
         self.window.switch_view("main_map")
 
     def on_show_view(self):

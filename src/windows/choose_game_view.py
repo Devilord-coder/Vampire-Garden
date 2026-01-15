@@ -1,6 +1,6 @@
 import arcade
 from src.styles import *
-from src.settings import settings
+from src.registry import reg
 from arcade.gui import UIManager, UIFlatButton, UILabel
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
@@ -14,7 +14,9 @@ class ChooseGameView(arcade.View):
         self.background = arcade.load_texture(
             "resources/Background/start_background.jpeg"
         )
-
+    
+    def setup(self):
+        
         # UIManager — сердце GUI
         self.manager = UIManager()
         self.manager.enable()  # Включить, чтоб виджеты работали
@@ -37,21 +39,26 @@ class ChooseGameView(arcade.View):
 
         @game_1_btn.event("on_click")
         def on_click_settings(event):
+            self.manager.disable()
             self.window.switch_view("game_1")
-
+            arcade.play_sound(reg.button_click_sound)
+        
         # кнопка для открытия 2 ячейки для сохранения игры
         game_2_btn = UIFlatButton(text="ИГРА 2", style=button_style, width=200)
 
         @game_2_btn.event("on_click")
         def on_click_settings(event):
+            self.manager.disable()
             self.window.switch_view("game_2")
-
+            arcade.play_sound(reg.button_click_sound)
         # кнопка для открытия 3 ячейки для сохранения игры
         game_3_btn = UIFlatButton(text="ИГРА 3", style=button_style, width=200)
 
         @game_3_btn.event("on_click")
         def on_click_settings(event):
+            self.manager.disable()
             self.window.switch_view("game_3")
+            arcade.play_sound(reg.button_click_sound)
 
         # ==== ДОБАВЛЯЕМ ВИДЖЕТЫ ПО ПОРЯДКУ ====
         self.box_layout.add(choose_game_text)
@@ -64,8 +71,8 @@ class ChooseGameView(arcade.View):
 
     def on_show_view(self):
         """Вызывается при показе этого представления"""
-
-        ...
+        
+        self.setup()
 
     def on_draw(self):
         """Рисование"""

@@ -17,15 +17,20 @@ EXIT_SCALE = scale(120, settings.height)
 
 
 class ShopView(arcade.View):
-    """Представление магазина для покупки семян"""
+    """ Представление магазина для покупки семян """
 
     def __init__(self, window):
-        """Инициализация представления, переменные из прошлых окон, загрузка текстур, координаты кнопок"""
+        """ Инициализация представления, переменные из прошлых окон, загрузка текстур, координаты кнопок """
+        
         self.window = window
         self.batch = Batch()
         self.ui_manager = arcade.gui.UIManager()
         self.ui_manager.enable()
         self.error = False
+        
+        self.setup()
+    
+    def setup(self):
 
         self.backgound_texture = arcade.load_texture(
             "resources/Background/shop_background.png"
@@ -70,11 +75,13 @@ class ShopView(arcade.View):
 
     def setup(self):
         """Загрузка представления, подготовка всех текстов"""
+        
         self.information = ShopData(self.window)
         self.left_money = self.information.quantity_money
         self.quantity_mandragora = self.information.quantity_mandragora_seeds
         self.quantity_belladonna = self.information.quantity_belladonna_seeds
         self.quantity_rose = self.information.quantity_rose_seeds
+
         x = 80
         y = self.height - 60
         self.left_money_text = arcade.Text(
@@ -116,7 +123,7 @@ class ShopView(arcade.View):
         self.ui_manager.add(button)
 
     def buttons_init(self, plant, x, y):
-        """Инициализация кнопок для покупки семян"""
+        """ Инициализация кнопок для покупки семян """
         button = arcade.gui.UITextureButton(
             x=x,
             y=y,
@@ -166,7 +173,8 @@ class ShopView(arcade.View):
         self.ui_manager.add(button)
 
     def on_draw(self):
-        """Отрисовка всех картинок, текстов, кнопок"""
+        """ Отрисовка всех картинок, текстов, кнопок """
+        
         rect = arcade.rect.XYWH(
             self.width // 2, self.height // 2, self.width, self.height
         )
@@ -205,7 +213,8 @@ class ShopView(arcade.View):
         self.batch.draw()
 
     def on_update(self, delta_time):
-        """Вывод текста, если была ошибка в недостатке средств"""
+        """ Обновление логики """
+
         if self.error:
             self.error_time += delta_time
         if self.error_time >= ERROR_TIME_VISIBLE:

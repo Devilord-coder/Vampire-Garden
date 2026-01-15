@@ -1,5 +1,5 @@
 import arcade
-from src.settings import settings
+from src.registry import reg
 from arcade.gui import UIManager, UITextureButton, UILabel, UIFlatButton
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 from src.styles import *
@@ -15,6 +15,8 @@ class MainMenuView(arcade.View):
         self.shape_list = arcade.shape_list.ShapeElementList()
         self.name_game = None
         self.rect_outline = None
+    
+    def setup(self):
         
         # UIManager — сердце GUI
         self.manager = UIManager()
@@ -49,6 +51,8 @@ class MainMenuView(arcade.View):
         )
         @play_btn.event("on_click")
         def on_click_settings(event):
+            arcade.play_sound(reg.button_click_sound)
+            self.manager.disable()
             self.window.switch_view("choose_game")
         
         # кнопка для открытия окна настроек
@@ -59,7 +63,9 @@ class MainMenuView(arcade.View):
         )
         @settings_btn.event("on_click")
         def on_click_settings(event):
-            self.window.switch_view("settings")
+            arcade.play_sound(reg.button_click_sound)
+            # self.manager.disable()
+            # self.window.switch_view("settings")
         
         # выход из аккаунта
         escape_btn = UIFlatButton(
@@ -69,6 +75,8 @@ class MainMenuView(arcade.View):
         )
         @escape_btn.event("on_click")
         def on_click_settings(event):
+            arcade.play_sound(reg.button_click_sound)
+            self.manager.disable()
             self.window.switch_view("start")
         
         # закрытие игры
@@ -93,8 +101,8 @@ class MainMenuView(arcade.View):
 
     def on_show_view(self):
         """ Вызывается при показе этого представления """
-        # self.create_text()
-        pass
+        
+        self.setup()
 
     def on_draw(self):
         """Рисование"""

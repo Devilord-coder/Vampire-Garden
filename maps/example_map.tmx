@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="70" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="48">
+ <tileset firstgid="1" source="dungeoun_tilesheet.tsx"/>
+ <tileset firstgid="97" source="colored_tiles.tsx"/>
+ <layer id="6" name="spikes_collision" width="70" height="20" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJzt1jEKwDAIBVDPKb3/ObJ0jCGQJlDyHrj4QUeNAACAWg76VXaD561eP4oMAP5u5v5np1Z2fTFrt5N3v9rl97hXA/+ECCU=
+  </data>
+ </layer>
+ <layer id="1" name="walls" width="70" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztWE1vwyAMRZ2mHHbeh7TDtEsadR+5ROm9f2T//18Mr0HzHNsYsLoc+qQnFATGfRib0ocQesKnK394xV9sUZeR8D+Q02VC9MBI2pI5l0TS5RJ7Q9cYhf4tYIvnSMOUYUKrzlQXrz0sOXfSOjTHWP3RxlltlMQLlws1/aS8VJNjLLDupWUM1kXbtxrbOXC5psZGTWznxnPxUlt7WuqWJe60fMLhPvJB4aMyFzTpBV+s8K7htaB+vEd+CARdPhVbWn7R9obTgtYDKQa0e5tHzbbYsJwjLl40TEK7BXhoAii9v1jipgZeceIxBmDRxeu/inR+rHbpmebuca1+plydyy8lqNHPu9632AVN6DvDDvGm1sFCSBq+RR4abYRMP53HaZJy735pXyJvjX55AzQ5Rs7Brg2FdG+R7iuSJkmXr/D7Xvea8Qv834V1nGE/7gjp+MQDsgmanMJ5j5I20N8R0t+M10nzTwypnU4YR7XB7SzY6Rb/07whrN8+4ft54bCQWxOvcwxrP2ayluWddU/scDGAvwc0Z0D939ccOMA=
+  </data>
+ </layer>
+ <layer id="4" name="spikes" width="70" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzt1bEKACAIBUD7/73vbQpaBKMmuQMXn+hoBAAAcGuOvJ9lAEBPlf+/Z856ufVjFz0sve0JcQ==
+  </data>
+ </layer>
+ <layer id="3" name="exit" width="70" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzt0DERACAQxMB77eADpEKLAr7YVZBJAgAAAK9RyazfFf2s+2T7AkAjB1UkAks=
+  </data>
+ </layer>
+ <objectgroup id="2" name="money">
+  <object id="14" name="bronze" x="271.429" y="81.6964"/>
+  <object id="15" name="gold" x="45.9821" y="113.393"/>
+  <object id="17" name="silver" x="366.964" y="208.036"/>
+  <object id="18" name="bronze" x="235.373" y="334.477"/>
+  <object id="19" name="bronze" x="497.427" y="396.417"/>
+  <object id="20" name="silver" x="176.779" y="175.859"/>
+  <object id="26" name="bronze" x="557.96" y="109.566"/>
+  <object id="27" name="bronze" x="620.569" y="108.646"/>
+  <object id="29" name="bronze" x="687.782" y="113.249"/>
+  <object id="30" name="bronze" x="1419.61" y="143.455"/>
+  <object id="31" name="bronze" x="1453.64" y="144.575"/>
+  <object id="32" name="brronze" x="1489.78" y="143.918"/>
+  <object id="33" name="bronze" x="1520.67" y="143.918"/>
+  <object id="34" name="bronze" x="1551.55" y="143.918"/>
+  <object id="35" name="silver" x="1585.73" y="143.261"/>
+  <object id="36" name="gold" x="1617.27" y="143.261"/>
+  <object id="38" name="silver" x="1070.93" y="593.237"/>
+  <object id="39" name="silver" x="1649.16" y="434.674"/>
+  <object id="40" name="gold" x="1931.27" y="271.108"/>
+  <object id="41" name="gold" x="1933.77" y="367.647"/>
+ </objectgroup>
+ <objectgroup id="5" name="enemies">
+  <object id="45" name="skeleton" x="1805.41" y="240.271"/>
+  <object id="46" name="skeleton" x="766.497" y="529.611"/>
+  <object id="47" name="skeleton" x="1406.93" y="248.918"/>
+ </objectgroup>
+ <layer id="7" name="secret" width="70" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20ON6AAAAAAAHg0FeAAAQ==
+  </data>
+ </layer>
+</map>

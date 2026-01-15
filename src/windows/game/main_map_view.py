@@ -16,6 +16,11 @@ class MainMapView(arcade.View):
     def __init__(self, window):
         super().__init__()
         arcade.set_background_color(arcade.color.ANTIQUE_RUBY)
+        self.window = window
+        self.setup()
+
+    def setup(self):
+        
         self.buildings = {
             "library": "resources/Buildings/library.png",
             "bat_house": "resources/Buildings/bat_house.png",
@@ -28,14 +33,13 @@ class MainMapView(arcade.View):
             "garden": "resources/Buildings/garden.png",
             "gates": "resources/Buildings/gates.png",
         }
-        self.window = window
+
         self.door_sound = reg.door_sound
+
         self.batch = Batch()
         self.ui_manager = arcade.gui.UIManager()
         self.ui_manager.enable()
-        self.setup()
-
-    def setup(self):
+        
         # Загрузка карты
         self.tilemap = arcade.load_tilemap("maps/main_map.tmx", TILE_SCALING)
 
@@ -51,6 +55,10 @@ class MainMapView(arcade.View):
 
         self.center_map()
         self.init_buildings_buttons()
+
+    
+    def on_show_view(self):
+        self.setup()
 
     def init_buildings_buttons(self):
         # Инициализация всех кнопок зданий
@@ -100,7 +108,8 @@ class MainMapView(arcade.View):
                 elif building_name == "garden":
                     self.window.switch_view("garden")
                 elif building_name == "portal":
-                    print("Портал")
+                    self.ui_manager.disable()
+                    self.window.switch_view("portal")
                 elif building_name == "vampire_house":
                     print("Дом вампиров")
                 elif building_name == "werewolf_house":
@@ -149,12 +158,12 @@ class MainMapView(arcade.View):
                 if isinstance(widget.child, AnimatedPortalButton):
                     widget.child.on_update(delta_time)
 
-    def on_show_view(self):
-        """Активация ui менеджера"""
-        if self.ui_manager:
-            self.ui_manager.enable()
-
     def on_hide_view(self):
         """Выключение ui менеджера"""
         if self.ui_manager:
             self.ui_manager.disable()
+    
+    def on_key_press(self, key, modifiers):
+        if key == arcade.key.ESCAPE:
+            self.ui_manager.disable()
+            self.window.switch_view("main_menu")

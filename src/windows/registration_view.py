@@ -3,6 +3,7 @@ import arcade
 import arcade.gui
 from arcade.gui import UIManager, UITextureButton, UILabel, UIFlatButton
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
+from src.registry import reg
 
 
 class RegistrationView(arcade.View):
@@ -40,11 +41,13 @@ class RegistrationView(arcade.View):
             if result:
                 self.error_text.text = ""
                 self.error_shadow.text = ""
+                self.manager.disable()
                 self.window.switch_view("start")
+                arcade.play_sound(reg.button_click_sound)
             else:
                 self.error_text.text = error.upper()
                 self.error_shadow.text = error.upper()
-
+                ... # звук ошибки
         # надпись имя
         name_text = UILabel(
             text="Имя",
@@ -158,6 +161,7 @@ class RegistrationView(arcade.View):
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.ESCAPE:
+            self.manager.disable()
             self.window.switch_view("start")
 
     def add_user(self) -> tuple[bool, None | str]:

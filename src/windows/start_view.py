@@ -1,6 +1,7 @@
 from src.styles import *
 import arcade
 import arcade.gui
+from src.registry import reg
 from arcade.gui import UIManager, UITextureButton, UILabel, UIFlatButton
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
@@ -15,9 +16,7 @@ class StartView(arcade.View):
         self.manager = None  # Значение ui менеджера для первого запуска
         
     def setup(self):
-        """Инициализация представления"""
-        
-        arcade.play_sound(self.window.bg_sound, loop=True, volume=0.75)
+        """ Инициализация представления """
         
         self.shape_list = arcade.shape_list.ShapeElementList()
         
@@ -52,7 +51,9 @@ class StartView(arcade.View):
         @reg_btn.event("on_click")
         def on_click_settings(event):
             self.error_text.text = ""
+            self.manager.disable()
             self.window.switch_view("registration")
+            arcade.play_sound(reg.button_click_sound)
         
         # при нажатии войти
         @self.log_in_btn.event("on_click")
@@ -61,13 +62,16 @@ class StartView(arcade.View):
             if result:
                 self.error_text.text = ""
                 self.error_shadow.text = ""
-                # self.window.reg_db.close() Оставляем бд открытой до самого закрытия приложения
+                self.window.login = self.login
+                self.window.reg_db.close()
+                self.manager.disable()
                 self.window.switch_view("main_menu")
                 self.login = self.login_input.text
-                self.window.login = self.login
+                arcade.play_sound(reg.button_click_sound)
             else:
                 self.error_text.text = error.upper()
                 self.error_shadow.text = error.upper()
+                ... # звук ошибки
         
         part_x, part_y, c_x, c_y = self.window.get_parts()
         self.error_text = arcade.Text(
