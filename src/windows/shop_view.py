@@ -70,11 +70,6 @@ class ShopView(arcade.View):
                 self.height // 4 - delta_height,
             ),
         }
-
-        self.setup()
-
-    def setup(self):
-        """Загрузка представления, подготовка всех текстов"""
         
         self.information = ShopData(self.window)
         self.left_money = self.information.quantity_money

@@ -337,7 +337,6 @@ class BattleView(arcade.View):
         if not self.hero:
             return
         
-        # Стандартное управление для PhysicsEngineSimple (как в уроке 2)
         if key == arcade.key.UP or key == arcade.key.W:
             self.hero.jump()
         elif key == arcade.key.LEFT or key == arcade.key.A:
@@ -363,11 +362,15 @@ class BattleView(arcade.View):
                 sy = -2
             else:
                 sy = 0
+            
+            # атака героя -> возвращает огненный шар
             fireboll = self.hero.attack(
-                (self.hero.center_x, self.hero.center_y),
-                (sx, sy),
-                [self.wall_list, self.enemies_list]
+                (self.hero.center_x, self.hero.center_y), # передаем координаты
+                (sx, sy), # скорость по х и у
+                [self.wall_list], # стены
+                [self.enemies_list] # враги
             )
+            # добавляем огненный шар
             self.firebolls_list.append(fireboll)
         elif key == arcade.key.B and modifiers in {arcade.key.MOD_COMMAND, arcade.key.MOD_CTRL}:
             self.hero.transform()

@@ -89,3 +89,15 @@ class Enemy(arcade.Sprite):
                 if self.current_texture >= len(self.idle_textures):
                     self.current_texture = 0
                 self.texture = self.idle_textures[self.current_texture]
+    
+    def hurt(self, damage):
+        """ Получение урона """
+        
+        self.health -= damage
+        if self.health <= 0:
+            self.death()
+    
+    def death(self):
+        """ Смерть """
+        
+        ...

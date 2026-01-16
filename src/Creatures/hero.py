@@ -252,7 +252,8 @@ class Hero(arcade.Sprite):
     def attack(self,
                coords: tuple[int, int],
                speed: tuple[int, int],
-               collision: list[arcade.SpriteList]) -> FireBoll:
+               collision: list[arcade.SpriteList],
+               enemies: list[arcade.SpriteList]) -> FireBoll:
         """ Атака """
         
         if not self.attack_b and not self.attack_f:
@@ -269,7 +270,8 @@ class Hero(arcade.Sprite):
                     center_y=coords[1],
                     change_x=speed[0],
                     change_y=speed[1],
-                    collision=collision
+                    collision=collision,
+                    enemies=enemies
                 )
 
     def update(self, delta_time):
