@@ -17,20 +17,16 @@ EXIT_SCALE = scale(120, settings.height)
 
 
 class ShopView(arcade.View):
-    """ Представление магазина для покупки семян """
+    """Представление магазина для покупки семян"""
 
     def __init__(self, window):
-        """ Инициализация представления, переменные из прошлых окон, загрузка текстур, координаты кнопок """
-        
+        """Инициализация представления, переменные из прошлых окон, загрузка текстур, координаты кнопок"""
+
         self.window = window
         self.batch = Batch()
         self.ui_manager = arcade.gui.UIManager()
         self.ui_manager.enable()
         self.error = False
-        
-        self.setup()
-    
-    def setup(self):
 
         self.backgound_texture = arcade.load_texture(
             "resources/Background/shop_background.png"
@@ -51,6 +47,7 @@ class ShopView(arcade.View):
 
         self.door_sound = reg.door_sound
         self.buy_sound = reg.buy_sound
+        self.sad_sound = reg.sad_sound  # Звук при недостатке средств во время покупки
 
         width = self.width // 2 - 200
         height = self.height // 2 - 150
@@ -75,7 +72,7 @@ class ShopView(arcade.View):
 
     def setup(self):
         """Загрузка представления, подготовка всех текстов"""
-        
+
         self.information = ShopData(self.window)
         self.left_money = self.information.quantity_money
         self.quantity_mandragora = self.information.quantity_mandragora_seeds
@@ -123,7 +120,7 @@ class ShopView(arcade.View):
         self.ui_manager.add(button)
 
     def buttons_init(self, plant, x, y):
-        """ Инициализация кнопок для покупки семян """
+        """Инициализация кнопок для покупки семян"""
         button = arcade.gui.UITextureButton(
             x=x,
             y=y,
@@ -136,7 +133,7 @@ class ShopView(arcade.View):
 
         @button.event("on_click")
         def on_click(event):
-            arcade.play_sound(self.buy_sound, 1, loop=False)
+            have_bought = False
             plant = event.source.name
             if plant == "mandragora":
                 self.left_money -= MANDRAGORA_PRICE
@@ -148,6 +145,7 @@ class ShopView(arcade.View):
                     self.information.quantity_mandragora_seeds = (
                         self.quantity_mandragora
                     )
+                    have_bought = True
             elif plant == "belladonna":
                 self.left_money -= BELLADONNA_PRICE
                 if self.left_money < 0:
@@ -158,6 +156,7 @@ class ShopView(arcade.View):
                     self.information.quantity_belladonna_seeds = (
                         self.quantity_belladonna
                     )
+                    have_bought = True
             elif plant == "rose":
                 self.left_money -= ROSE_PRICE
                 if self.left_money < 0:
@@ -166,6 +165,14 @@ class ShopView(arcade.View):
                 else:
                     self.quantity_rose += 1
                     self.information.quantity_rose_seeds = self.quantity_rose
+                    have_bought = True
+
+            if have_bought:
+                # Если покупка удалась -> звук покупки
+                arcade.play_sound(self.buy_sound, 1, loop=False)
+            else:
+                # Инче -> звук грусти
+                arcade.play_sound(self.sad_sound, 1, loop=False)
             self.left_money_text.text = str(self.left_money)
             self.information.quantity_money = self.left_money
             self.information.save()
@@ -173,8 +180,8 @@ class ShopView(arcade.View):
         self.ui_manager.add(button)
 
     def on_draw(self):
-        """ Отрисовка всех картинок, текстов, кнопок """
-        
+        """Отрисовка всех картинок, текстов, кнопок"""
+
         rect = arcade.rect.XYWH(
             self.width // 2, self.height // 2, self.width, self.height
         )
@@ -213,7 +220,7 @@ class ShopView(arcade.View):
         self.batch.draw()
 
     def on_update(self, delta_time):
-        """ Обновление логики """
+        """Обновление логики"""
 
         if self.error:
             self.error_time += delta_time
