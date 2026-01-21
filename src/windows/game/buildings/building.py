@@ -34,9 +34,10 @@ class Building(arcade.View):
         self.exit_texture = arcade.load_texture("resources/buttons/exit/shop_exit.png")
         self.buy_texture = arcade.load_texture("resources/buttons/buy.png")
         self.paper_texture = arcade.load_texture("resources/Background/paper.png")
-        
+
         self.door_sound = reg.door_sound
         self.buy_sound = reg.buy_sound
+        self.sad_sound = reg.sad_sound  # Звук при нехватке средств во время покупки
 
         self.texts = [
             "Добро пожаловать!",
@@ -76,7 +77,7 @@ class Building(arcade.View):
         self.quantity_money = self.game_statistic.get_quntity_money()
         information = [None, self.quantity_money, self.prices[self.minion_name]]
         for index, info in enumerate(information):
-            if not info:
+            if info is None:
                 text = self.texts[index]
             else:
                 text = f"{self.texts[index]} {info}"
@@ -103,13 +104,14 @@ class Building(arcade.View):
 
         @button.event("on_click")
         def on_click(event):
-            arcade.play_sound(self.buy_sound, 1, loop=False)
             if (
                 self.quantity_money - self.prices[self.minion_name]
-            ) < 0:  # Отрисовка текста ошибке при недостатке средств
+            ) < 0:  # Отрисовка текста ошибки при недостатке средств
                 self.error = True
                 self.error_text.batch = self.batch
+                arcade.play_sound(self.sad_sound, 1, loop=False)
                 return
+            arcade.play_sound(self.buy_sound, 1, loop=False)
             self.quantity_money -= self.prices[self.minion_name]
             self.game_statistic.update_minions_information(
                 self.minion_name, self.quantity_money

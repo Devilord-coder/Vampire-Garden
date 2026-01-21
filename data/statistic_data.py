@@ -70,7 +70,10 @@ class StatisticData:
                                          WHERE login=?""",
             (self.login,),
         ).fetchone()
-        return quantity[0]
+        quantity = quantity[0]
+        if not quantity:
+            quantity = 0
+        return quantity
 
     def update(self):
         """Метод обновления бд для синхронизации со всей игрой"""
