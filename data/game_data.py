@@ -15,7 +15,7 @@ class GameData:
 
     def get_user_id(self):
         """Метод получения id пользователя по логину"""
-        
+
         self.login = self.window.login
         id = self.cur.execute(
             "SELECT id FROM Registry WHERE login=?", (self.login,)
@@ -24,7 +24,7 @@ class GameData:
 
     def get_game_state(self):
         """Метод получения id игры (ели игры ещё не было, создаём новую)"""
-        
+
         self.login = self.window.login
         res = self.cur.execute(
             """SELECT Game.id, quantity_money FROM Game
@@ -45,9 +45,9 @@ class GameData:
             quantity_belladonna_seeds, quantity_rose_seeds, quantity_mandragora, quantity_belladonna, quantity_rose,
             quantity_bats, quantity_sceletons, quantity_werewolves,
             quantity_planted_mandragora, quantity_planted_belladonna, quantity_planted_rose)
-            VALUES(?, ?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)""",
+            VALUES(?, ?, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)""",
             (user_id, self.game_number),
-        )
+        )  # Создание данных для новой игры (изначально 500 монет)
         self.con.commit()
         res = self.cur.lastrowid
         self.game_id = res

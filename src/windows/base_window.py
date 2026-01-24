@@ -21,10 +21,11 @@ from src.windows.registration_view import RegistrationView
 from src.windows.start_view import StartView
 from src.windows.game.portal_view import PortalView
 from src.windows.game.battle import BattleView
+from src.windows.tutorial_view import TutorialView
 
 
 class BaseWindow(arcade.Window):
-    """ Базовое окно для всех окон игры """
+    """Базовое окно для всех окон игры"""
 
     def __init__(self):
         super().__init__(
@@ -36,7 +37,7 @@ class BaseWindow(arcade.Window):
         )
         self.set_minimum_size(settings.width_min, settings.height_min)
         # self.center_window() - не работает (по крайней мере на Маке)
-    
+
     def setup(self):
         self.background_color = arcade.color.BLACK
         self.sprites = arcade.SpriteList()
@@ -63,7 +64,7 @@ class BaseWindow(arcade.Window):
         self.quantity_money = None  # Количество денег
 
         self.bg_sound_playback = arcade.play_sound(self.bg_sound)
-    
+
     def on_mouse_motion(self, x, y, dx, dy):
         self.mouse.center_x = x
         self.mouse.center_y = y
@@ -98,7 +99,6 @@ class BaseWindow(arcade.Window):
 
                 game_data = GameData(self)
                 result = game_data.get_game_state()
-                result = False
                 if result:
                     self.views[view_name] = MainMapView(self)
                 else:
@@ -115,12 +115,14 @@ class BaseWindow(arcade.Window):
                 self.views[view_name] = SkeletonHouse(self)
             elif view_name == "werewolf_house":  # Представление дома оборотней
                 self.views[view_name] = WerewolfHouse(self)
-            elif view_name == "portal": # представление портала
+            elif view_name == "portal":  # представление портала
                 self.views[view_name] = PortalView(self)
-            elif view_name == "battle": # битва
+            elif view_name == "battle":  # битва
                 self.views[view_name] = BattleView(self)
-            elif view_name == "battle_statistic": # итоги сражения
+            elif view_name == "battle_statistic":  # итоги сражения
                 self.views[view_name] = BattleStatisticView(self)
+            elif view_name == "tutorial":  # Туториал
+                self.views[view_name] = TutorialView(self)
 
         return self.views[view_name]
 
@@ -128,15 +130,15 @@ class BaseWindow(arcade.Window):
 
         self.sprites.draw()
         return super().on_draw()
-    
+
     def on_update(self, delta_time):
-        """ Обновление логики """
-        
+        """Обновление логики"""
+
         if self.mouse.visible and self.mouse not in self.sprites:
             self.sprites.append(self.mouse)
         elif not self.mouse.visible and self.mouse in self.sprites:
             self.sprites.pop(self.sprites.index(self.mouse))
-    
+
     def get_parts(self) -> tuple[int, int, int, int]:
         """Функция для разделения экрана на равные части
 
@@ -160,7 +162,7 @@ class BaseWindow(arcade.Window):
         self.show_view(view)
 
     def on_key_press(self, key, modifiers):
-        """ Нажатие клавиши """
+        """Нажатие клавиши"""
 
         # выйти при нажатии COMMAND + Q или CTRL + Q
         if key == arcade.key.Q and modifiers in {
