@@ -22,6 +22,7 @@ from src.windows.start_view import StartView
 from src.windows.game.portal_view import PortalView
 from src.windows.game.battle import BattleView
 from src.windows.tutorial_view import TutorialView
+from src.windows.final import Final
 
 
 class BaseWindow(arcade.Window):
@@ -123,6 +124,8 @@ class BaseWindow(arcade.Window):
                 self.views[view_name] = BattleStatisticView(self)
             elif view_name == "tutorial":  # Туториал
                 self.views[view_name] = TutorialView(self)
+            elif view_name == 'final':  # Финальное окно
+                self.views[view_name] = Final(self)
 
         return self.views[view_name]
 

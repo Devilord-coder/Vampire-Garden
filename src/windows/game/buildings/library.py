@@ -63,6 +63,9 @@ class Library(arcade.View):
         self.box_layout.add(label)
 
         for index, line in enumerate(self.game_statistic.game_information):
+            if index > len(self.texts) - 1:
+                # Если текст закончился, выходим
+                break
             new_line = f"{self.texts[index]} {line}"
             label = UILabel(
                 text=new_line,
