@@ -1,6 +1,5 @@
 import arcade
 from src.registry import reg
-from datetime import datetime
 
 DELAY_TIME = 1
 
