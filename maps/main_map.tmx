@@ -5,15 +5,13 @@
   <image source="../resources/Background/main_background.png" width="1280" height="800"/>
  </imagelayer>
  <objectgroup id="4" name="buildings_territories">
-  <object id="1" name="main_house" x="530" y="410" width="180" height="220"/>
+  <object id="1" name="main_house" x="600" y="410" width="180" height="220"/>
   <object id="2" name="portal" x="0" y="200" width="150" height="170"/>
-  <object id="4" name="library" x="30" y="440" width="200" height="200"/>
-  <object id="5" name="bat_house" x="280" y="480" width="140" height="140"/>
-  <object id="6" name="sport_hall" x="820" y="440" width="200" height="200"/>
+  <object id="4" name="library" x="200" y="440" width="200" height="200"/>
   <object id="7" name="sceleton_house" x="800" y="130" width="170" height="170"/>
-  <object id="8" name="vampire_house" x="260" y="180" width="200" height="200"/>
+  <object id="8" name="bat_house" x="260" y="180" width="200" height="200"/>
   <object id="9" name="werewolf_house" x="520" y="130" width="200" height="220"/>
-  <object id="10" name="garden" x="1050" y="470" width="200" height="150"/>
+  <object id="10" name="garden" x="900" y="470" width="200" height="150"/>
   <object id="11" name="gates" x="1100" y="100" width="150" height="200"/>
  </objectgroup>
  <layer id="5" name="path" width="80" height="50">

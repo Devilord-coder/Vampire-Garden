@@ -18,10 +18,11 @@ class StatisticData:
         self.game_information = self.cur.execute(
             """SELECT quantity_money, quantity_mandragora_seeds, quantity_belladonna_seeds, quantity_rose_seeds,
             quantity_mandragora, quantity_belladonna, quantity_rose, quantity_bats, quantity_sceletons,
-            quantity_werewolves FROM Game
+            quantity_werewolves, quantity_planted_mandragora, quantity_planted_belladonna, quantity_planted_rose,
+            quantity_bought_bats, quantity_bought_skeletons, quantity_bought_werewolves FROM Game
                                                  JOIN Registry on Game.user_id=Registry.id
-                                                 WHERE login=?""",
-            (self.login,),
+                                                 WHERE login=? and Game.id=?""",
+            (self.login, self.game_id),
         ).fetchone()
 
     def get_user_id(self):
@@ -33,32 +34,33 @@ class StatisticData:
     def matching_name_column(self, name):
         """Соотношение названия бойца с колонкой в бд"""
         if name == "bat":
-            return "quantity_bats"
+            return "quantity_bats", "quantity_bought_bats"
         elif name == "sceleton":
-            return "quantity_sceleton"
+            return "quantity_sceleton", "quantity_bought_skeleton"
         elif name == "werewolf":
-            return "quantity_werewolves"
+            return "quantity_werewolves", "quantity_bought_werewolves"
 
-    def get_quantity_minions(self, column):
+    def get_quantity_minions(self, column1, column2):
         """Получение количество бойцов по названию на данный момент из бд"""
         quantity = self.cur.execute(
-            f"""SELECT {column} FROM Game
+            f"""SELECT {column1}, {column2} FROM Game
                                          JOIN Registry on Game.user_id=Registry.id
                                          WHERE login=?""",
             (self.login,),
         ).fetchone()
-        return quantity[0]
+        return quantity[0], quantity[1]
 
     def update_minions_information(self, name, quantity_money):
         """Обновление количества бойцов при покупке в бд"""
-        column = self.matching_name_column(name)
-        quantity = self.get_quantity_minions(column)
-        quantity += 1
+        column1, column2 = self.matching_name_column(name)
+        quantity1, quantity2 = self.get_quantity_minions(column1, column2)
+        quantity1 += 1
+        quantity2 += 1
         self.cur.execute(
             f"""UPDATE Game
-                         SET {column}=?, quantity_money=?
+                         SET {column1}=?, {column2}=?, quantity_money=?
                          WHERE user_id=?""",
-            (quantity, quantity_money, self.get_user_id()),
+            (quantity1, quantity2, quantity_money, self.get_user_id()),
         )
         self.con.commit()
 

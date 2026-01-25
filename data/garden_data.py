@@ -117,8 +117,8 @@ class GardenData:
         user_id = self.get_user_id()
         plants = self.cur.execute(
             """SELECT quantity_mandragora, quantity_belladonna, quantity_rose FROM Game
-                                  WHERE user_id=?""",
-            (user_id,),
+                                  WHERE user_id=? and id=?""",
+            (user_id, self.game_id),
         ).fetchone()
         if plants[0] >= 50 and plants[1] >= 30 and plants[2] >= 25:
             return True

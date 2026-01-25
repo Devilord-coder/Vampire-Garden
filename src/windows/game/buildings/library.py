@@ -22,9 +22,9 @@ class Library(arcade.View):
         )
         self.paper_texture = arcade.load_texture("resources/Background/paper.png")
         self.exit_texture = arcade.load_texture("resources/buttons/exit/shop_exit.png")
-        
+
         self.door_sound = reg.door_sound
-        
+
         self.manager = None
         self.text_color = arcade.color.CORDOVAN
         self.texts = [
@@ -63,6 +63,9 @@ class Library(arcade.View):
         self.box_layout.add(label)
 
         for index, line in enumerate(self.game_statistic.game_information):
+            if index > len(self.texts) - 1:
+                # Если текст закончился, выходим
+                break
             new_line = f"{self.texts[index]} {line}"
             label = UILabel(
                 text=new_line,
