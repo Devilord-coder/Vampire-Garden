@@ -22,9 +22,9 @@ class Library(arcade.View):
         )
         self.paper_texture = arcade.load_texture("resources/Background/paper.png")
         self.exit_texture = arcade.load_texture("resources/buttons/exit/shop_exit.png")
-        
+
         self.door_sound = reg.door_sound
-        
+
         self.manager = None
         self.text_color = arcade.color.CORDOVAN
         self.texts = [

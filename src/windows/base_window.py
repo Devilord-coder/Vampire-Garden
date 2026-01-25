@@ -124,7 +124,7 @@ class BaseWindow(arcade.Window):
                 self.views[view_name] = BattleStatisticView(self)
             elif view_name == "tutorial":  # Туториал
                 self.views[view_name] = TutorialView(self)
-            elif view_name == 'final':  # Финальное окно
+            elif view_name == "final":  # Финальное окно
                 self.views[view_name] = Final(self)
 
         return self.views[view_name]

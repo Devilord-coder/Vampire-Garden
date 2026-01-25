@@ -21,8 +21,8 @@ class StatisticData:
             quantity_werewolves, quantity_planted_mandragora, quantity_planted_belladonna, quantity_planted_rose,
             quantity_bought_bats, quantity_bought_skeletons, quantity_bought_werewolves FROM Game
                                                  JOIN Registry on Game.user_id=Registry.id
-                                                 WHERE login=?""",
-            (self.login,),
+                                                 WHERE login=? and Game.id=?""",
+            (self.login, self.game_id),
         ).fetchone()
 
     def get_user_id(self):
@@ -34,11 +34,11 @@ class StatisticData:
     def matching_name_column(self, name):
         """Соотношение названия бойца с колонкой в бд"""
         if name == "bat":
-            return "quantity_bats", 'quantity_bought_bats'
+            return "quantity_bats", "quantity_bought_bats"
         elif name == "sceleton":
-            return "quantity_sceleton", 'quantity_bought_skeleton'
+            return "quantity_sceleton", "quantity_bought_skeleton"
         elif name == "werewolf":
-            return "quantity_werewolves", 'quantity_bought_werewolves'
+            return "quantity_werewolves", "quantity_bought_werewolves"
 
     def get_quantity_minions(self, column1, column2):
         """Получение количество бойцов по названию на данный момент из бд"""

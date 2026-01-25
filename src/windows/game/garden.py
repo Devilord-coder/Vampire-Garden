@@ -9,6 +9,7 @@ from src.registry import reg
 from src.windows.game.sprites.rabbit import Rabbit
 from src.windows.game.sprites.garden_minion import GardenMinion
 from src.windows.game.participles.rabbit_participles import Participle
+from src.windows.loading import Loading
 
 FIELD_SCALE = scale(300, settings.height)
 SEED_SCALE = scale(200, settings.height)
@@ -373,7 +374,9 @@ class GardenView(arcade.View):
                 self.garden_information.save()
 
                 if self.garden_information.check_final():
-                    self.window.switch_view("main_map")  # Показ финального окна
+                    self.window.show_view(
+                        Loading(self.window, "final")
+                    )  # Показ финального окна
                 return
 
         elif self.seed.texture == self.mandragora_seeds_texture:

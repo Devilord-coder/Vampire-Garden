@@ -1,5 +1,6 @@
 import arcade
 from pyglet.graphics import Batch
+
 from src.settings import settings
 from src.auxiliary_classes.portal_animated_button import AnimatedPortalButton
 import arcade.gui
@@ -20,7 +21,6 @@ class MainMapView(arcade.View):
         self.setup()
 
     def setup(self):
-        
         self.buildings = {
             "library": "resources/Buildings/library.png",
             "bat_house": "resources/Buildings/bat_house.png",
@@ -37,7 +37,7 @@ class MainMapView(arcade.View):
         self.batch = Batch()
         self.ui_manager = arcade.gui.UIManager()
         self.ui_manager.enable()
-        
+
         # Загрузка карты
         self.tilemap = arcade.load_tilemap("maps/main_map.tmx", TILE_SCALING)
 
@@ -54,7 +54,6 @@ class MainMapView(arcade.View):
         self.center_map()
         self.init_buildings_buttons()
 
-    
     def on_show_view(self):
         self.setup()
 
@@ -160,7 +159,7 @@ class MainMapView(arcade.View):
         """Выключение ui менеджера"""
         if self.ui_manager:
             self.ui_manager.disable()
-    
+
     def on_key_press(self, key, modifiers):
         if key == arcade.key.ESCAPE:
             self.ui_manager.disable()
