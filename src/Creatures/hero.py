@@ -54,7 +54,10 @@ class Hero(arcade.Sprite):
             self.walk_f_textures.append(texture)
         # ходьба назад
         self.walk_b_textures = []
-        self.walk_b_textures = self.idle_textures = self.walk_f_textures
+        for i in range(18):
+            texture = arcade.load_texture(f"resources/Hero/bat/walk_back/{i}.png")
+            self.walk_b_textures.append(texture)
+        self.idle_textures = self.walk_f_textures
         # получение урона
         self.hurt_textures = self.idle_textures # заглушка
         # смерть
@@ -250,14 +253,26 @@ class Hero(arcade.Sprite):
             self.texture_change_delay = 0.05  # секунд на кадр
     
     def attack(self,
+               direction: str,
                coords: tuple[int, int],
                speed: tuple[int, int],
                collision: list[arcade.SpriteList],
                enemies: list[arcade.SpriteList]) -> FireBoll:
-        """ Атака """
+        """ Атака персонажа
+
+        Args:
+            direction (str): направление атаки 'f' или 'r'
+            coords (tuple[int, int]): координаты, которые надо передать огненному шару
+            speed (tuple[int, int]): скорость шара
+            collision (list[arcade.SpriteList]): слой коллизий
+            enemies (list[arcade.SpriteList]): слой врагов
+
+        Returns:
+            FireBoll: огненный шар, которым атаковал герой
+        """
         
         if not self.attack_b and not self.attack_f:
-            if self.change_x >= 0:
+            if direction == "f":
                 self.attack_f = True
                 self.attack_b = False
             else:

@@ -3,11 +3,11 @@ import random
 from arcade.gui import UITextArea, UIManager, UITextureButton
 
 from src.auxiliary_classes.scale import scale
-from data.garden_data import GardenData
+from data import GardenData
 from src.settings import settings
 from src.registry import reg
-from src.windows.game.sprites.rabbit import Rabbit
-from src.windows.game.sprites.garden_minion import GardenMinion
+from creatures import Rabbit
+from creatures import GardenMinion
 from src.windows.game.participles.rabbit_participles import Participle
 
 FIELD_SCALE = scale(300, settings.height)

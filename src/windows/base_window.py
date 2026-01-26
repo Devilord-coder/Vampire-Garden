@@ -1,9 +1,8 @@
 import arcade
 import sqlite3
 from src.settings import settings
-from data.registry_data import RegistryDataBase
+from data import RegistryDataBase, GameData
 from src.registry import reg
-from data.game_data import GameData
 
 from src.windows.game.main_map_view import MainMapView
 from src.windows.shop_view import ShopView
@@ -22,6 +21,7 @@ from src.windows.start_view import StartView
 from src.windows.game.portal_view import PortalView
 from src.windows.game.battle import BattleView
 from src.windows.tutorial_view import TutorialView
+from src.windows.game.battle import BattleWinView
 
 
 class BaseWindow(arcade.Window):
@@ -123,6 +123,8 @@ class BaseWindow(arcade.Window):
                 self.views[view_name] = BattleStatisticView(self)
             elif view_name == "tutorial":  # Туториал
                 self.views[view_name] = TutorialView(self)
+            elif view_name == "win_battle_view":
+                self.views[view_name] = BattleWinView(self)
 
         return self.views[view_name]
 

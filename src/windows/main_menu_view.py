@@ -57,18 +57,6 @@ class MainMenuView(arcade.View):
             self.manager.disable()
             self.window.switch_view("choose_game")
         
-        # кнопка для открытия окна настроек
-        settings_btn = UIFlatButton(
-            text="НАСТРОЙКИ",
-            style=button_style,
-            width=200
-        )
-        @settings_btn.event("on_click")
-        def on_click_settings(event):
-            arcade.play_sound(reg.button_click_sound)
-            # self.manager.disable()
-            # self.window.switch_view("settings")
-        
         # выход из аккаунта
         escape_btn = UIFlatButton(
             text='ВЫХОД',
@@ -94,7 +82,6 @@ class MainMenuView(arcade.View):
         # ==== ДОБАВЛЯЕМ ВИДЖЕТЫ ПО ПОРЯДКУ ====
         self.box_layout.add(mainmenu_text)
         self.box_layout.add(play_btn)
-        self.box_layout.add(settings_btn)
         self.box_layout.add(escape_btn)
         self.box_layout.add(close_btn)
         

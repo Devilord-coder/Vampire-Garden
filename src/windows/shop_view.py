@@ -1,7 +1,7 @@
 import arcade
 from pyglet.graphics import Batch
 import arcade.gui
-from data.shop_data import ShopData
+from data import ShopData
 from src.auxiliary_classes.scale import scale
 from src.settings import settings
 from src.registry import reg
