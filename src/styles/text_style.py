@@ -6,3 +6,4 @@ import arcade
 
 TEXT_COLOR = arcade.color.AMARANTH
 FONT_SIZE = 16
+FONT_NAME = "fonts/mainfont"

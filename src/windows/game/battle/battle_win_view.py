@@ -5,6 +5,7 @@ import arcade.gui
 from data import StatisticData
 from arcade.gui import UILabel, UIManager
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
+from data import StatisticData
 
 
 class BattleWinView(arcade.View):
@@ -122,6 +123,9 @@ class BattleWinView(arcade.View):
         """ Нажатие мыши """
         
         self.manager.disable()
+        self.money_count = self.bronze + self.silver * 5 + self.gold * 10
+        self.data = StatisticData(self.window)
+        self.data.add_money(self.money_count)
         self.window.switch_view("main_map")
     
     def on_key_press(self, key, modifiers):

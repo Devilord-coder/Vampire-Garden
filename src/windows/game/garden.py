@@ -6,8 +6,8 @@ from src.auxiliary_classes.scale import scale
 from data import GardenData
 from src.settings import settings
 from src.registry import reg
-from creatures import Rabbit
-from creatures import GardenMinion
+from src.creatures import Rabbit
+from src.creatures import GardenMinion
 from src.windows.game.participles.rabbit_participles import Participle
 
 FIELD_SCALE = scale(300, settings.height)

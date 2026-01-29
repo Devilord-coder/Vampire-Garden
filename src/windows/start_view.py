@@ -94,10 +94,11 @@ class StartView(arcade.View):
         
         # надпись логин
         login_text = UILabel(
-            text='ЛОГИН',
+            text='LOGIN',
             text_color=TEXT_COLOR,
             font_size=18,
-            multiline=True
+            multiline=True,
+            font_name=(FONT_NAME)
         )
         
         # надпись пароль
