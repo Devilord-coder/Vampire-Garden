@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="9">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="10">
  <tileset firstgid="1" source="../dungeoun_tilesheet.tsx"/>
  <tileset firstgid="97" source="../colored_tiles.tsx"/>
  <layer id="3" name="spikes_collision" width="50" height="20">
@@ -32,6 +32,7 @@
  </objectgroup>
  <objectgroup id="5" name="enemies">
   <object id="8" name="skeleton" x="226.276" y="172.536"/>
+  <object id="9" name="demon" x="717.013" y="531.749"/>
  </objectgroup>
  <layer id="7" name="secret" width="50" height="20">
   <data encoding="base64" compression="zlib">

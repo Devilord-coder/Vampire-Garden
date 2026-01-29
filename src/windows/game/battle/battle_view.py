@@ -323,6 +323,13 @@ class BattleView(arcade.View):
         hero_hurt = arcade.check_for_collision_with_list(self.hero, self.spikes_collision)
         if hero_hurt and not self.hero.hurting:
             self.hero.hurt(damage=20)
+        
+        # проверка на столкновение игрорка с врагами
+        if not self.hero.hurting:
+            enemies_attack = arcade.check_for_collision_with_list(self.hero, self.enemies_list)
+            for enemy in enemies_attack:
+                self.hero.hurt(enemy.power)
+                enemy.attack()
 
         # Двигаем камеру за игроком (центрируем)
         # self.camera.move_to((self.hero.center_x, self.hero.center_y))

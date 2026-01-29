@@ -123,7 +123,7 @@ class BattleWinView(arcade.View):
         """ Нажатие мыши """
         
         self.manager.disable()
-        self.money_count = self.bronze + self.silver * 5 + self.gold * 10
+        self.money_count = self.bronze * 5 + self.silver * 10 + self.gold * 15
         self.data = StatisticData(self.window)
         self.data.add_money(self.money_count)
         self.window.switch_view("main_map")

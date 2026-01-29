@@ -46,7 +46,7 @@
  <objectgroup id="4" name="enemies">
   <object id="7" name="skeleton" x="206.453" y="154.531"/>
   <object id="11" name="skeleton" x="2832.13" y="558.305"/>
-  <object id="12" name="skeleton" x="2001.63" y="337.673"/>
+  <object id="12" name="dragon" x="2001.63" y="337.673"/>
   <object id="13" name="skeleton" x="2477.62" y="148.495"/>
  </objectgroup>
  <layer id="2" name="secret" width="100" height="20">
