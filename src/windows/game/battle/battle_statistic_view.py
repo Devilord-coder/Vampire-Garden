@@ -14,6 +14,9 @@ class BattleStatisticView(arcade.View):
         arcade.set_background_color(arcade.color.BLACK)
         
         self.window = window
+        
+        # Важно не вызывать setup при инициализации, так как часть параметров передаются вручную позже 
+        # то есть setup вызывается только при показе представления
     
     def setup(self):
         """ Настройка представления """
@@ -61,11 +64,21 @@ class BattleStatisticView(arcade.View):
             align="left"
         )
         
+        # количество убитых врагов
+        enemies_text = UILabel(
+            text=f"ENEMIES - {self.enemies}",
+            text_color=TEXT_COLOR,
+            font_size=18,
+            multiline=True,
+            align="left"
+        )
+        
         # ==== ДОБАВЛЯЕМ ВИДЖЕТЫ ПО ПОРЯДКУ ====
         self.box_layout.add(game_over_text)
         self.box_layout.add(gold_text)
         self.box_layout.add(silver_text)
         self.box_layout.add(bronze_text)
+        self.box_layout.add(enemies_text)
         
         self.anchor_layout.add(self.box_layout)  # Box в anchor
         self.manager.add(self.anchor_layout)  # Всё в manager

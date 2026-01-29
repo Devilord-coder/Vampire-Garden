@@ -7,6 +7,8 @@ from src.objects import Money
 
 
 class BattleView(arcade.View):
+    """ Главное коно битвы """
+    
     def __init__(self, window):
         super().__init__(window, background_color=arcade.color.BLACK)
         self.window = window
@@ -62,6 +64,8 @@ class BattleView(arcade.View):
         self.secret_list = tile_map.sprite_lists["secret"]
         self.collision_list = self.wall_list
         self.enemy_init()
+        self.enemies_count = len(self.enemies_list) # количество врагов
+        self.enemies_killed = 0 # количество убитых врагов
         for spike in self.spikes_list:
             self.collision_list.append(spike)
         
@@ -265,6 +269,10 @@ class BattleView(arcade.View):
         else:
             self.physics_engine_bat.update()
         
+        if self.enemies_count != len(self.enemies_list):
+            self.enemies_killed += self.enemies_count - len(self.enemies_list)
+            self.enemies_count = len(self.enemies_list)
+        
         for engine in self.enemies_engine_list:
             engine.update()
         
@@ -297,7 +305,7 @@ class BattleView(arcade.View):
         
         is_exit = arcade.check_for_collision_with_list(self.hero, self.exit_list)
         if is_exit:
-            self.end_game()
+            self.win_game()
         
         # обновление монеток
         for money in self.money_list:
@@ -320,16 +328,32 @@ class BattleView(arcade.View):
         # self.camera.move_to((self.hero.center_x, self.hero.center_y))
     
     def end_game(self):
+        """ Окончание игры при смерти персонажа """
+        
         arcade.stop_sound(self.bg_sound_playback)
         self.window.bg_sound_playback = arcade.play_sound(self.window.bg_sound)
         self.window.mouse.visible = True
         self.manager.disable()
         battle_statistic_view = self.window.get_view("battle_statistic")
-        battle_statistic_view.hero_health = self.hero.health
         battle_statistic_view.gold = self.money_count["gold"]
         battle_statistic_view.silver = self.money_count["silver"]
         battle_statistic_view.bronze = self.money_count["bronze"]
+        battle_statistic_view.enemies = self.enemies_killed
         self.window.switch_view("battle_statistic")
+    
+    def win_game(self):
+        """ Окончание игры при победе """
+        
+        arcade.stop_sound(self.bg_sound_playback)
+        self.window.bg_sound_playback = arcade.play_sound(self.window.bg_sound)
+        self.window.mouse.visible = True
+        self.manager.disable()
+        battle_statistic_view = self.window.get_view("win_battle_view")
+        battle_statistic_view.gold = self.money_count["gold"]
+        battle_statistic_view.silver = self.money_count["silver"]
+        battle_statistic_view.bronze = self.money_count["bronze"]
+        battle_statistic_view.enemies = self.enemies_killed
+        self.window.switch_view("win_battle_view")
 
     def on_key_press(self, key, modifiers):
         """Обработка нажатий клавиш."""
@@ -337,37 +361,57 @@ class BattleView(arcade.View):
         if not self.hero:
             return
         
-        # Стандартное управление для PhysicsEngineSimple (как в уроке 2)
-        if key == arcade.key.UP or key == arcade.key.W:
+        if key == arcade.key.UP:
             self.hero.jump()
-        elif key == arcade.key.LEFT or key == arcade.key.A:
+        elif key == arcade.key.LEFT:
             if modifiers in {arcade.key.MOD_COMMAND, arcade.key.MOD_CTRL}:
                 self.hero.run_back()
             else:
                 self.hero.walk_back()
-        elif key == arcade.key.RIGHT or key == arcade.key.D:
+        elif key == arcade.key.RIGHT:
             if modifiers in {arcade.key.MOD_COMMAND, arcade.key.MOD_CTRL}:
                 self.hero.run_forward()
             else:
                 self.hero.walk_forward()
-        elif key in {arcade.key.A, arcade.key.DOWN}:
+        elif key == arcade.key.DOWN:
             self.hero.down()
-        elif key == arcade.key.SPACE:
-            if self.hero.change_x >= 0:
-                sx = 3
-            elif self.hero.change_x < 0:
-                sx = -3
+        elif key == arcade.key.D:
+            sx = 3
             if self.hero.change_y > 0:
                  sy = 2
             elif self.hero.change_y < 0:
                 sy = -2
             else:
                 sy = 0
+            
+            # атака героя -> возвращает огненный шар
             fireboll = self.hero.attack(
-                (self.hero.center_x, self.hero.center_y),
-                (sx, sy),
-                [self.wall_list, self.enemies_list]
+                'f',
+                (self.hero.center_x, self.hero.center_y), # передаем координаты
+                (sx, sy), # скорость по х и у
+                [self.wall_list], # стены
+                [self.enemies_list] # враги
             )
+            # добавляем огненный шар
+            self.firebolls_list.append(fireboll)
+        elif key == arcade.key.A:
+            sx = -3
+            if self.hero.change_y > 0:
+                 sy = 2
+            elif self.hero.change_y < 0:
+                sy = -2
+            else:
+                sy = 0
+            
+            # атака героя -> возвращает огненный шар
+            fireboll = self.hero.attack(
+                'r',
+                (self.hero.center_x, self.hero.center_y), # передаем координаты
+                (sx, sy), # скорость по х и у
+                [self.wall_list], # стены
+                [self.enemies_list] # враги
+            )
+            # добавляем огненный шар
             self.firebolls_list.append(fireboll)
         elif key == arcade.key.B and modifiers in {arcade.key.MOD_COMMAND, arcade.key.MOD_CTRL}:
             self.hero.transform()

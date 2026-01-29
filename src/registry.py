@@ -46,6 +46,7 @@ class Registry:
 
         self.fireboll_fly_textures = []
         self.fireboll_attack_textures = []
+        self.fireboll_reverse_fly_textures = []
 
         for file_name in filter(
             lambda x: x[-4:] == ".png",  # выбор всех картинок (.png) из нужной папки
@@ -60,6 +61,13 @@ class Registry:
         ):
             self.fireboll_attack_textures.append(
                 arcade.load_texture(f"resources/Objects/fireboll/attack/{file_name}")
+            )
+        
+        for file_name in filter(
+            lambda x: x[-4:] == ".png", listdir("resources/Objects/fireboll/reverse_fly")
+        ):
+            self.fireboll_reverse_fly_textures.append(
+                arcade.load_texture(f"resources/Objects/fireboll/reverse_fly/{file_name}")
             )
 
 
