@@ -16,5 +16,6 @@ __all__ = [
     "FONT_SIZE",
     "EASY_STYLE",
     "MEDIUM_STYLE",
-    "HARD_STYLE"
+    "HARD_STYLE",
+    "FONT_NAME"
 ]
