@@ -8,7 +8,8 @@ class FireBoll(arcade.Sprite):
     def __init__(self, scale: float = 1,
                  center_x=0, center_y=0,
                  change_x=3, change_y=0,
-                 collision: list[arcade.SpriteList] | None = None):
+                 collision: list[arcade.SpriteList] | None = None,
+                 enemies: list[arcade.SpriteList] | None = None):
         super().__init__()
         
         """ Класс огненных шаров
@@ -19,7 +20,8 @@ class FireBoll(arcade.Sprite):
             center_x, center_y - координаты спрайта;
             change_x, change_y - скорость по x и y;
             collision: list[arcade.SpriteList] | None = None - список спрайтов,
-            при столкновении с которыми шар взрывается
+            при столкновении с которыми шар взрывается;
+            enemies: list[arcade.SpriteList] | None = None - список врагов, при взаимодействии с ними нужно взорваться и нанести урон.
         """
         
         # основный параметры спрайта
@@ -29,12 +31,15 @@ class FireBoll(arcade.Sprite):
         self.change_x = change_x
         self.change_y = change_y
         
-        # список спрайтов, с которыми нельзя сталкиваться
-        self.collision_list = collision
+        self.power = 50 # сила удара
         
-        # список текстур
-        self.fly_textures = reg.fireboll_fly_textures.copy()
-        self.attack_textures = reg.fireboll_attack_textures.copy()
+        # список спрайтов, с которыми нельзя сталкиваться
+        self.collision_lists = collision
+        # список спрайтов врагов. При столкновении нанести урон и взорваться
+        self.enemies_lists = enemies
+        
+        # загрузка текстур
+        self.textures_init()
         # текущая текстура
         self.texture = self.fly_textures[0]
         
@@ -47,22 +52,37 @@ class FireBoll(arcade.Sprite):
         self.texture_change_time = 0
         self.texture_change_delay = 0.1  # секунд на кадр
     
+    def textures_init(self):
+        """ Загрузка текстур """
+        
+        if self.change_x >= 0:
+            self.fly_textures = reg.fireboll_fly_textures.copy()
+        else:
+            self.fly_textures = reg.fireboll_reverse_fly_textures.copy()
+        self.attack_textures = reg.fireboll_attack_textures.copy()
+    
     def update(self, delta_time):
         """ Перемещение персонажа """
         
-        if self.deleted:
+        if self.deleted or self.attacking:
+            self.update_animation(delta_time)
             return
         
         # проверка на столкновение
-        for col_list in self.collision_list:
+        for col_list in self.collision_lists:
             if arcade.check_for_collision_with_list(self, col_list):
                 self.attacking = True
                 self.change_x = self.change_y = 0
                 break
+        for enemies_list in self.enemies_lists:
+            for enemy in arcade.check_for_collision_with_list(self, enemies_list):
+                enemy.hurt(self.power)
+                self.attacking = True
             
         # перемещение
-        self.center_x += self.change_x
-        self.center_y += self.change_y
+        if not self.attacking:
+            self.center_x += self.change_x
+            self.center_y += self.change_y
         
         # обновление анимации
         self.update_animation(delta_time)
