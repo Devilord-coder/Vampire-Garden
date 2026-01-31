@@ -39,7 +39,7 @@ class StatisticData:
         if name == "bat":
             return "quantity_bats", "quantity_bought_bats"
         elif name == "sceleton":
-            return "quantity_sceleton", "quantity_bought_skeleton"
+            return "quantity_sceletons", "quantity_bought_skeletons"
         elif name == "werewolf":
             return "quantity_werewolves", "quantity_bought_werewolves"
 
@@ -49,8 +49,8 @@ class StatisticData:
         quantity = self.cur.execute(
             f"""SELECT {column1}, {column2} FROM Game
                                          JOIN Registry on Game.user_id=Registry.id
-                                         WHERE login=?""",
-            (self.login,),
+                                         WHERE login=? AND Game.id=?""",
+            (self.login, self.game_id),
         ).fetchone()
         return quantity[0], quantity[1]
 
@@ -64,8 +64,8 @@ class StatisticData:
         self.cur.execute(
             f"""UPDATE Game
                          SET {column1}=?, {column2}=?, quantity_money=?
-                         WHERE user_id=?""",
-            (quantity1, quantity2, quantity_money, self.get_user_id()),
+                         WHERE user_id=? AND id=?""",
+            (quantity1, quantity2, quantity_money, self.get_user_id(), self.game_id),
         )
         self.con.commit()
 
@@ -75,8 +75,8 @@ class StatisticData:
         quantity = self.cur.execute(
             """SELECT quantity_money FROM Game
                                          JOIN Registry on Game.user_id=Registry.id
-                                         WHERE login=?""",
-            (self.login,),
+                                         WHERE login=? AND Game.id=?""",
+            (self.login, self.game_id)
         ).fetchone()
         quantity = quantity[0]
         if not quantity:
@@ -90,9 +90,11 @@ class StatisticData:
 
     def add_money(self, money: int):
         """Добавление денег на счет"""
-
+        quantity_money = self.get_quntity_money()  # Получение количества денег из бд
+        quantity_money += money
         self.cur.execute(
             f"""UPDATE Game
-                         SET quantity_money=quantity_money + {money}"""
+                         SET quantity_money=?
+                         WHERE id=?""", (quantity_money, self.game_id)
         )
         self.con.commit()
