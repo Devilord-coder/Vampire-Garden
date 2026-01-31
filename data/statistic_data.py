@@ -10,7 +10,7 @@ class StatisticData:
 
     def setup(self):
         """Получение имени пользавателя и всех данных статистики"""
-        
+
         self.name = self.cur.execute(
             """SELECT name FROM Registry
                                      WHERE login=?""",
@@ -28,29 +28,29 @@ class StatisticData:
 
     def get_user_id(self):
         """Метод получения id пользователя по логину"""
-        
+
         return self.cur.execute(
             "SELECT id FROM Registry WHERE login=?", (self.login,)
         ).fetchone()[0]
 
     def matching_name_column(self, name):
         """Соотношение названия бойца с колонкой в бд"""
-        
+
         if name == "bat":
             return "quantity_bats", "quantity_bought_bats"
         elif name == "sceleton":
-            return "quantity_sceleton", "quantity_bought_skeleton"
+            return "quantity_sceletons", "quantity_bought_skeletons"
         elif name == "werewolf":
             return "quantity_werewolves", "quantity_bought_werewolves"
 
     def get_quantity_minions(self, column1, column2):
         """Получение количество бойцов по названию на данный момент из бд"""
-        
+
         quantity = self.cur.execute(
             f"""SELECT {column1}, {column2} FROM Game
                                          JOIN Registry on Game.user_id=Registry.id
-                                         WHERE login=?""",
-            (self.login,),
+                                         WHERE login=? AND Game.id=?""",
+            (self.login, self.game_id),
         ).fetchone()
         return quantity[0], quantity[1]
 
@@ -60,22 +60,23 @@ class StatisticData:
         quantity1, quantity2 = self.get_quantity_minions(column1, column2)
         quantity1 += 1
         quantity2 += 1
+
         self.cur.execute(
             f"""UPDATE Game
                          SET {column1}=?, {column2}=?, quantity_money=?
-                         WHERE user_id=?""",
-            (quantity1, quantity2, quantity_money, self.get_user_id()),
+                         WHERE user_id=? AND id=?""",
+            (quantity1, quantity2, quantity_money, self.get_user_id(), self.game_id),
         )
         self.con.commit()
 
     def get_quntity_money(self):
         """Получение количства денег"""
-        
+
         quantity = self.cur.execute(
             """SELECT quantity_money FROM Game
                                          JOIN Registry on Game.user_id=Registry.id
-                                         WHERE login=?""",
-            (self.login,),
+                                         WHERE login=? AND Game.id=?""",
+            (self.login, self.game_id)
         ).fetchone()
         quantity = quantity[0]
         if not quantity:
@@ -84,12 +85,16 @@ class StatisticData:
 
     def update(self):
         """Метод обновления бд для синхронизации со всей игрой"""
-        
+
         self.setup()
-    
+
     def add_money(self, money: int):
-        """ Добавление денег на счет """
-        
-        self.cur.execute(f"""UPDATE Game
-                         SET quantity_money=quantity_money + {money}""")
+        """Добавление денег на счет"""
+        quantity_money = self.get_quntity_money()  # Получение количества денег из бд
+        quantity_money += money
+        self.cur.execute(
+            f"""UPDATE Game
+                         SET quantity_money=?
+                         WHERE id=?""", (quantity_money, self.game_id)
+        )
         self.con.commit()

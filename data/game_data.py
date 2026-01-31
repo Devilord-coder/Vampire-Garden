@@ -41,8 +41,9 @@ class GameData:
             """INSERT INTO Game(user_id, game_number, quantity_money, quantity_mandragora_seeds,
             quantity_belladonna_seeds, quantity_rose_seeds, quantity_mandragora, quantity_belladonna, quantity_rose,
             quantity_bats, quantity_sceletons, quantity_werewolves,
-            quantity_planted_mandragora, quantity_planted_belladonna, quantity_planted_rose)
-            VALUES(?, ?, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)""",
+            quantity_planted_mandragora, quantity_planted_belladonna, quantity_planted_rose,
+            quantity_bought_bats, quantity_bought_skeletons, quantity_bought_werewolves)
+            VALUES(?, ?, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)""",
             (user_id, self.game_number),
         )  # Создание данных для новой игры (изначально 500 монет)
         self.con.commit()
