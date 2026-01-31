@@ -38,6 +38,8 @@ class Registry:
 
         # инициализация текктур для огненного шара
         self.fireboll_textures_init()
+        
+        self.beer_money_font = arcade.load_font("fonts/mainfont.ttf")
 
         ...
 

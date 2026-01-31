@@ -53,7 +53,7 @@ class RegistrationView(arcade.View):
             text="Имя",
             text_color=arcade.color.AMARANTH_PURPLE,
             font_size=30,
-            multiline=True,
+            multiline=True
         )
 
         # объект для ввода имени
