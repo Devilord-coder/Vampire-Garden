@@ -4,14 +4,19 @@ from os import listdir
 
 class Enemy(arcade.Sprite):
     def __init__(
-        self, scaling: float = 1, health: int = 100,
-        folder_name: str = "skeleton", walk_speed: int = 0,
-        fly_jump_speed: int = 0
+        self, enemies_name_list: list = [], scaling: float = 1, health: int = 100,
+        folder_name: str = "skeleton", walk_speed: int = 3,
+        fly_jump_speed: int = 0, power: int = 25,
     ):
         super().__init__()
         
         self.scale = scaling
+        
+        # сила и здоровье
+        self.power = power
         self.health = health
+        
+        self.enemies_name_list = enemies_name_list
         
         # название типа
         self.name = folder_name
@@ -22,6 +27,7 @@ class Enemy(arcade.Sprite):
         
         # умер или нет
         self.death = False
+        self.attacking = False
         
         self.current_texture = 0
         self.texture_change_time = 0
@@ -65,6 +71,12 @@ class Enemy(arcade.Sprite):
                 texture = arcade.load_texture(f"resources/Enemies/{self.name}/death/{name}")
                 self.death_textures.append(texture)
         
+        self.attack_textures = []
+        for name in sorted(listdir(f"resources/Enemies/{self.name}/attack")):
+            if name[-4:] == ".png":
+                texture = arcade.load_texture(f"resources/Enemies/{self.name}/attack/{name}")
+                self.attack_textures.append(texture)
+        
         
     def update(self, delta_time):
         """ Перемещение персонажа """
@@ -78,12 +90,17 @@ class Enemy(arcade.Sprite):
             self.change_y = -self.change_y
         
         self.update_animation(delta_time)
+    
+    def attack(self):
+        self.attacking = True
+        self.current_texture = -1
         
     def update_animation(self, delta_time):
         """ Обновление анимации """
         
+        self.texture_change_time += delta_time
+        
         if self.death:
-            self.texture_change_time += delta_time
             if self.texture_change_time >= self.texture_change_delay:
                 self.texture_change_time = 0
                 self.current_texture += 1
@@ -91,9 +108,17 @@ class Enemy(arcade.Sprite):
                     self.kill()
                 else:
                     self.texture = self.death_textures[self.current_texture]
+        elif self.attacking:
+            if self.texture_change_time >= self.texture_change_delay:
+                self.texture_change_time = 0
+                self.current_texture += 1
+                if self.current_texture >= len(self.attack_textures):
+                    self.attacking = False
+                    self.current_texture = -1
+                else:
+                    self.texture = self.attack_textures[self.current_texture]
         elif self.walking:
             if self.change_x > 0:
-                self.texture_change_time += delta_time
                 if self.texture_change_time >= self.texture_change_delay:
                     self.texture_change_time = 0
                     self.current_texture += 1
@@ -101,7 +126,6 @@ class Enemy(arcade.Sprite):
                         self.current_texture = 0
                     self.texture = self.walk_f_textures[self.current_texture]
             else:
-                self.texture_change_time += delta_time
                 if self.texture_change_time >= self.texture_change_delay:
                     self.texture_change_time = 0
                     self.current_texture += 1
@@ -109,7 +133,6 @@ class Enemy(arcade.Sprite):
                         self.current_texture = 0
                     self.texture = self.walk_b_textures[self.current_texture]
         else:
-            self.texture_change_time += delta_time
             if self.texture_change_time >= self.texture_change_delay:
                 self.texture_change_time = 0
                 self.current_texture += 1
@@ -121,7 +144,8 @@ class Enemy(arcade.Sprite):
         """ Получение урона """
         
         self.health -= damage
-        if self.health <= 0:
+        if self.health <= 0 and not self.death:
             self.death = True
             self.current_texture = -1
+            self.enemies_name_list.append(self.name)
             self.change_x = self.change_y = 0

@@ -29,7 +29,7 @@ class FireBoll(arcade.Sprite):
         self.center_x = center_x
         self.center_y = center_y
         self.change_x = change_x
-        self.change_y = change_y
+        self.change_y = 0
         
         self.power = 50 # сила удара
         

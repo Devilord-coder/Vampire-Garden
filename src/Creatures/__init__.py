@@ -1,5 +1,5 @@
 from .hero import Hero
-from .enemies import ENEMIES
+from .enemies import ENEMIES, ENEMIES_PRICE
 from .garden_minion import GardenMinion
 from .rabbit import Rabbit
 
@@ -13,5 +13,6 @@ __all__ = [
     "Hero",
     "ENEMIES",
     "GardenMinion",
-    "Rabbit"
+    "Rabbit",
+    "ENEMIES_PRICE"
 ]
