@@ -63,7 +63,7 @@ class BaseWindow(arcade.Window):
         self.garden_id = None  # Индекс огорода
         self.quantity_money = None  # Количество денег
 
-        self.bg_sound_playback = arcade.play_sound(self.bg_sound)
+        self.bg_sound_playback = arcade.play_sound(self.bg_sound, loop=True)
 
     def on_mouse_motion(self, x, y, dx, dy):
         self.mouse.center_x = x

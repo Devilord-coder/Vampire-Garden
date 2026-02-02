@@ -1,6 +1,6 @@
 import arcade
 import arcade.gui
-from src.creatures import Hero, ENEMIES
+from src.creatures import Hero, ENEMIES, ENEMIES_PRICE
 from .battle_physics import *
 from src.registry import reg
 from src.objects import Money
@@ -29,6 +29,10 @@ class BattleView(arcade.View):
         self.manager = arcade.gui.UIManager()
         
         self.map_name = None
+        
+        self.enemies_killed_names = []
+        
+        self.setup()
 
     def setup(self):
         """ Настраиваем игру здесь. Вызывается при старте и при рестарте. """
@@ -42,7 +46,7 @@ class BattleView(arcade.View):
         arcade.stop_sound(self.window.bg_sound_playback)
         if self.bg_sound_playback:
             arcade.stop_sound(self.bg_sound_playback)
-        self.bg_sound_playback = arcade.play_sound(self.bg_sound)
+        self.bg_sound_playback = arcade.play_sound(self.bg_sound, loop=True)
         
         # Инициализируем списки спрайтов
         self.player_list = arcade.SpriteList()
@@ -125,7 +129,7 @@ class BattleView(arcade.View):
         self.enemies_list = arcade.SpriteList()
         self.enemies_engine_list = []
         for enemy_ter in self.enemies_territory_list:
-            enemy = ENEMIES[enemy_ter.name](walk_speed=0.5, scaling=0.75)
+            enemy = ENEMIES[enemy_ter.name](walk_speed=0.5, scaling=0.75, enemies_name_list=self.enemies_killed_names)
             x, y = enemy_ter.shape[0], enemy_ter.shape[1]
             enemy.center_x = x
             enemy.center_y = y
@@ -338,7 +342,7 @@ class BattleView(arcade.View):
         """ Окончание игры при смерти персонажа """
         
         arcade.stop_sound(self.bg_sound_playback)
-        self.window.bg_sound_playback = arcade.play_sound(self.window.bg_sound)
+        self.window.bg_sound_playback = arcade.play_sound(self.window.bg_sound, loop=True)
         self.window.mouse.visible = True
         self.manager.disable()
         battle_statistic_view = self.window.get_view("battle_statistic")
@@ -352,7 +356,7 @@ class BattleView(arcade.View):
         """ Окончание игры при победе """
         
         arcade.stop_sound(self.bg_sound_playback)
-        self.window.bg_sound_playback = arcade.play_sound(self.window.bg_sound)
+        self.window.bg_sound_playback = arcade.play_sound(self.window.bg_sound, loop=True)
         self.window.mouse.visible = True
         self.manager.disable()
         battle_statistic_view = self.window.get_view("win_battle_view")
@@ -360,6 +364,7 @@ class BattleView(arcade.View):
         battle_statistic_view.silver = self.money_count["silver"]
         battle_statistic_view.bronze = self.money_count["bronze"]
         battle_statistic_view.enemies = self.enemies_killed
+        battle_statistic_view.enemies_money = sum(map(lambda x: ENEMIES_PRICE[x], self.enemies_killed_names))
         self.window.switch_view("win_battle_view")
 
     def on_key_press(self, key, modifiers):
@@ -424,7 +429,7 @@ class BattleView(arcade.View):
             self.hero.transform()
         elif key == arcade.key.ESCAPE:
             arcade.stop_sound(self.bg_sound_playback)
-            self.window.bg_sound_playback = arcade.play_sound(self.window.bg_sound)
+            self.window.bg_sound_playback = arcade.play_sound(self.window.bg_sound, loop=True)
             self.window.mouse.visible = True
             self.manager.disable()
             self.window.switch_view("main_map")

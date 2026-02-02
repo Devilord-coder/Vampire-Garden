@@ -8,3 +8,9 @@ ENEMIES = {
     "demon": DemonEnemy,
     "dragon": DragonEnemy
 }
+
+ENEMIES_PRICE = {
+    "skeleton": 25,
+    "demon": 50,
+    "dragon": 100
+}

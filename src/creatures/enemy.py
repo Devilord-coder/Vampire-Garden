@@ -4,9 +4,9 @@ from os import listdir
 
 class Enemy(arcade.Sprite):
     def __init__(
-        self, scaling: float = 1, health: int = 100,
+        self, enemies_name_list: list = [], scaling: float = 1, health: int = 100,
         folder_name: str = "skeleton", walk_speed: int = 3,
-        fly_jump_speed: int = 0, power: int = 25
+        fly_jump_speed: int = 0, power: int = 25,
     ):
         super().__init__()
         
@@ -15,6 +15,8 @@ class Enemy(arcade.Sprite):
         # сила и здоровье
         self.power = power
         self.health = health
+        
+        self.enemies_name_list = enemies_name_list
         
         # название типа
         self.name = folder_name
@@ -145,4 +147,5 @@ class Enemy(arcade.Sprite):
         if self.health <= 0 and not self.death:
             self.death = True
             self.current_texture = -1
+            self.enemies_name_list.append(self.name)
             self.change_x = self.change_y = 0

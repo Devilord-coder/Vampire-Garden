@@ -31,6 +31,8 @@ class BattleWinView(arcade.View):
         self.anchor_layout = UIAnchorLayout()  # Центрирует виджеты
         self.box_layout = UIBoxLayout(vertical=True, space_between=20)  # Вертикальный стек
         
+        self.money_count = self.bronze * 5 + self.silver * 10 + self.gold * 15 + self.enemies_money
+        
         victory_text = UILabel(
             text="VICTORY",
             text_color=TEXT_COLOR,
@@ -75,12 +77,21 @@ class BattleWinView(arcade.View):
             align="left"
         )
         
+        money_count = UILabel(
+            text=f"MONEY COUNT - {self.money_count}",
+            text_color=TEXT_COLOR,
+            font_size=18,
+            multiline=True,
+            align="left"
+        )
+        
         # ==== ДОБАВЛЯЕМ ВИДЖЕТЫ ПО ПОРЯДКУ ====
         self.box_layout.add(victory_text)
         self.box_layout.add(gold_text)
         self.box_layout.add(silver_text)
         self.box_layout.add(bronze_text)
         self.box_layout.add(enemies_text)
+        self.box_layout.add(money_count)
         
         self.anchor_layout.add(self.box_layout)  # Box в anchor
         self.manager.add(self.anchor_layout)  # Всё в manager
@@ -123,7 +134,6 @@ class BattleWinView(arcade.View):
         """ Нажатие мыши """
         
         self.manager.disable()
-        self.money_count = self.bronze * 5 + self.silver * 10 + self.gold * 15
         self.data = StatisticData(self.window)
         self.data.add_money(self.money_count)
         self.window.switch_view("main_map")
