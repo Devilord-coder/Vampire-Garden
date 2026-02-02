@@ -332,6 +332,8 @@ class BattleView(arcade.View):
         if not self.hero.hurting:
             enemies_attack = arcade.check_for_collision_with_list(self.hero, self.enemies_list)
             for enemy in enemies_attack:
+                if enemy.death:
+                    continue
                 self.hero.hurt(enemy.power)
                 enemy.attack()
 
@@ -444,7 +446,7 @@ class BattleView(arcade.View):
         if not self.hero:
             return
         
-        if key in (arcade.key.UP, arcade.key.DOWN, arcade.key.W, arcade.key.S):
+        if key in (arcade.key.UP, arcade.key.DOWN):
             self.hero.change_y = 0
-        elif key in (arcade.key.LEFT, arcade.key.RIGHT, arcade.key.A, arcade.key.D):
+        elif key in (arcade.key.LEFT, arcade.key.RIGHT):
             self.hero.change_x = 0

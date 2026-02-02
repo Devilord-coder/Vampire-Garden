@@ -11,7 +11,6 @@ class BattleStatisticView(arcade.View):
     
     def __init__(self, window):
         super().__init__()
-        arcade.set_background_color(arcade.color.BLACK)
         
         self.window = window
         
@@ -20,6 +19,7 @@ class BattleStatisticView(arcade.View):
     
     def setup(self):
         """ Настройка представления """
+        arcade.set_background_color(arcade.color.BLACK)
         
         # UIManager — сердце GUI
         self.manager = UIManager()

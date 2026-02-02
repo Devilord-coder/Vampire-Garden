@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="36">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="41">
  <tileset firstgid="1" source="../dungeoun_tilesheet.tsx"/>
  <tileset firstgid="97" source="../colored_tiles.tsx"/>
  <layer id="7" name="spikes_collision" width="100" height="20" visible="0">
@@ -9,7 +9,7 @@
  </layer>
  <layer id="1" name="walls" width="100" height="20">
   <data encoding="base64" compression="zlib">
-   eJzlWdtOwzAMjeAbgGcetkrcKhiCx2n7Av7/a1BELXlHudiOk1X0SEdR1sTOfOo4bU8hhFMHzp3sboEW3EH/Afqz0e5/gya+Vj1QCwLXZAZuFSP00CKlB+p1Dd1G+F2jHhEztLkxtdigHYldqy8PjNDjJfP7m8EWwiNOkvkWH5hPudzm/VY9YqxfGXMxjuN+GD20IHjoIaHFDv6em0folR8p36RdSosR93hPWPMU57Xo8Sn013IdfWGLtq5Z561zObR6PAaZDjW/PWPmsfdo/WnH59Yy+nzlFYsWOzlNPO7x1vMgjy+vzak9nvT4SPBQ8dMrP1piKImdJcdactE7P3Av86ofPeCRY9qzVw1aPSbhWMueah2/hrMVb3PXJdgpxmr08ELu3VcOnjW8VGdKz3YhyHMGsTY9YvzvGWl9pXNuhOSZK/WMhtdxbG1eDqX1lGqp5r7R6PEeLus89lOIWuwS9IRUN+28mr8eoHp+U+CT0NYzm3Mb/rTYLzwvLOnR+j2mNzDPifjdpwX0/1P38LS0X6GsF/G7Yi++4zqHy7j3+E7WCyPWGW0dwTb1J2hrPAJJF95q9dgifwEs6HQU
+   eJzlWVtqxDAMNO0Z2n73IxvoK7Rb2s9l9wS9/2mKaQTawbJlWfYuzcBgnNhSooksJzmGEI4duHSyuwVacAf9B+gvRrv/DTXxteqBWhC4JgtwqxihRy1SeqBel9BthN9r1CNigVYaU4oN2tHYtfryQC6+6N+qx4tw/M1gC+ERJ818iw/MJym3eb81P2KsXxmlGMdxP4weWhA89NDQYgePS/MIGj24dlr9Ur5Ju5QWI57xnrDmKc5ryY9Ppb+W8+gLW7R1yTpvnctRq8dj0OlQ8tszZh5rT62/2vHStdSsPx77K69YtNiRNPF4xlv3gzy+vDan1njS4yPBfcFPr/xoiaEmdpYca8lF73qOa5lX/egBjxyr3XuVQN/yNIhjZ+VYy5pqHX8NeyveSuc1mArzcC+m1cML0rcvCZ41PFdncu92IehzBjEljkm2RugR43/PSNeX2+dGaN65Uu9oeB7HluZJyF1PrpaW6hJHjR7v4bzOYz+FqMWUoCe0utXOK/nzBNbzmwyflDaf2Zzb8KfFbuVpZU6P1v8xvYF5TsT/Pi2g+089w/PafoW8XsTvgr34jesUzuPe4z9ZL4y4zmjrALapP0Nb4gFIuvC2Vo8t8hdrEnXq
   </data>
  </layer>
  <layer id="6" name="spikes" width="100" height="20">
@@ -47,7 +47,11 @@
   <object id="7" name="skeleton" x="206.453" y="154.531"/>
   <object id="11" name="skeleton" x="2832.13" y="558.305"/>
   <object id="12" name="dragon" x="2001.63" y="337.673"/>
-  <object id="13" name="skeleton" x="2477.62" y="148.495"/>
+  <object id="36" name="demon" x="2962.52" y="564.059"/>
+  <object id="37" name="demon" x="1386.04" y="417.018"/>
+  <object id="38" name="skeleton" x="1863.32" y="112.089"/>
+  <object id="39" name="skeleton" x="1466.8" y="260.335"/>
+  <object id="40" name="skeleton" x="2710.62" y="559.238"/>
  </objectgroup>
  <layer id="2" name="secret" width="100" height="20">
   <data encoding="base64" compression="zlib">

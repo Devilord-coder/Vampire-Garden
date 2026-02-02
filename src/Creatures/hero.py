@@ -68,6 +68,9 @@ class Hero(arcade.Sprite):
         
         # атака
         self.attack_f_textures = self.attack_b_textures = self.idle_textures # заглушка
+        
+        self.current_texture = -1
+        self.texture = self.idle_textures[0]
     
     def create_vampire_textures(self):
         """ Изменение внешнего вида на вампирский """
@@ -107,6 +110,9 @@ class Hero(arcade.Sprite):
         for i in range(12):
             texture = arcade.load_texture(f"resources/Hero/vampire/attack_back/{i}.png")
             self.attack_b_textures.append(texture)
+        
+        self.current_texture = -1
+        self.texture = self.idle_textures[0]
 
     def update_animation(self, delta_time: float = 1/60):
         """ Обновление анимации """

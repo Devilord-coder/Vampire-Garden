@@ -230,10 +230,13 @@ class ShopView(arcade.View):
 
     def on_show_view(self):
         """Активация ui менеджера"""
+        
+        self.setup()
         if self.ui_manager:
             self.ui_manager.enable()
 
     def on_hide_view(self):
         """Выключение ui менеджера"""
+        
         if self.ui_manager:
             self.ui_manager.disable()
