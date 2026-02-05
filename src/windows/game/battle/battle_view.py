@@ -1,9 +1,9 @@
 import arcade
 import arcade.gui
-from src.creatures import Hero, ENEMIES, ENEMIES_PRICE
+from src.game_creatures import Hero, ENEMIES, ENEMIES_PRICE
 from .battle_physics import *
 from src.registry import reg
-from src.objects import Money
+from src.game_objects import Money
 
 
 class BattleView(arcade.View):

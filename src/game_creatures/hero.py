@@ -1,5 +1,5 @@
 import arcade
-from src.objects import FireBoll
+from src.game_objects import FireBoll
 
 
 class Hero(arcade.Sprite):
