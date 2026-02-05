@@ -35,11 +35,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['resources/icon.ico'],
-)
-app = BUNDLE(
-    exe,
-    name='Vampire Garden.app',
-    icon='resources/icon.ico',
-    bundle_identifier=None,
+    icon=['resources\\icon.ico'],
 )

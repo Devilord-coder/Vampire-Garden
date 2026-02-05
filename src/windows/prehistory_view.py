@@ -22,8 +22,9 @@ class PrehistoryView(arcade.View):
         self.ui_manager.enable()
 
         # настройка текста сообщения
-        with open("resources/prehistory.txt", "r") as file:
-            self.text = file.readlines()
+        self.text = """Всё началось с того, что мой любимый питомец заболел.
+Тогда я прочитал в книге, что ему может помочь только одно зелье,
+но у меня не было ингредиентов, и я не знал, где их найти. Я решил сам их вырастить...""".split('\n')
         self.background = arcade.load_texture("resources/Moon/orig.png")
         self.vampire_picture = arcade.load_texture("resources/prehistory_vampire.jpg")
         self.voice_playback = arcade.play_sound(self.sound, volume=0.9, loop=False)
@@ -66,7 +67,7 @@ class PrehistoryView(arcade.View):
         height = self.height // 2 + 50
         for i in range(len(self.text)):
             text = arcade.Text(
-                self.text[i],
+                self.text[i] + '\n',
                 self.width // 2 - 10 * self.width // 100,
                 height,
                 font_size=20,

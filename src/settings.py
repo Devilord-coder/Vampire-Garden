@@ -1,11 +1,22 @@
-import screeninfo
+import os
 
 
 class Settings:
     def __init__(self):
         # self.fps = 60 в arcade это не требуется через delta_time уже учитываем частоту кадров
-        monitor = screeninfo.get_monitors()[0]
-        self.resolution = self.width, self.height = monitor.width, monitor.height  # Разрешение экрана
+        if os.name == 'nt':
+            import ctypes
+
+            user32 = ctypes.windll.user32
+            user32.SetProcessDPIAware()
+            width = user32.GetSystemMetrics(0)
+            height = user32.GetSystemMetrics(1)
+            self.resolution = self.width, self.height = width, height
+        else:
+            import screeninfo
+
+            monitor = screeninfo.get_monitors()[0]
+            self.resolution = self.width, self.height = monitor.width, monitor.height  # Разрешение экрана
         # Минимальное разрешение экрана
         self.resolution_min = self.width_min, self.height_min = 800, 600
         self.resizable = False  # Флажок для редактирования размера окна
